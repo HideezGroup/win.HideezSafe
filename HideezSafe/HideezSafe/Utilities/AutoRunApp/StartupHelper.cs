@@ -5,38 +5,40 @@ using System.Windows.Forms;
 
 namespace HideezSafe.Utils
 {
+    /// <summary>
+    /// Provides methods and properties to manage an application in startup list.
+    /// </summary>
     public class StartupHelper : IStartupHelper
 	{
-		/// <summary>
-		/// Add app to startap list
-		/// </summary>
-		/// <returns>if success add</returns>
-		public bool AddToStartup()
+        /// <summary>
+        /// Add app to startup list.
+        /// </summary>
+        /// <returns>True if application is successfully added to startup.</returns>
+        public bool AddToStartup()
 		{
 			return AddToStartup(AppName, ExecutablePath);
 		}
 
-		/// <summary>
-		/// Add app to startap list
-		/// </summary>
-		/// <param name="appName">registry key</param>
-		/// <returns>if success add</returns>
-		public bool AddToStartup(string appName)
+        /// <summary>
+        /// Add app to startup list.
+        /// </summary>
+        /// <param name="appName">App name for registry key.</param>
+        /// <returns>True if application is successfully added to startup.</returns>
+        public bool AddToStartup(string appName)
 		{
 			return AddToStartup(appName, ExecutablePath);
 		}
 
-		/// <summary>
-		/// Add app to startap list
-		/// </summary>
-		/// <param name="appName">registry key</param>
-		/// <param name="path">path to executable file</param>
-		/// registry key
-		/// <returns>if success add</returns>
-		public bool AddToStartup(string appName, string path)
+        /// <summary>
+        /// Add app to startup list.
+        /// </summary>
+        /// <param name="appName">App name for registry key.</param>
+        /// <param name="path">Path to executable file.</param>
+        /// <returns>True if application is successfully added to startup.</returns>
+        public bool AddToStartup(string appName, string path)
 		{
 			if (string.IsNullOrEmpty(appName))
-				throw new ArgumentException("Value can not be empty", nameof(appName));
+				throw new ArgumentException("Value can not be empty.", nameof(appName));
 
 			try
 			{
@@ -56,24 +58,24 @@ namespace HideezSafe.Utils
 			return true;
 		}
 
-		/// <summary>
-		/// Remove app from startap list
-		/// </summary>
-		/// <returns>if success add</returns>
-		public bool RemoveFromStartup()
+        /// <summary>
+        /// Remove app from startup list.
+        /// </summary>
+        /// <returns>True if application is successfully removed from startup.</returns>
+        public bool RemoveFromStartup()
 		{
 			return RemoveFromStartup(AppName);
 		}
 
-		/// <summary>
-		/// Remove app from startap list
-		/// </summary>
-		/// <param name="appName">registry key</param>
-		/// <returns>if success add</returns>
-		public bool RemoveFromStartup(string appName)
+        /// <summary>
+        /// Remove app from startup list.
+        /// </summary>
+        /// <param name="appName">App name for registry key.</param>
+        /// <returns>True if application is successfully removed from startup.</returns>
+        public bool RemoveFromStartup(string appName)
 		{
 			if (string.IsNullOrEmpty(appName))
-				throw new ArgumentException("Value can not be empty", nameof(appName));
+				throw new ArgumentException("Value can not be empty.", nameof(appName));
 
 			bool res;
 			try
@@ -87,7 +89,7 @@ namespace HideezSafe.Utils
 				}
 				res = true;
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				res = false;
 			}
@@ -107,7 +109,7 @@ namespace HideezSafe.Utils
 				}
 				res = true;
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				if (!res)
 				{
@@ -117,10 +119,11 @@ namespace HideezSafe.Utils
 			return res;
 		}
 
-		/// <summary>
-		/// Check if app in startap list
-		/// </summary>
-		public bool IsInStartup()
+        /// <summary>
+        /// Check if app in startup list.
+        /// </summary>
+        /// <returns>True if application is in startup list.</returns>
+        public bool IsInStartup()
 		{
 			return IsInStartup(AppName);
 		}
@@ -133,7 +136,7 @@ namespace HideezSafe.Utils
 		public bool IsInStartup(string appName)
 		{
 			if (string.IsNullOrEmpty(appName))
-				throw new ArgumentException("Value can not be empty", nameof(appName));
+				throw new ArgumentException("Value can not be empty.", nameof(appName));
 
 			bool isInStartup = false;
 
@@ -200,10 +203,10 @@ namespace HideezSafe.Utils
 			return isInStartup;
 		}
 
-		/// <summary>
-		/// Return name this aplication
-		/// </summary>
-		private string AppName
+        /// <summary>
+        /// Gets the name associated with this application.
+        /// </summary>
+        private string AppName
 		{
 			get
 			{
@@ -211,10 +214,10 @@ namespace HideezSafe.Utils
 			}
 		}
 
-		/// <summary>
-		/// Return path of the executable file
-		/// </summary>
-		private string ExecutablePath
+        /// <summary>
+        /// Gets the path for the executable file that started the application, including the executable name.
+        /// </summary>
+        private string ExecutablePath
 		{
 			get
 			{
@@ -222,16 +225,16 @@ namespace HideezSafe.Utils
 			}
 		}
 
-		/// <summary>
-		/// Check windows version
-		/// </summary>
+        /// <summary>
+        /// True if version of windows 8 or higher.
+        /// </summary>
 		private bool IsWindows8orHigher
 		{
 			get
 			{
 				Version version = Environment.OSVersion.Version;
 
-				// version of windows
+				// versions of windows
 				// 5.1 Windows Xp 32x
 				// 5.2 Windows Xp 64x
 				// 6.0 Windows Vista
