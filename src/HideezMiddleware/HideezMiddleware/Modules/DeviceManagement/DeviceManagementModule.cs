@@ -144,6 +144,18 @@ namespace HideezMiddleware.Modules.DeviceManagement
                 {
                     try
                     {
+                        if (device.ChannelNo == (byte)DefaultDeviceChannel.Main && device.GetUserProperty<bool>(CustomProperties.HW_WIPE_STATE_PROP))
+                        {
+                            try
+                            {
+                                // Wiped device is cleared of all bond information, and therefore must be paired again
+                                await _deviceManager.DeleteBond(device.DeviceConnection);
+                            }
+                            catch (Exception ex)
+                            {
+                                WriteLine(ex);
+                            }
+                        }
                         await SafePublish(new DeviceDisconnectedMessage(new DeviceDTO(device)));
                     }
                     catch (Exception ex)
@@ -183,19 +195,9 @@ namespace HideezMiddleware.Modules.DeviceManagement
                 var device = (IDevice)sender;
                 if (device.ChannelNo == (byte)DefaultDeviceChannel.Main)
                 {
+                    device.SetUserProperty(CustomProperties.HW_WIPE_STATE_PROP, true);
                     WriteLine($"({device.SerialNo}) Wipe finished. Disabling automatic reconnect");
                     await _messenger.Publish(new DeviceManager_ExpectedDeviceRemovalMessage(device));
-                    try
-                    {
-                            
-
-                        // Wiped device is cleared of all bond information, and therefore must be paired again
-                        await _deviceManager.DeleteBond(device.DeviceConnection);
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLine(ex);
-                    }
                 }
             }
         }

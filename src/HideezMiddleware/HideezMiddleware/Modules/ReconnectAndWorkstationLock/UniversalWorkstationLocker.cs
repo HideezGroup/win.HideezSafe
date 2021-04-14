@@ -28,7 +28,7 @@ namespace HideezMiddleware.Modules.ReconnectAndWorkstationLock
 
             public async Task Run()
             {
-//#if !DEBUG
+#if !DEBUG
                 if (_workstationHelper.GetActiveSessionLockState() == WorkstationInformationHelper.LockState.Unlocked)
                 {
                     try
@@ -48,7 +48,7 @@ namespace HideezMiddleware.Modules.ReconnectAndWorkstationLock
                         _workstationHelper.GetActiveSessionLockState() == WorkstationInformationHelper.LockState.Unlocked)
                         _wtsapiLocker.LockWorkstation();
                 }
-//#endif
+#endif
             }
 
             void SessionSwitchMonitor_SessionSwitch(int sessionId, SessionSwitchReason reason)
