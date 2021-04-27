@@ -270,8 +270,8 @@
     <Compile Include="Modules\FwUpdateCheck\FwUpdateCheckModule.cs" />
     <Compile Include="Modules\FwUpdateCheck\FwUpdateInfo.cs" />
     <Compile Include="Modules\FwUpdateCheck\Messages\AvailableDeviceModelsMessage.cs" />
-    <Compile Include="Modules\FwUpdateCheck\Messages\GetFwUpdateByModelMessage.cs" />
-    <Compile Include="Modules\FwUpdateCheck\Messages\GetFwUpdateByModelResponse.cs" />
+    <Compile Include="Modules\FwUpdateCheck\Messages\GetFwUpdateByDeviceModelMessage.cs" />
+    <Compile Include="Modules\FwUpdateCheck\Messages\GetFwUpdateByDeviceModelResponse.cs" />
     <Compile Include="Modules\FwUpdateCheck\Messages\GetFwUpdateFilePathMessage.cs" />
     <Compile Include="Modules\FwUpdateCheck\Messages\GetFwUpdateFilePathResponse.cs" />
     <Compile Include="Modules\FwUpdateCheck\Messages\GetFwUpdatesCollectionMessage.cs" />

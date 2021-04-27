@@ -250,8 +250,10 @@ namespace DeviceMaintenance.ViewModel
             try
             {
                 var mb = MessageBox.Show(
-                    "WARNING! ALL DATA WILL BE LOST!" +
-                    Environment.NewLine +
+                    "After performing wipe:\n" +
+                    "- All your FIDO data will be erased from your vault(this data cannot be restored!)\n" +
+                    "- All your credentials will be erased from your vault\n" +
+                    "- Your vault will be disconnected and unpaired from all devices\n\n" +
                     "To wipe the device, press OK, wait for the green light on the device then press and hold the button for 15 seconds.",
                     "Wipe the device",
                     MessageBoxButton.OKCancel,

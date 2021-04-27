@@ -164,7 +164,6 @@
     <Compile Include="Messages\FilePathDetectionMessage.cs" />
     <Compile Include="Messages\FilePathDetectionResponse.cs" />
     <Compile Include="Messages\MessageBase.cs" />
-    <Compile Include="Messages\StartDiscoveryCommand.cs" />
     <Compile Include="Service\HideezServiceController.cs" />
     <Compile Include="Utils\DelegateCommand.cs" />
     <Compile Include="Messages\AdvertismentReceivedEvent.cs" />

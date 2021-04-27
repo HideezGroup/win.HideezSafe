@@ -146,7 +146,7 @@
                     </StackPanel>
                     <StackPanel Visibility="{Binding IsQuickUpdate, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <WrapPanel HorizontalAlignment="Center">
-                            
+
                             <TextBlock
                                 FontSize="20"
                                 Foreground="White"
@@ -154,25 +154,8 @@
                                 Text="Quick update"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"/>
-                                
+
                         </WrapPanel>
-                        <Grid>
-                            <TextBlock
-                                FontSize="16"
-                                Foreground="White"
-                                FontWeight="DemiBold"
-                                VerticalAlignment="Center"
-                                Visibility="{Binding IsFirmwareSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Run Text="Version '"/><Run Text="{Binding TempFileName, Mode=OneWay}"/><Run Text="' is available for update"/>
-                            </TextBlock>
-                            <TextBlock
-                                FontSize="16"
-                                Foreground="White"
-                                FontWeight="DemiBold"
-                                Text="No firware available for download. Use 'local file' instead."
-                                VerticalAlignment="Center"
-                                Visibility="{Binding IsFirmwareSelected, Converter={StaticResource InvertBooleanToVisibilityConverter}}"/>
-                        </Grid>
                     </StackPanel>
                 </Grid>
                 <StackPanel Visibility="{Binding IsButtonsVisible, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
@@ -218,7 +201,7 @@
                             Foreground="White"
                             FontWeight="DemiBold"
                             VerticalAlignment="Center"
-                            Visibility="{Binding Path=IsWinBleUpdateAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            Visibility="{Binding Path=IsWinBleEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </WrapPanel>
                 </StackPanel>
             </StackPanel>

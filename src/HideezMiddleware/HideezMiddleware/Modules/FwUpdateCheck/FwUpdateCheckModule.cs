@@ -30,7 +30,7 @@ namespace HideezMiddleware.Modules.FwUpdateCheck
             DeleteOldCachedUpdates();
             Task.Run(RunAvailableModelsCheck);
 
-            _messenger.Subscribe<GetFwUpdateByModelMessage>(OnGetFwUpdateByModel);
+            _messenger.Subscribe<GetFwUpdateByDeviceModelMessage>(OnGetFwUpdateByModel);
             _messenger.Subscribe<GetFwUpdateFilePathMessage>(OnGetFwUpdate);
             _messenger.Subscribe<GetFwUpdatesCollectionMessage>(OnGetFwUpdatesCollection);
         }
@@ -158,7 +158,7 @@ namespace HideezMiddleware.Modules.FwUpdateCheck
             }
         }
 
-        private async Task OnGetFwUpdateByModel(GetFwUpdateByModelMessage arg)
+        private async Task OnGetFwUpdateByModel(GetFwUpdateByDeviceModelMessage arg)
         {
             string filePath = string.Empty;
             try
@@ -175,7 +175,7 @@ namespace HideezMiddleware.Modules.FwUpdateCheck
             }
             finally
             {
-                await _messenger.Publish(new GetFwUpdateByModelResponse(filePath));
+                await _messenger.Publish(new GetFwUpdateByDeviceModelResponse(filePath));
             }
         }
 

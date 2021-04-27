@@ -107,13 +107,14 @@ namespace DeviceMaintenance.ViewModel
             }
         }
 
-        [DependsOn(nameof(FilePath))]
+        [DependsOn(nameof(FirmwareFilePath))]
         public bool IsFirmwareSelected
         {
             get
             {
-                    return !string.IsNullOrWhiteSpace(FilePath) &&
-                            FilePath.EndsWith($".{FW_FILE_EXTENSION}");
+                return IsAdvancedUpdate && IsUpdateFromFileEnabled ? 
+                    !string.IsNullOrWhiteSpace(FirmwareFilePath) && FirmwareFilePath.EndsWith($".{FW_FILE_EXTENSION}")
+                    : true;
             }
         }
 
@@ -421,7 +422,6 @@ namespace DeviceMaintenance.ViewModel
             ConnectionModeProvider modeProvider = new ConnectionModeProvider(HideezClientRegistryRoot.GetRootRegistryKey(false), _log);
 
             ConnectionManager = new ConnectionManagerViewModel(_log, _hub);
-            ConnectionManager.Initialize(DefaultConnectionIdProvider.Csr);
             HideezServiceController = new HideezServiceController(_log, _hub);
 
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
@@ -430,9 +430,6 @@ namespace DeviceMaintenance.ViewModel
                 IsCsrEnabled = true;
             else
                 IsWinBleEnabled = true;
-
-            if (IsFirmwareSelected)
-                _hub.Publish(new StartDiscoveryCommand());
         }
 
         Task OnClosing(ClosingEvent arg)
@@ -483,7 +480,7 @@ namespace DeviceMaintenance.ViewModel
                 if (IsQuickUpdate)
                 {
                     var deviceModel = GetDeviceModelBySerialNo(arg.DeviceSerialNo);
-                    var response = await _hub.Process<GetFwUpdateByModelResponse>(new GetFwUpdateByModelMessage(deviceModel.Code));
+                    var response = await _hub.Process<GetFwUpdateByDeviceModelResponse>(new GetFwUpdateByDeviceModelMessage(deviceModel.Code));
                     filePath = response.FilePath;
                 }
                 else if (IsAdvancedUpdate)
@@ -577,9 +574,6 @@ namespace DeviceMaintenance.ViewModel
 
             if (ofd.ShowDialog() == true)
                 FirmwareFilePath = ofd.FileName;
-
-            if (IsFirmwareSelected)
-                _hub.Publish(new StartDiscoveryCommand());
         }
 
 
