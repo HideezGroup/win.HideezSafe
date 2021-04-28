@@ -1086,7 +1086,7 @@ Would you like to perform application update now?</value>
     <value>Never</value>
   </data>
   <data name="Button.EditUnlockAccount" xml:space="preserve">
-    <value>Edit unlock account</value>
+    <value>Edit Password</value>
   </data>
   <data name="BackupPassword.ConfirmBP.Label" xml:space="preserve">
     <value>Confirm password</value>
