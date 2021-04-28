@@ -201,7 +201,7 @@ namespace DeviceMaintenance.ViewModel
                 if (res.Device == null)
                 {
                     if(_connectionId.IdProvider == (byte)DefaultConnectionIdProvider.WinBle)
-                        throw new Exception("Failed to connect device. Pair device and try again");
+                        throw new Exception("Failed to connect device. Repair device or turn the Bluetooth off and on.");
                     else if(_connectionId.IdProvider == (byte)DefaultConnectionIdProvider.Csr)
                         throw new Exception("Failed to connect device");
                 }
