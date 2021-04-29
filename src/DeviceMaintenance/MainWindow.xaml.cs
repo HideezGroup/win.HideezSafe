@@ -54,5 +54,18 @@ namespace DeviceMaintenance
             }
         }
 
+        private void WrapPanel_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if((bool)e.NewValue)
+            {
+                Width = 400;
+                Height = 300;
+            }
+            else
+            {
+                Width = 1000;
+                Height = 450;
+            }
+        }
     }
 }
