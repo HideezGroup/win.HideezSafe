@@ -1,4 +1,5 @@
 ﻿using HideezClient.Controls;
+using HideezClient.Controls.Notification.View;
 using HideezClient.Models;
 using HideezClient.Utilities;
 using HideezClient.ViewModels;
@@ -228,6 +229,26 @@ namespace HideezClient.Modules.NotificationsManager
 
             var result = await taskCompletionSourceForDialog.Task;
             return result;
+        }
+
+        public void ShowClientOpeningFromTaskbarNotification()
+        {
+            Screen screen = GetCurrentScreen();
+
+            var options = new NotificationOptions { CloseTimeout = TimeSpan.FromSeconds(10) };
+
+            OpenClientFromTaskbarNotification notification = new OpenClientFromTaskbarNotification(options);
+
+            if (notification.Options.IsReplace)
+            {
+                var matchingNotificationViews = GetNotifications().Where(n => n is OpenClientFromTaskbarNotification).ToList();
+
+                foreach (var notificationView in matchingNotificationViews)
+                {
+                    notificationView.Close();
+                }
+            }
+            AddNotification(screen, notification);
         }
 
         /// <summary>

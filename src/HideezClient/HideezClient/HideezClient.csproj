@@ -296,6 +296,9 @@
       <DependentUpon>LoadingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Notification\ViewModel\DeviceIsLockedNotificationViewModel.cs" />
+    <Compile Include="Controls\Notification\View\OpenClientFromTaskbarNotification.xaml.cs">
+      <DependentUpon>OpenClientFromTaskbarNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Notification\View\UpdateAvailableNotification.xaml.cs">
       <DependentUpon>UpdateAvailableNotification.xaml</DependentUpon>
     </Compile>
@@ -620,6 +623,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Notification\View\OpenClientFromTaskbarNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Notification\View\UpdateAvailableNotification.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -860,6 +867,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\taskbar.png" />
     <Resource Include="Resources\Icon\Alert\Alert1.ico" />
     <Resource Include="Resources\Icon\Idle\Idle1.ico" />
     <Resource Include="128x128.ico" />

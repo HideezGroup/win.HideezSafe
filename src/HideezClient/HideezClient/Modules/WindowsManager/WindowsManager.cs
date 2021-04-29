@@ -68,6 +68,7 @@ namespace HideezClient.Modules
 
             metaMessenger.TrySubscribeOnServer<UserNotificationMessage>((m)=>ShowInfo(new ShowInfoNotificationMessage(m.Message, notificationId:m.NotificationId)));
             metaMessenger.TrySubscribeOnServer<UserErrorMessage>((m) => ShowError(new ShowErrorNotificationMessage(m.Message, notificationId: m.NotificationId)));
+            metaMessenger.TrySubscribeOnServer<ClientOpeningNotificationMessage>(ShowClientOpeningNotification);
 
             metaMessenger.Subscribe<ShowButtonConfirmUiMessage>(ShowButtonConfirmAsync, msg => !ContainsDialogType(typeof(PinDialog)));
             metaMessenger.Subscribe<ShowPinUiMessage>(ShowPinAsync, msg => !ContainsDialogType(typeof(PinDialog)));
@@ -317,6 +318,12 @@ namespace HideezClient.Modules
         public Task<bool> ShowAccountNotFoundAsync(string message, string title = null)
         {
             return UIDispatcher.Invoke(() => _notificationsManager.ShowAccountNotFoundNotification(title ?? GetTitle(), message));
+        }
+
+        private Task ShowClientOpeningNotification(ClientOpeningNotificationMessage arg)
+        {
+            UIDispatcher.Invoke(() => _notificationsManager.ShowClientOpeningFromTaskbarNotification());
+            return Task.CompletedTask;
         }
 
         private string GetTitle()

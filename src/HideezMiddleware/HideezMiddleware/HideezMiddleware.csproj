@@ -228,6 +228,7 @@
     <Compile Include="IPC\Messages\ServiceComponentsStateChangedMessage.cs" />
     <Compile Include="IPC\Messages\ServiceSettingsChangedMessage.cs" />
     <Compile Include="IPC\Messages\ShowActivationCodeUiMessage.cs" />
+    <Compile Include="IPC\Messages\ClientOpeningNotificationMessage.cs" />
     <Compile Include="IPC\Messages\UnpairDeviceMessage.cs" />
     <Compile Include="IPC\Messages\UserErrorMessage.cs" />
     <Compile Include="IPC\Messages\UserNotificationMessage.cs" />

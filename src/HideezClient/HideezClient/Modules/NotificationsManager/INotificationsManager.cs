@@ -15,6 +15,7 @@ namespace HideezClient.Modules.NotificationsManager
         Task<bool> ShowAccountNotFoundNotification(string title, string message);
         Task<Account> SelectAccountAsync(Account[] accounts, IntPtr hwnd);
         Task<bool> ShowApplicationUpdateAvailableNotification(string title, string message);
+        void ShowClientOpeningFromTaskbarNotification();
         void ClearNotifications();
     }
 }

@@ -23,6 +23,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml.Serialization;
+using HideezClient.Messages.Dialogs;
+using HideezClient.Dialogs;
 
 namespace HideezClient.ViewModels
 {
@@ -140,49 +142,60 @@ namespace HideezClient.ViewModels
                     Filter = "Hideez vault backup (.hvb,*.hb)|*.hvb;*.hb|All files (*.*)|*.*" // Filter files by extension
                 };
 
-                // Show open file dialog box
-                var result = dlg.ShowDialog();
+            // Show open file dialog box
+            var result = dlg.ShowDialog();
 
-                if (result == true)
+            if (result == true)
+            {
+                ShowInfo(TranslationSource.Instance["Vault.Notification.EnterCurrentBackupPassword"]);
+
+                while (true)
                 {
-                    string filename = dlg.FileName;
-                    var passwordResult = await GetBackupPassword(false, filename);
-
-                    if (passwordResult != null)
+                    try
                     {
-                        var restoreProc = new CredentialsRestoreProcedure();
+                        string filename = dlg.FileName;
+                        var passwordResult = await GetBackupPassword(false, filename);
 
-                        restoreProc.ProgressChanged += RestoreProc_ProgressChanged;
+                        if (passwordResult != null)
+                        {
+                            var restoreProc = new CredentialsRestoreProcedure();
 
-                        await restoreProc.Run(_activeDevice.Device.Storage, filename, passwordResult.Password);
+                            restoreProc.ProgressChanged += RestoreProc_ProgressChanged;
 
-                        await _messenger.Publish(new SetResultUIBackupPasswordMessage(true));
+                            await restoreProc.Run(_activeDevice.Device.Storage, filename, passwordResult.Password);
+
+                            await _messenger.Publish(new SetResultUIBackupPasswordMessage(true));
+                        }
+
+                        break;
+                    }
+                    catch (OperationCanceledException ex)
+                    {
+                        _log.WriteLine(ex);
+                        await _messenger.Publish(new SetResultUIBackupPasswordMessage(false));
+                        break;
+                    }
+                    catch (HideezException ex) when (ex.ErrorCode == HideezErrorCode.FileCorruptOrPasswordIncorrect)
+                    {
+                        _log.WriteLine(ex);
+                        await _messenger.Publish(new ShowErrorNotificationMessage(TranslationSource.Instance["BackupPassword.Error.WrongPassword"], notificationId: Device.Id));
+                        await _messenger.Publish(new HideDialogMessage(typeof(BackupPasswordDialog)));
+                    }
+                    catch (NotSupportedException)
+                    {
+                        await _messenger.Publish(new SetResultUIBackupPasswordMessage(false, TranslationSource.Instance["BackupPassword.Error.NotSupportedFile"]));
+                    }
+                    catch (CryptographicException ex)
+                    {
+                        _log.WriteLine(ex);
+                        await _messenger.Publish(new SetResultUIBackupPasswordMessage(false, TranslationSource.Instance["BackupPassword.Error.WrongPassword"]));
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.WriteLine(ex);
+                        await _messenger.Publish(new SetResultUIBackupPasswordMessage(false));
                     }
                 }
-            }
-            catch (OperationCanceledException ex)
-            {
-                _log.WriteLine(ex);
-                await _messenger.Publish(new SetResultUIBackupPasswordMessage(false));
-            }
-            catch(HideezException ex) when (ex.ErrorCode == HideezErrorCode.FileCorruptOrPasswordIncorrect)
-            {
-                _log.WriteLine(ex);
-                await _messenger.Publish(new SetResultUIBackupPasswordMessage(false, TranslationSource.Instance["BackupPassword.Error.WrongPassword"]));
-            }
-            catch (NotSupportedException)
-            {
-                await _messenger.Publish(new SetResultUIBackupPasswordMessage(false, TranslationSource.Instance["BackupPassword.Error.NotSupportedFile"]));
-            }
-            catch (CryptographicException ex)
-            {
-                _log.WriteLine(ex);
-                await _messenger.Publish(new SetResultUIBackupPasswordMessage(false, TranslationSource.Instance["BackupPassword.Error.WrongPassword"]));
-            }
-            catch(Exception ex)
-            {
-                _log.WriteLine(ex);
-                await _messenger.Publish(new SetResultUIBackupPasswordMessage(false));
             }
         }
 
@@ -240,8 +253,7 @@ namespace HideezClient.ViewModels
         {
             if(isNewPassword)
                 ShowInfo(TranslationSource.Instance["Vault.Notification.NewBackupPassword"]);
-            else
-                ShowInfo(TranslationSource.Instance["Vault.Notification.EnterCurrentBackupPassword"]);
+            
             bool passwordOk = false;
             while (!passwordOk)
             {
