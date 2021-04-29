@@ -134,13 +134,11 @@ namespace HideezClient.ViewModels
 
         private async Task OnRestoreCredentials()
         {
-            try
+            OpenFileDialog dlg = new OpenFileDialog
             {
-                OpenFileDialog dlg = new OpenFileDialog
-                {
-                    DefaultExt = ".hvb",
-                    Filter = "Hideez vault backup (.hvb,*.hb)|*.hvb;*.hb|All files (*.*)|*.*" // Filter files by extension
-                };
+                DefaultExt = ".hvb",
+                Filter = "Hideez vault backup (.hvb,*.hb)|*.hvb;*.hb|All files (*.*)|*.*" // Filter files by extension
+            };
 
             // Show open file dialog box
             var result = dlg.ShowDialog();
