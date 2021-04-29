@@ -177,7 +177,7 @@ namespace HideezMiddleware
 
         bool CanLock(IDevice device)
         {
-            return IsEnabled && device.GetUserProperty<bool>(PROX_LOCK_ENABLED_PROP) && _proximitySettingsProvider.IsEnabledLockByProximity(device.DeviceConnection.Connection.ConnectionId.Id);
+            return IsEnabled && device.GetUserProperty<bool>(PROX_LOCK_ENABLED_PROP) && _proximitySettingsProvider.IsEnabledLockByProximity(device.DeviceConnection.Connection.ConnectionId);
         }
     }
 }

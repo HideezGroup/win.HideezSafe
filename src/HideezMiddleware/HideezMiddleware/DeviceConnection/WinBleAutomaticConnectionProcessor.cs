@@ -224,7 +224,7 @@ namespace HideezMiddleware.DeviceConnection
             if (_advIgnoreListMonitor.IsIgnored(e.Controller.Id))
                 return;
 
-            await ConnectById(e.Controller.Id);
+            await Connect(e.Controller.Connection.ConnectionId);
         }
 
         async Task ConnectByProximity(AdvertismentReceivedEventArgs adv, bool isCommandLinkPressed = false)
@@ -243,12 +243,14 @@ namespace HideezMiddleware.DeviceConnection
 
             var proximity = BleUtils.RssiToProximity(adv.Rssi);
 
+            var connectionId = new ConnectionId(adv.Id, (byte)DefaultConnectionIdProvider.WinBle);
+
             if (_workstationHelper.IsActiveSessionLocked())
             {
-                if (!_proximitySettingsProvider.IsEnabledUnlockByProximity(adv.Id) && !isCommandLinkPressed)
+                if (!_proximitySettingsProvider.IsEnabledUnlockByProximity(connectionId) && !isCommandLinkPressed)
                     return;
 
-                if (proximity < _proximitySettingsProvider.GetUnlockProximity(adv.Id))
+                if (proximity < _proximitySettingsProvider.GetUnlockProximity(connectionId))
                 {
                     if (isCommandLinkPressed)
                     {
@@ -260,12 +262,12 @@ namespace HideezMiddleware.DeviceConnection
                 }
             }
 
-            await ConnectById(adv.Id);
+            await Connect(connectionId);
         }
 
-        async Task ConnectById(string id)
+        async Task Connect(ConnectionId connectionId)
         {
-            if (_advIgnoreListMonitor.IsIgnored(id))
+            if (_advIgnoreListMonitor.IsIgnored(connectionId.Id))
                 return;
 
             if (Interlocked.CompareExchange(ref _isConnecting, 1, 0) == 0)
@@ -277,7 +279,8 @@ namespace HideezMiddleware.DeviceConnection
                         // If device from advertisement already exists and is connected, ignore advertisement
                         var device = _deviceManager.Devices.FirstOrDefault(d =>
                         {
-                            return WinBleUtils.WinBleIdToMac(d.DeviceConnection.Connection.ConnectionId.Id) == WinBleUtils.WinBleIdToMac(id)
+                            return WinBleUtils.WinBleIdToMac(d.DeviceConnection.Connection.ConnectionId.Id) 
+                            == WinBleUtils.WinBleIdToMac(connectionId.Id)
                             && !(d is IRemoteDeviceProxy);
                         });
 
@@ -287,7 +290,6 @@ namespace HideezMiddleware.DeviceConnection
                             == HwVaultConnectionState.Online)
                             return;
 
-                        var connectionId = new ConnectionId(id, (byte)DefaultConnectionIdProvider.WinBle);
                         await ConnectAndUnlockByConnectionId(connectionId);
                     }
                     catch (Exception)
@@ -299,7 +301,7 @@ namespace HideezMiddleware.DeviceConnection
                     }
                     finally
                     {
-                        _advIgnoreListMonitor.Ignore(id);
+                        _advIgnoreListMonitor.Ignore(connectionId.Id);
                     }
                 }
                 finally

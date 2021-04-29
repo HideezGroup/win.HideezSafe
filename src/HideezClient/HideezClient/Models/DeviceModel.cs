@@ -53,6 +53,7 @@ namespace HideezClient.Models
 
         string id;
         string connectionId;
+        string notificationsId;
         string name;
         string ownerName;
         string ownerEmail;
@@ -132,6 +133,8 @@ namespace HideezClient.Models
         public string TypeName { get; } = "Hardware Vault";
 
         // There properties are set by constructor and updated by certain events and messages
+        
+        // Virtual device identifier
         public string Id
         {
             get { return id; }
@@ -141,8 +144,8 @@ namespace HideezClient.Models
         // This property is used as id for notifications related to this device
         public string NotificationsId
         {
-            get { return connectionId; }
-            private set { Set(ref connectionId, value); }
+            get { return notificationsId; }
+            private set { Set(ref notificationsId, value); }
         }
 
         public string Name

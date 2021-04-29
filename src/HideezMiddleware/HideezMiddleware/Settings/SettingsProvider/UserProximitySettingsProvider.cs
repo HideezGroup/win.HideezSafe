@@ -1,4 +1,5 @@
 ﻿using Hideez.SDK.Communication;
+using Hideez.SDK.Communication.Connection;
 using Hideez.SDK.Communication.Log;
 using Hideez.SDK.Communication.Proximity.Interfaces;
 using System;
@@ -70,43 +71,59 @@ namespace HideezMiddleware.Settings.SettingsProvider
             }
         }
 
-        public int GetLockProximity(string connectionId)
+        string GetSettingsIdFromConnectionId(ConnectionId connectionId)
         {
-            var deviceSettings = _userProximitySettings.GetProximitySettings(connectionId);
+            switch (connectionId.IdProvider)
+            {
+                case (byte)DefaultConnectionIdProvider.WinBle:
+                    return WinBle.WinBleUtils.WinBleIdToMac(connectionId.Id);
+                default:
+                    return connectionId.Id;
+            }
+        }
+
+        public int GetLockProximity(ConnectionId connectionId)
+        {
+            var id = GetSettingsIdFromConnectionId(connectionId);
+            var deviceSettings = _userProximitySettings.GetProximitySettings(id);
             return deviceSettings.LockProximity;
         }
 
-        public int GetUnlockProximity(string connectionId)
+        public int GetUnlockProximity(ConnectionId connectionId)
         {
-            var deviceSettings = _userProximitySettings.GetProximitySettings(connectionId);
+            var id = GetSettingsIdFromConnectionId(connectionId);
+            var deviceSettings = _userProximitySettings.GetProximitySettings(id);
             return deviceSettings.UnlockProximity;
         }
 
-        public int GetLockTimeout(string connectionId)
+        public int GetLockTimeout(ConnectionId connectionId)
         {
             return SdkConfig.DefaultLockTimeout;
         }
 
-        public int GetProximityTimeout(string connectionId)
+        public int GetProximityTimeout(ConnectionId connectionId)
         {
-            return GetLockProximity(connectionId)*2;
-        }
+            return GetLockProximity(connectionId) * 2;
 
-        public bool IsEnabledLockByProximity(string connectionId)
+        }
+        public bool IsEnabledLockByProximity(ConnectionId connectionId)
         {
-            var deviceSettings = _userProximitySettings.GetProximitySettings(connectionId);
+            var id = GetSettingsIdFromConnectionId(connectionId);
+            var deviceSettings = _userProximitySettings.GetProximitySettings(id);
             return deviceSettings.EnabledLockByProximity;
         }
 
-        public bool IsEnabledUnlockByProximity(string connectionId)
+        public bool IsEnabledUnlockByProximity(ConnectionId connectionId)
         {
-            var deviceSettings = _userProximitySettings.GetProximitySettings(connectionId);
+            var id = GetSettingsIdFromConnectionId(connectionId);
+            var deviceSettings = _userProximitySettings.GetProximitySettings(id);
             return deviceSettings.EnabledUnlockByProximity;
         }
 
-        public bool IsDisabledAutoDisplay(string connectionId)
+        public bool IsDisabledAutoDisplay(ConnectionId connectionId)
         {
-            var deviceSettings = _userProximitySettings.GetProximitySettings(connectionId);
+            var id = GetSettingsIdFromConnectionId(connectionId);
+            var deviceSettings = _userProximitySettings.GetProximitySettings(id);
             return deviceSettings.DisabledDisplayAuto;
         }
     }
