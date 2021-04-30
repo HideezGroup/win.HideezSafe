@@ -1427,6 +1427,8 @@ namespace HideezClient.Models
                             var masterKey = MasterPasswordConverter.GetMasterKey(masterPassword, SerialNo);
 
                             await _remoteDevice.Access(DateTime.UtcNow, masterKey, accessParams);
+                            if (!requirePin)
+                                await _remoteDevice.ResetPin(masterKey);
                             await _remoteDevice.RefreshDeviceInfo();
 
                             return true;
