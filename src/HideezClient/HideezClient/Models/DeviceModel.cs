@@ -66,9 +66,7 @@ namespace HideezClient.Models
         uint storageFreeSize;
         Version firmwareVersion;
         Version bootloaderVersion;
-        int pinAttemptsRemain;
         bool isCanUnlock;
-        int minPinLength;
         int unlockAttemptsRemain;
         double proximity = 0;
         int battery = 0;
@@ -322,8 +320,7 @@ namespace HideezClient.Models
 
         public int MinPinLength
         {
-            get { return minPinLength; }
-            private set { Set(ref minPinLength, value); }
+            get { return _remoteDevice != null ? (int)_remoteDevice?.MinPinLength : 0; }
         }
 
         public int UnlockAttemptsRemain
@@ -385,6 +382,7 @@ namespace HideezClient.Models
             switch (e)
             {
                 case nameof(AccessLevel):
+                case nameof(MinPinLength):
                 case nameof(PinAttemptsRemain):
                     RaisePropertyChanged(e);
                     break;
@@ -530,7 +528,6 @@ namespace HideezClient.Models
                 FinishedMainFlow = dto.HwVaultConnectionState == HwVaultConnectionState.Online;
                 CanLockByProximity = dto.CanLockPyProximity;
                 IsCanUnlock = dto.IsCanUnlock;
-                MinPinLength = dto.MinPinLength;
                 UnlockAttemptsRemain = dto.UnlockAttemptsRemain;
             }
         }
