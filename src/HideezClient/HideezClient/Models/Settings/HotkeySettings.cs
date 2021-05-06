@@ -1,7 +1,7 @@
 ﻿using HideezMiddleware.Settings;
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
+using System.Linq;
 
 namespace HideezClient.Models.Settings
 {
@@ -9,35 +9,17 @@ namespace HideezClient.Models.Settings
     public class HotkeySettings : BaseSettings
     {
         /// <summary>
-        /// The class acts in the same way as <see cref="Tuple{T1, T2}"/> but allows Xml serialization
-        /// by providing a default constructor
-        /// </summary>
-        public class SerializableTuple<T1, T2>
-        {
-            public SerializableTuple() { }
-
-            public SerializableTuple(T1 item1, T2 item2)
-            {
-                Item1 = item1;
-                Item2 = item2;
-            }
-
-            public T1 Item1 { get; set; }
-            public T2 Item2 { get; set; }
-        }
-
-        /// <summary>
         /// Initializes new instance of <see cref="HotkeySettings"/> with default values
         /// </summary>
         public HotkeySettings()
         {
-            SettingsVersion = new Version(1, 1, 0);
-            Hotkeys = new Dictionary<UserAction, string>()
+            SettingsVersion = new Version(1, 2, 0);
+            Hotkeys = new Hotkey[]
             {
-                {UserAction.InputLogin, "Control + Alt + L" },
-                {UserAction.InputPassword, "Control + Alt + P" },
-                {UserAction.InputOtp, "Control + Alt + O" },
-                {UserAction.AddAccount, "Control + Alt + A" },
+                new Hotkey(1, true, UserAction.InputLogin, "Control + Alt + L"),
+                new Hotkey(2, true, UserAction.InputPassword, "Control + Alt + P"),
+                new Hotkey(3, true, UserAction.InputOtp, "Control + Alt + O"),
+                new Hotkey(4, true, UserAction.AddAccount, "Control + Alt + A"),
             };
         }
 
@@ -52,11 +34,7 @@ namespace HideezClient.Models.Settings
                 return;
 
             SettingsVersion = (Version)copy.SettingsVersion.Clone();
-            Hotkeys = new Dictionary<UserAction, string>(copy.Hotkeys.Count, copy.Hotkeys.Comparer);
-            foreach (var h in copy.Hotkeys)
-            {
-                Hotkeys.Add(h.Key, h.Value);
-            }
+            Hotkeys = copy.Hotkeys.Select(h => h.DeepCopy()).ToArray();
         }
 
 
@@ -64,34 +42,18 @@ namespace HideezClient.Models.Settings
         public Version SettingsVersion { get; }
 
         [Setting]
-        [XmlIgnore]
-        public Dictionary<UserAction, string> Hotkeys { get; set; }
+        public Hotkey[] Hotkeys { get; set; }
 
-        /// <summary>
-        /// Do not use this property. Instead use <see cref="Hotkeys"/>
-        /// This property is used for serialization instead of <see cref="Hotkeys"/>, because XmlSerializer does not support
-        /// serialization of types that implement IDictionary
-        /// </summary>
-        public List<SerializableTuple<UserAction, string>> SerializableHotkeys
+        public void AddHotkey(Hotkey hotkey)
         {
-            get
-            {
-                var serializableList = new List<SerializableTuple<UserAction, string>>();
-                foreach (var key in Hotkeys.Keys)
-                {
-                    var tuple = new SerializableTuple<UserAction, string>(key, Hotkeys[key]);
-                    serializableList.Add(tuple);
-                }
-                return serializableList;
-            }
-            set
-            {
-                Hotkeys = new Dictionary<UserAction, string>();
-                foreach (var tuple in value)
-                {
-                    Hotkeys.Add(tuple.Item1, tuple.Item2);
-                }
-            }
+            Hotkeys = Hotkeys.Append(hotkey).ToArray();
+        }
+
+        public int RemoveHotkey(int id)
+        {
+            int startCount = Hotkeys.Length;
+            Hotkeys = Hotkeys.Where(h => h.HotkeyId != id).ToArray();
+            return startCount - Hotkeys.Length;
         }
 
         public override object Clone()

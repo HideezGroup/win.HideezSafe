@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Meta.Lib.Modules.PubSub;
 using HideezClient.ViewModels.Controls;
 using HideezMiddleware.Modules.UpdateCheck.Messages;
+using HideezMiddleware.ApplicationModeProvider;
 
 namespace HideezClient.ViewModels
 {
@@ -28,6 +29,7 @@ namespace HideezClient.ViewModels
         readonly ViewModelLocator _viewModelLocator;
         readonly IAppHelper _appHelper;
         readonly SoftwareUnlockSettingViewModel _softwareUnlock;
+        readonly IApplicationModeProvider _applicationModeProvider;
         readonly ISet<MenuItemViewModel> _leftAppMenuItems = new HashSet<MenuItemViewModel>();
         readonly ISet<MenuItemViewModel> _leftDeviceMenuItems = new HashSet<MenuItemViewModel>();
         Uri _displayPage;
@@ -39,7 +41,8 @@ namespace HideezClient.ViewModels
             IMetaPubSub metaMessenger,
             ViewModelLocator viewModelLocator,
             IAppHelper appHelper,
-            SoftwareUnlockSettingViewModel softwareUnlock)
+            SoftwareUnlockSettingViewModel softwareUnlock,
+            IApplicationModeProvider applicationModeProvider)
         {
             _deviceManager = deviceManager;
             _menuFactory = menuFactory;
@@ -47,6 +50,7 @@ namespace HideezClient.ViewModels
             _viewModelLocator = viewModelLocator;
             _appHelper = appHelper;
             _softwareUnlock = softwareUnlock;
+            _applicationModeProvider = applicationModeProvider;
 
             _messenger = metaMessenger;
 
@@ -174,7 +178,8 @@ namespace HideezClient.ViewModels
                 }
             }
 
-            if (e.PropertyName == nameof(DeviceInfoViewModel.IsStorageLoaded))
+            if (_applicationModeProvider.GetApplicationMode() == ApplicationMode.Enterprise &&
+                e.PropertyName == nameof(DeviceInfoViewModel.IsStorageLoaded))
             {
                 if (ActiveDevice != null && ActiveDevice.IsStorageLoaded && ActiveDevice.CanAccessStorage)
                 {

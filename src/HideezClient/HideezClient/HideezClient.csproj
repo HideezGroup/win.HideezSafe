@@ -283,6 +283,9 @@
     </Compile>
     <Compile Include="Controls\CsrModeContainer.cs" />
     <Compile Include="Controls\EnterpriseModeContainer.cs" />
+    <Compile Include="Controls\HotkeySettingsControl.xaml.cs">
+      <DependentUpon>HotkeySettingsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\InfoButton.xaml.cs">
       <DependentUpon>InfoButton.xaml</DependentUpon>
     </Compile>
@@ -411,14 +414,25 @@
     <Compile Include="Messages\Dialogs\Wipe\StartWipeMessage.cs" />
     <Compile Include="Messages\Dialogs\Wipe\HideWipeDialogMessage.cs" />
     <Compile Include="Messages\Dialogs\Wipe\ShowWipeDialogMessage.cs" />
+    <Compile Include="Messages\ForcePasswordManagerSync.cs" />
+    <Compile Include="Messages\EnablePasswordManagerSyncOnChange.cs" />
+    <Compile Include="Messages\DisablePasswordManagerSyncOnChange.cs" />
     <Compile Include="Messages\ShowActivateMainWindowMessage.cs" />
+    <Compile Include="Messages\Hotkeys\AddHotkeyMessage.cs" />
+    <Compile Include="Messages\Hotkeys\DeleteHotkeyMessage.cs" />
+    <Compile Include="Messages\Hotkeys\ChangeHotkeyMessage.cs" />
+    <Compile Include="Messages\Hotkeys\DisableHotkeyManagerMessage.cs" />
+    <Compile Include="Messages\Hotkeys\EnableHotkeyManagerMessage.cs" />
+    <Compile Include="Messages\Hotkeys\GetHotkeyStatesMessage.cs" />
+    <Compile Include="Messages\Hotkeys\GetHotkeyStatesMessageReply.cs" />
+    <Compile Include="Messages\Hotkeys\ResetHotkeysMessage.cs" />
     <Compile Include="Messages\ShowDeviceLockedByPinNotificationMessage.cs" />
     <Compile Include="Messages\ShowLowBatteryNotificationMessage.cs" />
     <Compile Include="Messages\ShowLockNotificationMessage.cs" />
     <Compile Include="Messages\ForceShutdownMessage.cs" />
     <Compile Include="Messages\Dialogs\Pin\HidePinUiMessage.cs" />
-    <Compile Include="Messages\HotkeyPressedMessage.cs" />
-    <Compile Include="Messages\HotkeyStateChangedMessage.cs" />
+    <Compile Include="Messages\Hotkeys\HotkeyPressedMessage.cs" />
+    <Compile Include="Messages\Hotkeys\HotkeyStateChangedMessage.cs" />
     <Compile Include="Messages\OpenHideezKeyPageMessage.cs" />
     <Compile Include="Messages\OpenMobileAuthenticatorPageMessage.cs" />
     <Compile Include="Messages\OpenPasswordManagerMessage.cs" />
@@ -437,6 +451,7 @@
     <Compile Include="Messages\WipeFinishedMessage.cs" />
     <Compile Include="Models\DeviceModel.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Hotkey.cs" />
     <Compile Include="Modules\AccountManager\AccountExtensions.cs" />
     <Compile Include="Modules\ActionHandler\Exception\AccountException.cs" />
     <Compile Include="Modules\ActionHandler\Exception\ActionNotSupportedException.cs" />
@@ -467,6 +482,14 @@
     <Compile Include="Controls\Notification\NotificationBase.cs" />
     <Compile Include="Modules\HideDialogsAdapter\HideDialogsAdapter.cs" />
     <Compile Include="Modules\HideDialogsAdapter\IHideDialogsAdapter.cs" />
+    <Compile Include="Modules\HotkeyManager\HotkeyManager_Registration.cs" />
+    <Compile Include="Modules\HotkeyManager\HotkeyModule.cs" />
+    <Compile Include="Modules\HotkeyManager\HotkeyNameFormatter.cs" />
+    <Compile Include="Modules\HotkeyManager\HotkeySettingsController.cs" />
+    <Compile Include="Modules\HotkeyManager\HotkeyStatesMonitor.cs" />
+    <Compile Include="Modules\HotkeyManager\IHotkeySettingsController.cs" />
+    <Compile Include="Modules\HotkeyManager\IHotkeyStatesMonitor.cs" />
+    <Compile Include="Modules\HotkeyManager\RemoveEmptyHotkeysProc.cs" />
     <Compile Include="Modules\Log\LogManager.cs" />
     <Compile Include="Modules\NotificationsManager\INotificationsManager.cs" />
     <Compile Include="Modules\NotificationsManager\NotificationsManager.cs" />
@@ -551,6 +574,8 @@
     <Compile Include="ViewModels\Dialog\IDialogViewModel.cs" />
     <Compile Include="ViewModels\Dialog\MasterPasswordViewModel.cs" />
     <Compile Include="ViewModels\Dialog\WipeViewModel.cs" />
+    <Compile Include="ViewModels\HotkeySettingsViewModel.cs" />
+    <Compile Include="ViewModels\HotkeyViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\NotificationsContainerViewModel.cs" />
     <Compile Include="PageViewModels\PasswordManagerViewModel.cs" />
@@ -582,6 +607,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\AccountInfoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HotkeySettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

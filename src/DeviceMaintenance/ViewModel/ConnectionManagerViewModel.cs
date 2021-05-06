@@ -33,7 +33,6 @@ namespace DeviceMaintenance.ViewModel
             _log = log;
             _hub = hub;
             _hub.Subscribe<ConnectDeviceCommand>(OnConnectDeviceCommand);
-            _hub.Subscribe<StartDiscoveryCommand>(OnStartDiscoveryCommand);
             _hub.Subscribe<EnterBootCommand>(OnEnterBootCommand);
             _hub.Subscribe<DeviceWipedEvent>(OnDeviceWipedEvent);
             _hub.Subscribe<ClosingEvent>(OnClosing);
@@ -100,11 +99,6 @@ namespace DeviceMaintenance.ViewModel
         void WinBleConnectionManager_ControllerAdded(object sender, ControllerAddedEventArgs e)
         {
             _hub.Publish(new ControllerAddedEvent(e.Controller.Connection.ConnectionId));
-        }
-
-        Task OnStartDiscoveryCommand(StartDiscoveryCommand arg)
-        {
-            return Task.CompletedTask;
         }
 
         async Task OnConnectDeviceCommand(ConnectDeviceCommand arg)

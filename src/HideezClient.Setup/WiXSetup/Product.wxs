@@ -462,7 +462,6 @@
         <File Id="HideezService.Microsoft.Bcl.AsyncInterfaces.dll" Name="Microsoft.Bcl.AsyncInterfaces.dll" Source="$(var.HideezServiceHost_TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" />
       </Component>
       
-
       <Component Id="HideezService.Unity.Abstractions.dll" Guid="{CA4FB601-DD81-4A42-9040-5F8569F107C8}" Win64="$(var.Win64)">
         <File Id="HideezService.Unity.Abstractions.dll" Name="Unity.Abstractions.dll" Source="$(var.HideezServiceHost_TargetDir)Unity.Abstractions.dll" />
       </Component>
@@ -470,6 +469,11 @@
       <Component Id="HideezService.Unity.Container.dll" Guid="{FE35F902-226F-45E6-BEE7-F6D1D7A812E4}" Win64="$(var.Win64)">
         <File Id="HideezService.Unity.Container.dll" Name="Unity.Container.dll" Source="$(var.HideezServiceHost_TargetDir)Unity.Container.dll" />
       </Component>
+    
+      <Component Id="HideezService.System.ValueTuple.dll" Guid="{6E67F395-06C3-420C-844F-E041B76F9A07}" Win64="$(var.Win64)">
+        <File Id="HideezService.System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.HideezServiceHost_TargetDir)System.ValueTuple.dll" />
+      </Component>
+    
     </ComponentGroup>
   </Fragment>
   

@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HideezServiceHost", "Hideez
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RfidService", "RfidService\RfidService\RfidService.csproj", "{7B206A4F-ED60-4181-9BE6-A6A117378378}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CsrBLE", "..\win.sdk\CsrBLE\CsrBLE.vcxproj", "{D274AA09-5B34-4450-A6FB-5A5A351C7B45}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CsrBLE", "..\win.SDK\CsrBLE\CsrBLE.vcxproj", "{D274AA09-5B34-4450-A6FB-5A5A351C7B45}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1B723099-C753-40D0-B7B2-ADD49D9E6F8F} = {1B723099-C753-40D0-B7B2-ADD49D9E6F8F}
 	EndProjectSection

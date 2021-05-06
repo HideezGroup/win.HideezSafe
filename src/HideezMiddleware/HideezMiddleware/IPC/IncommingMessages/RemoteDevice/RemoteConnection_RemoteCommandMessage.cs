@@ -14,7 +14,13 @@ namespace HideezMiddleware.IPC.IncommingMessages.RemoteDevice
         {
             ConnectionId = connectionid;
             EncryptedRequest = data;
+
             ResponseTimeout = SdkConfig.DefaultRemoteCommandTimeout;
+
+            // Large requests get an increased timeout, since they take significantly longer to send over ble.
+            var minBufferLengthToIncreaseTimeout = 128;
+            if (EncryptedRequest?.Buffer?.Data?.Length > minBufferLengthToIncreaseTimeout)
+                ResponseTimeout += SdkConfig.DefaultRemoteCommandTimeout * (EncryptedRequest.Buffer.Data.Length / minBufferLengthToIncreaseTimeout);
         }
     }
 }

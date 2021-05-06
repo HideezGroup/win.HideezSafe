@@ -729,6 +729,76 @@
         </Setter>
     </Style>
 
+    <Style
+        x:Key="CheckboxWithoutContentStyle"
+        BasedOn="{StaticResource BaseButtonStyle}"
+        TargetType="{x:Type CheckBox}">
+        <Setter Property="Background" Value="#F4FEFF" />
+        <Setter Property="Foreground" Value="{StaticResource DarkForeground}" />
+        <Setter Property="BorderBrush" Value="#CC1BA2DC" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid x:Name="main">
+                        <Border
+                            x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            CornerRadius="3.5" />
+                        <Path
+                            x:Name="check"
+                            Data="M5.50001 9.47511L2.02501 6.00011L0.841675 7.17511L5.50001 11.8334L15.5 1.83345L14.325 0.658447L5.50001 9.47511Z"
+                            Opacity="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            <Path.Fill>
+                                <LinearGradientBrush MappingMode="Absolute" StartPoint="16,1" EndPoint="-1,5">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStopCollection>
+                                            <GradientStop Color="#43C7D9"/>
+                                            <GradientStop Color="#0E5F93" Offset="1"/>
+                                        </GradientStopCollection>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#E1F3F8" />
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#CCEBF4" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="main" Property="Opacity" Value="0.3" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="check" Property="Opacity" Value="1" />
+                            <Setter TargetName="border" Property="BorderBrush">
+                                <Setter.Value>
+                                    <LinearGradientBrush MappingMode="Absolute" StartPoint="24,0" EndPoint="-4,5">
+                                        <LinearGradientBrush.GradientStops>
+                                            <GradientStopCollection>
+                                                <GradientStop Color="#43C7D9"/>
+                                                <GradientStop Color="#0E5F93" Offset="1"/>
+                                            </GradientStopCollection>
+                                        </LinearGradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="DialogTitleTextBlockStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{StaticResource DarkForeground}" />
         <Setter Property="FontSize" Value="16" />

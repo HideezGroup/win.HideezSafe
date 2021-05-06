@@ -1086,7 +1086,7 @@ Would you like to perform application update now?</value>
     <value>Never</value>
   </data>
   <data name="Button.EditUnlockAccount" xml:space="preserve">
-    <value>Edit unlock account</value>
+    <value>Edit Password</value>
   </data>
   <data name="BackupPassword.ConfirmBP.Label" xml:space="preserve">
     <value>Confirm password</value>
@@ -1248,6 +1248,60 @@ Would you like to perform application update now?</value>
   </data>
   <data name="AccessSettings.SetPinCode" xml:space="preserve">
     <value>Set PIN code</value>
+  </data>
+  <data name="Hotkey.NotSet" xml:space="preserve">
+    <value>Hotkey not set</value>
+  </data>
+  <data name="MessageBox.ResetHotkeys.Caption" xml:space="preserve">
+    <value>Resetting hotkeys</value>
+  </data>
+  <data name="MessageBox.ResetHotkeys.Message" xml:space="preserve">
+    <value>Are you sure that you want to reset all your hotkeys to default values?</value>
+  </data>
+  <data name="HotkeysSettings.Actions.AddAccount" xml:space="preserve">
+    <value>Add New Account</value>
+  </data>
+  <data name="HotkeysSettings.Actions.InputLogin" xml:space="preserve">
+    <value>Input Login</value>
+  </data>
+  <data name="HotkeysSettings.Actions.InputOtp" xml:space="preserve">
+    <value>Input OTP</value>
+  </data>
+  <data name="HotkeysSettings.Actions.InputPassword" xml:space="preserve">
+    <value>Input Password</value>
+  </data>
+  <data name="HotkeysSettings.Actions.LockWorkstation" xml:space="preserve">
+    <value>Lock Workstation</value>
+  </data>
+  <data name="HotkeysSettings.Actions.None" xml:space="preserve">
+    <value>Unassigned</value>
+  </data>
+  <data name="HotkeysSettings.Button.AddHotkey" xml:space="preserve">
+    <value>Add a hotkey</value>
+  </data>
+  <data name="HotkeysSettings.Button.DeleteHotkey" xml:space="preserve">
+    <value>Delete this hotkey</value>
+  </data>
+  <data name="HotkeysSettings.Button.SetDefault" xml:space="preserve">
+    <value>Reset to default</value>
+  </data>
+  <data name="HotkeysSettings.ColumnHeader.Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="HotkeysSettings.ColumnHeader.Enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="HotkeysSettings.ColumnHeader.Hotkeys" xml:space="preserve">
+    <value>Hotkeys</value>
+  </data>
+  <data name="HotkeysSettings.Keystroke.Unavailable" xml:space="preserve">
+    <value>This hotkey is already in use</value>
+  </data>
+  <data name="HotkeysSettings.Keystroke.Watermark" xml:space="preserve">
+    <value>Unassigned</value>
+  </data>
+  <data name="HotkeysSettings.Title" xml:space="preserve">
+    <value>Hotkeys</value>
   </data>
   <data name="Notification.OpeningFromTaskbar" xml:space="preserve">
     <value>Hideez Client can be opened from the taskbar.</value>

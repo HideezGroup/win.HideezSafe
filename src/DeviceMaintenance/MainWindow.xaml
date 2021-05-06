@@ -10,11 +10,10 @@
     mc:Ignorable="d"
     Title="{Binding Title}" 
     Height="450" 
-    Width="1200"
+    Width="1000"
     Background="{DynamicResource NotificationLeftColumnBrush}"
     TitleCharacterCasing="Normal"
-    WindowTitleBrush="{DynamicResource WindowTitleBrush}"
-    >
+    WindowTitleBrush="{DynamicResource WindowTitleBrush}">
     <Grid>
         <Grid Margin="10">
             <Grid.RowDefinitions>
@@ -27,239 +26,356 @@
                 Orientation="Vertical"
                 VerticalAlignment="Top">
 
-                <WrapPanel >
+                <WrapPanel Margin="0,0,0,20" HorizontalAlignment="Center">
+                    <Button
+                        Style="{DynamicResource WhiteButton}"
+                        Margin="10,0,10,0"
+                        FontSize="14"
+                        IsEnabled="{Binding IsFirmwareUpdateInProgress, Converter={StaticResource InvertBooleanConverter}}"
+                        Visibility="{Binding IsButtonsVisible, Converter={StaticResource InvertBooleanToVisibilityConverter}}"
+                        Command="{Binding GoToStartPageCommand}">
+                        <Button.Content>
+                            <TextBlock Text="Start page"/>
+                        </Button.Content>
+                    </Button>
                     <controls:StateControl
-                        Margin="0,0,0,0"
                         HasConnectionText="BLE"
                         NoConnectionText="BLE"
                         State="{Binding ConnectionManager.BleAdapterAvailable}"
                         NoConnectionBackground="{DynamicResource DisconnectedBrush}"
-                        HasConnectionBackground="{DynamicResource ConnectedBrush}"
-                        />
-                    <RadioButton GroupName="Type"
-                                 Content="Csr"
-                                 IsChecked="{Binding IsCsrEnabled, Mode=TwoWay}"
-                                 Margin="10,0">
-                    </RadioButton>
-                    <RadioButton GroupName="Type"
-                                 Content="WinBle"
-                                 IsChecked="{Binding IsWinBleEnabled, Mode=TwoWay}"/>
-                </WrapPanel>
-
-
-                <WrapPanel Margin="0,10,0,0" >
-                    <Button
-                        Style="{DynamicResource BlueButton}"
-                        Content="Select firmware file"
-                        Command="{Binding SelectFirmwareCommand}"
+                        HasConnectionBackground="{DynamicResource ConnectedBrush}"/>
+                    <RadioButton 
+                        GroupName="Type"
+                        Content="Hideez Dongle"
                         IsEnabled="{Binding IsFirmwareUpdateInProgress, Converter={StaticResource InvertBooleanConverter}}"
-                        />
-                    <TextBlock 
-                        Text="{Binding FirmwareFilePath}" 
-                        FontSize="16"
-                        Foreground="White"
-                        VerticalAlignment="Center"
-                        Margin="10,0,0,0"
-                        />
+                        IsChecked="{Binding IsCsrEnabled, Mode=TwoWay}"
+                        Margin="10,0"/>
+                    <RadioButton
+                        GroupName="Type"
+                        Content="Windows Bluetooth"
+                        IsEnabled="{Binding IsFirmwareUpdateInProgress, Converter={StaticResource InvertBooleanConverter}}"
+                        IsChecked="{Binding IsWinBleEnabled, Mode=TwoWay}"/>
                 </WrapPanel>
+                <Grid>
+                    <WrapPanel
+                        Margin="0,10,0,0"
+                        Orientation="Vertical"
+                        HorizontalAlignment="Center"
+                        IsVisibleChanged="WrapPanel_IsVisibleChanged"
+                        Visibility="{Binding IsButtonsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Button
+                            Style="{DynamicResource BlueButton}"
+                            Command="{Binding QuickUpdateCommand}"
+                            FontSize="20">
+                            <TextBlock 
+                                Text="Quick update"
+                                Margin="10,4"/>
+                        </Button>
+                        <Button
+                            Style="{DynamicResource WhiteButton}"
+                            Margin="0,10"
+                            Command="{Binding AdvancedUpdateCommand}"
+                            FontSize="12"
+                            Content="Advanced update"/>
+                    </WrapPanel>
+                    <StackPanel Visibility="{Binding IsAdvancedUpdate, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock
+                            FontSize="20"
+                            Foreground="White"
+                            FontWeight="DemiBold"
+                            Text="Advanced update"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                        <RadioButton
+                            x:Name="serverRdBtn"
+                            GroupName="FileLoading"
+                            IsChecked="{Binding IsAdvancedUpdateFromServerEnabled}"
+                            Content="Choose available version for your device model"
+                            Margin="0,0,0,10"/>
+                        <RadioButton
+                            x:Name="fileRdBtn"
+                            GroupName="FileLoading"
+                            Content="Select a file"
+                            IsChecked="{Binding IsUpdateFromFileEnabled}"
+                            Margin="0,0,0,10"/>
+                        <Grid Height="55">
+                            <Grid Visibility="{Binding ElementName=serverRdBtn, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="15"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock 
+                                    Text="Model"/>
+                                <TextBlock
+                                    Grid.Column="2"
+                                    Text="Version"/>
+                                <ComboBox
+                                    Grid.Row="1"
+                                    ItemsSource="{Binding DeviceModels}"
+                                    DisplayMemberPath="Name"
+                                    SelectedValue="{Binding SelectedModel}"
+                                    Width="150"/>
+                                <ComboBox
+                                    Grid.Row="1"
+                                    Grid.Column="2"
+                                    ItemsSource="{Binding Versions}"
+                                    DisplayMemberPath="Version"
+                                    SelectedValue="{Binding SelectedVersion}"
+                                    Width="150"/>
+                            </Grid>
+                            <WrapPanel 
+                                VerticalAlignment="Center"
+                                Visibility="{Binding ElementName=fileRdBtn, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Button
+                                    Style="{DynamicResource BlueButton}"
+                                    Content="Select firmware file"
+                                    Command="{Binding SelectFirmwareCommand}"/>
+                                <TextBlock 
+                                    Text="{Binding FirmwareFilePath}" 
+                                    FontSize="16"
+                                    Foreground="White"
+                                    VerticalAlignment="Center"
+                                    Margin="10,0,0,0"/>
+                            </WrapPanel>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding IsQuickUpdate, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <WrapPanel HorizontalAlignment="Center">
 
-                <CheckBox 
-                    Style="{DynamicResource MetroCheckBox}"
-                    Margin="0,20,20,0"
-                    Content="Automatically start uploading device firmware" 
-                    HorizontalAlignment="Left" 
-                    IsChecked="{Binding AutomaticallyUploadFirmware, Mode=TwoWay}"
-                    Visibility="{Binding Path=IsCsrEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    />
+                            <TextBlock
+                                FontSize="20"
+                                Foreground="White"
+                                FontWeight="DemiBold"
+                                Text="Quick update"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
 
-                <WrapPanel 
-                    Background="{DynamicResource DeepDarkGray}"
-                    Margin="0,10,0,0">
-                    <iconPacks:PackIconMaterial 
-                        Margin="10,10,0,10"
-                        Width="24"
-                        Height="24"
-                        Kind="InformationOutline" 
-                        Foreground="LightBlue"
-                        VerticalAlignment="Center"
-                        />
-                    <TextBlock
-                        Margin="10"
-                        Text="Please, select firmware file"
-                        FontSize="14"
-                        Foreground="White"
-                        FontWeight="DemiBold"
-                        VerticalAlignment="Center"
-                        Visibility="{Binding Path=IsFirmwareSelected, Converter={StaticResource InvertBooleanToVisibilityConverter}}"
-                        />
-                    <TextBlock 
-                        Margin="10"
-                        Text="Tap the device on the bluetooth dongle to upload new firmware" 
-                        FontSize="14"
-                        Foreground="White"
-                        FontWeight="DemiBold"
-                        VerticalAlignment="Center"
-                        Visibility="{Binding Path=IsTapEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        />
-                    <TextBlock 
-                        Margin="10"
-                        Text="Pair device through Windows Bluetooth Settings to upload new firmware" 
-                        FontSize="14"
-                        Foreground="White"
-                        FontWeight="DemiBold"
-                        VerticalAlignment="Center"
-                        Visibility="{Binding Path=IsWinBleUpdateAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        />
-                </WrapPanel>
+                        </WrapPanel>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Visibility="{Binding IsButtonsVisible, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
+                    <CheckBox 
+                        Style="{DynamicResource MetroCheckBox}"
+                        Margin="0,10,20,0"
+                        Content="Automatically start uploading device firmware" 
+                        HorizontalAlignment="Left" 
+                        IsChecked="{Binding AutomaticallyUploadFirmware, Mode=TwoWay}"
+                        Visibility="{Binding Path=IsCsrEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
+                    <WrapPanel 
+                        VerticalAlignment="Top"
+                        Background="{DynamicResource DeepDarkGray}"
+                        Margin="0,10,0,0">
+                        <iconPacks:PackIconMaterial 
+                            Margin="10,10,0,10"
+                            Width="24"
+                            Height="24"
+                            Kind="InformationOutline" 
+                            Foreground="LightBlue"
+                            VerticalAlignment="Center"/>
+                        <TextBlock
+                            Margin="10"
+                            Text="Please, select firmware file"
+                            FontSize="14"
+                            Foreground="White"
+                            FontWeight="DemiBold"
+                            VerticalAlignment="Center"
+                            Visibility="{Binding Path=IsFirmwareSelected, Converter={StaticResource InvertBooleanToVisibilityConverter}}"/>
+                        <TextBlock 
+                            Margin="10"
+                            Text="Tap the device on the bluetooth dongle to upload new firmware" 
+                            FontSize="14"
+                            Foreground="White"
+                            FontWeight="DemiBold"
+                            VerticalAlignment="Center"
+                            Visibility="{Binding Path=IsTapEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <TextBlock 
+                            Margin="10"
+                            Text="Pair device through Windows Bluetooth Settings to upload new firmware" 
+                            FontSize="14"
+                            Foreground="White"
+                            FontWeight="DemiBold"
+                            VerticalAlignment="Center"
+                            Visibility="{Binding Path=IsWinBleEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    </WrapPanel>
+                </StackPanel>
             </StackPanel>
 
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer 
+                Grid.Row="1"
+                VerticalScrollBarVisibility="Auto"
+                Visibility="{Binding IsButtonsVisible, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
                 <ItemsControl 
-                Margin="0,10,0,0"
-                BorderThickness="0"
-                Background="{DynamicResource DeepDarkGray}"
-                ItemsSource="{Binding Devices}" 
-                Focusable="False"
-                >
+                    Margin="0,10,0,0"
+                    BorderThickness="0"
+                    Background="{DynamicResource DeepDarkGray}"
+                    ItemsSource="{Binding Devices}" 
+                    Focusable="False">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border 
-                            BorderThickness="0,0,0,1"
-                            BorderBrush="#54B9E5"
-                            Background="Transparent"
-                            Height="36"
-                            >
+                                BorderThickness="0,0,0,1"
+                                BorderBrush="#54B9E5"
+                                Background="Transparent"
+                                Height="36">
                                 <Grid HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
                                     <TextBlock
-                                    Text="{Binding SerialNo}" 
-                                    FontWeight="Bold" 
-                                    VerticalAlignment="Center"
-                                    Margin="10,0,0,0"
-                                    />
+                                        Text="{Binding SerialNo}" 
+                                        FontWeight="Bold" 
+                                        VerticalAlignment="Center"
+                                        Margin="10,0,0,0"/>
 
                                     <TextBlock
-                                    Text="Connecting..."
-                                    FontWeight="Bold"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Margin="10,0"
-                                    Visibility="{Binding ConnectingState, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    />
-
-                                    <TextBlock
-                                    Text="PRESS THE BUTTON, Connecting..."
-                                    FontWeight="Bold"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Margin="10,0"
-                                    Visibility="{Binding BondingState, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    />
-
-                                    <StackPanel Orientation="Horizontal" Margin="10,4" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                        <Button
-                                        Content="Wipe"
+                                        Grid.Column="2"
+                                        Text="Connecting..."
                                         FontWeight="Bold"
-                                        Background="Red"
-                                        Command="{Binding WipeDevice}"
-                                        Style="{StaticResource MetroAccentButton}"
-                                        Visibility="{Binding ReadyToUpdateState, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        />
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Margin="10,0"
+                                        Visibility="{Binding ConnectingState, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        Text="PRESS THE BUTTON, Connecting..."
+                                        FontWeight="Bold"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Margin="10,0"
+                                        Visibility="{Binding BondingState, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                    <StackPanel
+                                        Grid.Column="2"
+                                        Orientation="Horizontal"
+                                        Margin="10,4"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center">
+                                        <Button
+                                            Content="Wipe"
+                                            FontWeight="Bold"
+                                            Background="Red"
+                                            Command="{Binding WipeDevice}"
+                                            Style="{StaticResource MetroAccentButton}"
+                                            Visibility="{Binding ReadyToUpdateState, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                         
                                         <Button
-                                        Content="Update"
-                                        FontWeight="Bold"
-                                        Margin="10,0,0,0"
-                                        Command="{Binding UpdateDevice}" CommandParameter="{Binding DataContext.FirmwareFilePath, RelativeSource={RelativeSource FindAncestor, AncestorType=Metro:MetroWindow}}"
-                                        IsEnabled="{Binding DataContext.IsFirmwareSelected, RelativeSource={RelativeSource FindAncestor, AncestorType=Metro:MetroWindow}}"
-                                        Style="{StaticResource MetroAccentButton}"
-                                        Visibility="{Binding ReadyToUpdateState, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        />
+                                            Content="Update"
+                                            FontWeight="Bold"
+                                            Margin="10,0,0,0"
+                                            Command="{Binding UpdateDevice}" CommandParameter="{Binding DataContext.FilePath, RelativeSource={RelativeSource FindAncestor, AncestorType=Metro:MetroWindow}}"
+                                           
+                                            Style="{StaticResource MetroAccentButton}"
+                                            Visibility="{Binding ReadyToUpdateState, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                         
                                     </StackPanel>
 
 
                                     <TextBlock
-                                    Text="Entering boot mode..."
-                                    FontWeight="Bold"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Margin="10,0"
-                                    Visibility="{Binding EnteringBootModeState, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    />
+                                        Grid.Column="2"
+                                        Text="Entering boot mode..."
+                                        FontWeight="Bold"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Margin="10,0"
+                                        Visibility="{Binding EnteringBootModeState, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                                     <TextBlock
-                                    Text="Wiping the device..."
-                                    FontWeight="Bold"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Margin="10,0"
-                                    Visibility="{Binding WipingState, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    />
+                                        Grid.Column="2"
+                                        Text="Wiping the device..."
+                                        FontWeight="Bold"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Margin="10,0"
+                                        Visibility="{Binding WipingState, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                     
                                     <StackPanel 
-                                    Orientation="Horizontal"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Visibility="{Binding UpdatingState, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        Grid.Column="2"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Visibility="{Binding UpdatingState, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <TextBlock
-                                        Text="uploading firmware... "
-                                        />
+                                            Text="uploading firmware... "/>
                                         <TextBlock 
-                                        FontWeight="Bold"
-                                        Text="{Binding Progress, Mode=OneWay, StringFormat=\{0:#0.00\'%\'\}}"
+                                            FontWeight="Bold"
+                                            Text="{Binding Progress, Mode=OneWay, StringFormat=\{0:#0.00\'%\'\}}"
                                         />
                                         <Metro:MetroProgressBar 
-                                        Minimum="0" 
-                                        Maximum="100" 
-                                        Value="{Binding Progress, Mode=OneWay}" 
-                                        HorizontalAlignment="Right"
-                                        Foreground="#43C7D9"
-                                        Margin="10,0"
-                                        Width="150"
+                                            Minimum="0" 
+                                            Maximum="100" 
+                                            Value="{Binding Progress, Mode=OneWay}" 
+                                            HorizontalAlignment="Right"
+                                            Foreground="#43C7D9"
+                                            Margin="10,0"
+                                            Width="150"
                                         />
                                     </StackPanel>
 
                                     <iconPacks:PackIconMaterial
-                                    Kind="CheckboxMarkedOutline"
-                                    Foreground="#32d400"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Height="22"
-                                    Width="22"
-                                    Margin="10,0"
-                                    Visibility="{Binding SuccessState, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                    ToolTip="Update finished"
-                                    Background="Transparent"
-                                    Padding="2"
+                                        Grid.Column="2"
+                                        Kind="CheckboxMarkedOutline"
+                                        Foreground="#32d400"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Height="22"
+                                        Width="22"
+                                        Margin="10,0"
+                                        Visibility="{Binding SuccessState, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        ToolTip="Update finished"
+                                        Background="Transparent"
+                                        Padding="2"
                                     />
 
-                                    <StackPanel Orientation="Horizontal"
-                                                Margin="10,2,5,2"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Center"
-                                                Visibility="{Binding ErrorState, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock 
+                                        Grid.Column="1"
+                                        Margin="10,0"
+                                        FontWeight="Bold"
+                                        Text="{Binding CustomError}"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Right"
+                                        TextTrimming="CharacterEllipsis"
+                                        Visibility="{Binding ErrorState, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    <StackPanel
+                                        Grid.Column="2"
+                                        Orientation="Horizontal"
+                                        Margin="10,2,5,2"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Visibility="{Binding ErrorState, Converter={StaticResource BooleanToVisibilityConverter}}">
 
-                                        <Border BorderThickness="2"
-                                                BorderBrush="White"
-                                                Padding="10,1,0,1"
-                                                VerticalAlignment="Center"
-                                                ToolTip="{Binding CustomError}">
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" >
-                                                <TextBlock VerticalAlignment="Center"
-                                                           HorizontalAlignment="Left"
-                                                           Text="Failed"
-                                                           FontSize="14"
-                                                           />
+                                        <Border 
+                                            BorderThickness="2"
+                                            BorderBrush="White"
+                                            Padding="10,1,0,1"
+                                            VerticalAlignment="Center"
+                                            ToolTip="{Binding CustomError}">
+                                            <StackPanel 
+                                                Orientation="Horizontal"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center" >
+                                                <TextBlock 
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Left"
+                                                    Text="Failed"
+                                                    FontSize="14"/>
                                                 <iconPacks:PackIconMaterial
-                                                        Kind="Cancel"
-                                                        Foreground="Red"
-                                                        HorizontalAlignment="Right"
-                                                        VerticalAlignment="Center"
-                                                        Height="19"
-                                                        Width="19"
-                                                        Margin="14,2,4,2"
-                                                        Background="Transparent"/>
+                                                    Kind="Cancel"
+                                                    Foreground="Red"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Center"
+                                                    Height="19"
+                                                    Width="19"
+                                                    Margin="14,2,4,2"
+                                                    Background="Transparent"/>
                                             </StackPanel>
                                         </Border>
                                     </StackPanel>
@@ -270,6 +386,5 @@
                 </ItemsControl>
             </ScrollViewer>
         </Grid>
-
     </Grid>
 </Metro:MetroWindow>

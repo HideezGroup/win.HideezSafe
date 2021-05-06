@@ -3,6 +3,8 @@ using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.Connection;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.LongOperations;
+using HideezMiddleware.Modules.FwUpdateCheck;
+using HideezMiddleware.Modules.FwUpdateCheck.Messages;
 using Meta.Lib.Modules.PubSub;
 using MvvmExtensions.Attributes;
 using MvvmExtensions.PropertyChangedMonitoring;
@@ -114,8 +116,7 @@ namespace DeviceMaintenance.ViewModel
                 {
                     CommandAction = async (x) =>
                     {
-                        if(!string.IsNullOrEmpty((string)x))
-                            await StartFirmwareUpdate((string)x);
+                        await StartFirmwareUpdate();
                     }
                 };
             }
@@ -200,7 +201,7 @@ namespace DeviceMaintenance.ViewModel
                 if (res.Device == null)
                 {
                     if(_connectionId.IdProvider == (byte)DefaultConnectionIdProvider.WinBle)
-                        throw new Exception("Failed to connect device. Pair device and try again");
+                        throw new Exception("Failed to connect device. Repair device or turn the Bluetooth off and on.");
                     else if(_connectionId.IdProvider == (byte)DefaultConnectionIdProvider.Csr)
                         throw new Exception("Failed to connect device");
                 }
@@ -216,10 +217,16 @@ namespace DeviceMaintenance.ViewModel
             }
         }
 
-        public async Task StartFirmwareUpdate(string filePath)
+        public async Task StartFirmwareUpdate()
         {
             try
             {
+                var response = await _hub.Process<FilePathDetectionResponse>(new FilePathDetectionMessage(SerialNo));
+                string filePath = response.FilePath;
+
+                if (string.IsNullOrWhiteSpace(filePath))
+                    throw new Exception("No available firmware");
+
                 CurrentState = State.EnteringBoot;
 
                 var res = await _hub.Process<EnterBootResponse>(
@@ -243,8 +250,10 @@ namespace DeviceMaintenance.ViewModel
             try
             {
                 var mb = MessageBox.Show(
-                    "WARNING! ALL DATA WILL BE LOST!" +
-                    Environment.NewLine +
+                    "After performing wipe:\n" +
+                    "- All your FIDO data will be erased from your vault(this data cannot be restored!)\n" +
+                    "- All your credentials will be erased from your vault\n" +
+                    "- Your vault will be disconnected and unpaired from all devices\n\n" +
                     "To wipe the device, press OK, wait for the green light on the device then press and hold the button for 15 seconds.",
                     "Wipe the device",
                     MessageBoxButton.OKCancel,

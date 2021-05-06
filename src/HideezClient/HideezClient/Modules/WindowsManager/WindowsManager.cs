@@ -577,6 +577,14 @@ namespace HideezClient.Modules
             return ShowMessageViewAsync(vm, "WarnIco", "Button.Yes", "Button.No");
         }
 
+        public Task<bool> ShowResetToDefaultHotkeysAsync()
+        {
+            var vm = new MessageViewModel();
+            vm.SetCaptionFormat("MessageBox.ResetHotkeys.Caption");
+            vm.SetMessageFormat("MessageBox.ResetHotkeys.Message");
+            return ShowMessageViewAsync(vm, "WarnIco", "Button.Yes", "Button.No");
+        }
+
         private Task<bool> ShowMessageViewAsync(MessageViewModel viewModel, string icoKey, string confirmButtonTextKey = "Button.Ok", string cancelButtonTextKey = "")
         {
             viewModel.Tcs = new TaskCompletionSource<bool>();

@@ -1,4 +1,5 @@
-﻿using Hideez.SDK.Communication.Log;
+﻿using Hideez.SDK.Communication.BLE;
+using Hideez.SDK.Communication.Log;
 using Hideez.SDK.Communication.PasswordManager;
 using HideezClient.Extension;
 using HideezClient.Messages;
@@ -336,8 +337,7 @@ namespace HideezClient.PageViewModels
             {
                 if (Device != null)
                 {
-                    string connectionId = Device.Id.Remove(Device.Id.Length - 2);
-                    var reply = await _metaMessenger.ProcessOnServer<LoadUserProximitySettingsMessageReply>(new LoadUserProximitySettingsMessage(connectionId));
+                    var reply = await _metaMessenger.ProcessOnServer<LoadUserProximitySettingsMessageReply>(new LoadUserProximitySettingsMessage(BleUtils.MacToConnectionId(Device.Mac)));
                     LockProximity = reply.UserDeviceProximitySettings.LockProximity;
                     UnlockProximity = reply.UserDeviceProximitySettings.UnlockProximity;
                     EnabledLockByProximity = reply.UserDeviceProximitySettings.EnabledLockByProximity;
@@ -356,10 +356,8 @@ namespace HideezClient.PageViewModels
         {
             try
             {
-                string connectionId = Device.Id.Remove(Device.Id.Length - 2);
-
                 var newSettings = UserDeviceProximitySettings.DefaultSettings;
-                newSettings.Id = connectionId;
+                newSettings.Id = BleUtils.MacToConnectionId(Device.Mac);
                 newSettings.DisabledDisplayAuto = DisabledDisplayAuto;
                 newSettings.EnabledLockByProximity = EnabledLockByProximity;
                 newSettings.EnabledUnlockByProximity = EnabledUnlockByProximity;

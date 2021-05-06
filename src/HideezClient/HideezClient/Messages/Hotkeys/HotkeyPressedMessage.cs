@@ -1,9 +1,9 @@
 ﻿using HideezClient.Models;
 using Meta.Lib.Modules.PubSub;
 
-namespace HideezClient.Messages
+namespace HideezClient.Messages.Hotkeys
 {
-    public class HotkeyPressedMessage: PubSubMessageBase
+    internal sealed class HotkeyPressedMessage : PubSubMessageBase
     {
         public HotkeyPressedMessage(UserAction action, string hotkey)
         {

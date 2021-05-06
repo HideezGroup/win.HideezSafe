@@ -6,7 +6,6 @@
         InputPassword,
         InputOtp,
         AddAccount,
-        CustomAccountEntry,
         LockWorkstation,
         None,
     }

@@ -12,6 +12,7 @@ using HideezClient.Models.Settings;
 using HideezMiddleware.Settings;
 using HideezClient.Modules.HotkeyManager;
 using Meta.Lib.Modules.PubSub;
+using HideezClient.Messages.Hotkeys;
 
 namespace HideezClient.Modules.ActionHandler
 {
@@ -70,7 +71,9 @@ namespace HideezClient.Modules.ActionHandler
                         string info = TranslationSource.Instance["UserAction.ButtonDisabled.ToManyOtherConnections"];
                         var deviceName = _activeDevice.Device.Name;
                         var otherConnections = _activeDevice.Device.OtherConnections;
-                        var hotkey = await _hotkeyManager.GetHotkeyForAction(message.Action);
+                        var hotkey = await _hotkeyManager.GetEnabledKeystrokeForAction(message.Action);
+                        if (string.IsNullOrWhiteSpace(hotkey))
+                            hotkey = TranslationSource.Instance["Hotkey.NotSet"];
                         var localizedAction = TranslationSource.Instance[$"Enum.UserAction.{message.Action.ToString()}"].ToLowerInvariant();
                         info = string.Format(info, deviceName, otherConnections, hotkey, localizedAction);
                         var msgOptions = new NotificationOptions { CloseTimeout = NotificationOptions.LongTimeout };

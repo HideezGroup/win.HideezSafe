@@ -3,16 +3,11 @@ using System.Threading.Tasks;
 
 namespace HideezClient.Modules.HotkeyManager
 {
-    interface IHotkeyManager
+    internal interface IHotkeyManager
 	{
-        bool Enabled { get; set; }
+        Task<string> GetEnabledKeystrokeForAction(UserAction action);
 
-        Task<string> GetHotkeyForAction(UserAction action);
-
-        Task<bool> IsFreeHotkey(UserAction action, string hotkey);
-
-        Task<bool> IsUniqueHotkey(UserAction action, string hotkey);
-
+        Task<bool> IsUniqueKeystroke(int hotkeyId, string hotkey);
 
     }
 }

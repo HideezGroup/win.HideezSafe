@@ -115,22 +115,24 @@ namespace HideezMiddleware.DeviceConnection
             if (_isConnecting == 1)
                 return;
 
-            var id = adv.Id;
-            if (!_proximitySettingsProvider.IsEnabledUnlockByProximity(id))
+            var connectionId = new ConnectionId(adv.Id, (byte)DefaultConnectionIdProvider.Csr);
+            
+            if (!_proximitySettingsProvider.IsEnabledUnlockByProximity(connectionId))
                 return;
 
             var proximity = BleUtils.RssiToProximity(adv.Rssi);
-            if (proximity < _proximitySettingsProvider.GetUnlockProximity(id))
+
+            if (proximity < _proximitySettingsProvider.GetUnlockProximity(connectionId))
                 return;
 
-            if (_advIgnoreListMonitor.IsIgnored(id))
+            if (_advIgnoreListMonitor.IsIgnored(adv.Id))
                 return;
 
             if (Interlocked.CompareExchange(ref _isConnecting, 1, 0) == 0)
             {
                 try
                 {
-                    var device = _deviceManager.Devices.FirstOrDefault(d => d.Id == id && !(d is IRemoteDeviceProxy) && !d.IsBoot);
+                    var device = _deviceManager.Devices.FirstOrDefault(d => d.Id == adv.Id && !(d is IRemoteDeviceProxy) && !d.IsBoot);
 
                     // Unlocked Workstation, Device not found OR Device not connected - dont add to ignore
                     if (!_workstationUnlocker.IsConnected && (device == null || (device != null && !device.IsConnected)))
@@ -145,7 +147,6 @@ namespace HideezMiddleware.DeviceConnection
                         // Locked Workstation, Device not found OR not connected - connect add to ignore
                         if (_workstationUnlocker.IsConnected && (device == null || (device != null && !device.IsConnected)))
                         {
-                            var connectionId = new ConnectionId(adv.Id, (byte)DefaultConnectionIdProvider.Csr);
                             await ConnectAndUnlockByConnectionId(connectionId);
                         }
                     }
@@ -155,7 +156,7 @@ namespace HideezMiddleware.DeviceConnection
                     }
                     finally
                     {
-                        _advIgnoreListMonitor.Ignore(id);
+                        _advIgnoreListMonitor.Ignore(adv.Id);
                     }
                 }
                 finally

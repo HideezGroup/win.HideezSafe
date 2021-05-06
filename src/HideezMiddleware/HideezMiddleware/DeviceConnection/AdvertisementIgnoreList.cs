@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Hideez.SDK.Communication.Proximity.Interfaces;
+using Hideez.SDK.Communication.Connection;
 
 namespace HideezMiddleware.DeviceConnection
 {
@@ -149,7 +150,8 @@ namespace HideezMiddleware.DeviceConnection
                 {
                     var proximity = BleUtils.RssiToProximity(e.Rssi);
 
-                    if (proximity > _proximitySettingsProvider.GetLockProximity(e.Id))
+                    var connectionId = new ConnectionId(e.Id, _bleConnectionManager.Id);
+                    if (proximity > _proximitySettingsProvider.GetLockProximity(connectionId))
                         _ignoreDict[e.Id].LastReceivedTime = DateTime.UtcNow;
                 }
             }

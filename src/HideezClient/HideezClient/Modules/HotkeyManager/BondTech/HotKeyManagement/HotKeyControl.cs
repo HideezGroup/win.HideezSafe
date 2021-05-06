@@ -305,7 +305,8 @@ namespace HideezClient.Modules.HotkeyManager.BondTech.HotKeyManagement
         private void ClearErrorMessage()
         {
             var tltp = this.ToolTip as ToolTip;
-            tltp.IsOpen = false;
+            if (tltp != null)
+                tltp.IsOpen = false;
             HasError = false;
         }
         #endregion

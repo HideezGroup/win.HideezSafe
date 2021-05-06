@@ -52,6 +52,10 @@ namespace HideezMiddleware.DeviceConnection.Workflow
             {
                 device = await _deviceManager.Connect(connectionId).TimeoutAfter(connectionTimeout);
             }
+            catch (TimeoutException)
+            {
+                WriteLine($"Connection attempt timed out");
+            }
             catch (Exception ex) // Thrown when LTK error occurs in csr
             {
                 WriteLine(ex);
@@ -76,6 +80,10 @@ namespace HideezMiddleware.DeviceConnection.Workflow
                 try
                 {
                     device = await _deviceManager.Connect(connectionId).TimeoutAfter(connectionTimeout / 2);
+                }
+                catch (TimeoutException)
+                {
+                    WriteLine("Connection attempt timed out");
                 }
                 catch (Exception ex)
                 {

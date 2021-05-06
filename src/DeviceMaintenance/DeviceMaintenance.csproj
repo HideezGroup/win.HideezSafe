@@ -161,8 +161,9 @@
     <Compile Include="Messages\DeviceWipedEvent.cs" />
     <Compile Include="Messages\EnterBootCommand.cs" />
     <Compile Include="Messages\EnterBootResponse.cs" />
+    <Compile Include="Messages\FilePathDetectionMessage.cs" />
+    <Compile Include="Messages\FilePathDetectionResponse.cs" />
     <Compile Include="Messages\MessageBase.cs" />
-    <Compile Include="Messages\StartDiscoveryCommand.cs" />
     <Compile Include="Service\HideezServiceController.cs" />
     <Compile Include="Utils\DelegateCommand.cs" />
     <Compile Include="Messages\AdvertismentReceivedEvent.cs" />
@@ -237,6 +238,10 @@
     <ProjectReference Include="..\..\win.SDK\WinBle\WinBle.csproj">
       <Project>{af08ed4d-6977-4dcb-a49d-0c0a547698ba}</Project>
       <Name>WinBle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HideezMiddleware\HideezMiddleware\HideezMiddleware.csproj">
+      <Project>{2a5abf59-55ee-461b-8c6f-2a294481129b}</Project>
+      <Name>HideezMiddleware</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

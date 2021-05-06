@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:adorners="http://gu.se/Adorners"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:HideezClient.PagesView"    
     xmlns:l="clr-namespace:HideezClient.Modules.Localize"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -17,6 +16,7 @@
     Style="{DynamicResource PageStyle}"
     mc:Ignorable="d">
     <ScrollViewer 
+        x:Name="scrollViewer"
         HorizontalScrollBarVisibility="Hidden"
         VerticalScrollBarVisibility="Auto"
         CanContentScroll="True">
@@ -78,6 +78,21 @@
                         Content="{l:Localization Settings.CheckBox.EnableSoftwareVaultUnlockModule}"
                         IsChecked="{Binding Path=SoftwareUnlock.IsChecked}" />
                 </Border>
+
+                <!-- Hotkey Settings -->
+                <StackPanel
+                    Focusable="True">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        FontSize="24"
+                        Foreground="{StaticResource DarkForeground}"
+                        Margin="31,2,0,2"
+                        Text="{l:Localization HotkeysSettings.Title}" />
+                    <Border Style="{StaticResource SettingsBorderStyle}">
+                        <controls:HotkeySettingsControl MouseWheelOverListView="HotkeySettingsControl_MouseWheelOverListView"/>
+                    </Border>
+                </StackPanel>
 
                 <controls:WinBleModeContainer>
                     <Border

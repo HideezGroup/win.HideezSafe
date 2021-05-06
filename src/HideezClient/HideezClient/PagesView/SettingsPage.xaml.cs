@@ -24,5 +24,10 @@ namespace HideezClient.PagesView
         {
             InitializeComponent();
         }
+
+        private void HotkeySettingsControl_MouseWheelOverListView(object sender, MouseWheelEventArgs e)
+        {
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+        }
     }
 }

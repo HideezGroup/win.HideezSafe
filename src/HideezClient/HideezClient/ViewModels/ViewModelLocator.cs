@@ -113,6 +113,11 @@ namespace HideezClient.ViewModels
             get { return DIContainer.Resolve<UnsupportedAccessSettingsViewModel>(); }
         }
 
+        public HotkeySettingsViewModel HotkeySettingsViewModel
+        {
+            get { return DIContainer.Resolve<HotkeySettingsViewModel>(); }
+        }
+
         #endregion
 
         #region Dialog
