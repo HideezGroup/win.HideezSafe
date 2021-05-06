@@ -49,7 +49,8 @@ namespace HideezClient.Models
 
         ApplicationMode _applicationMode;
         Device _remoteDevice;
-        DelayedMethodCaller dmc = new DelayedMethodCaller(2000);
+        DelayedMethodCaller dmc = new DelayedMethodCaller(2500);
+        bool storageSyncEnabled = true;
 
         string id;
         string connectionId;
@@ -110,6 +111,9 @@ namespace HideezClient.Models
             _metaMessenger.TrySubscribeOnServer<HideezMiddleware.IPC.Messages.LockDeviceStorageMessage>(OnLockDeviceStorage);
             _metaMessenger.TrySubscribeOnServer<HideezMiddleware.IPC.Messages.LiftDeviceStorageLockMessage>(OnLiftDeviceStorageLock);
             _metaMessenger.Subscribe<SessionSwitchMessage>(OnSessionSwitch);
+            _metaMessenger.Subscribe<EnablePasswordManagerSyncOnChange>(OnEnablePasswordManagerSyncOnChange, msg => msg.DeviceId == Id);
+            _metaMessenger.Subscribe<DisablePasswordManagerSyncOnChange>(OnDisablePasswordManagerSyncOnChange, msg => msg.DeviceId == Id);
+            _metaMessenger.Subscribe<ForcePasswordManagerSync>(OnForcePasswordManagerSync, msg => msg.DeviceId == Id);
 
             RegisterDependencies();
 
@@ -361,7 +365,7 @@ namespace HideezClient.Models
             {
                 dmc.CallMethod(async () =>
                 {
-                    if (_remoteDevice != null && PasswordManager != null)
+                    if (_remoteDevice != null && PasswordManager != null && storageSyncEnabled)
                     {
                         var updateCounter = _remoteDevice.StorageUpdateCounter;
                         var loadedUpdateCounter = PasswordManager.LoadedStorageUpdateCounter;
@@ -506,6 +510,37 @@ namespace HideezClient.Models
             {
                 await TryShutdownRemoteAsync();
             }
+        }
+
+        Task OnEnablePasswordManagerSyncOnChange(EnablePasswordManagerSyncOnChange arg)
+        {
+            storageSyncEnabled = true;
+            return Task.CompletedTask;
+        }
+
+        Task OnDisablePasswordManagerSyncOnChange(DisablePasswordManagerSyncOnChange arg)
+        {
+            storageSyncEnabled = false;
+            return Task.CompletedTask;
+        }
+
+        Task OnForcePasswordManagerSync(ForcePasswordManagerSync arg)
+        {
+            Task.Run(async () =>
+            {
+                if (_remoteDevice != null && PasswordManager != null)
+                {
+                    try
+                    {
+                        await LoadStorage();
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.WriteLine(ex);
+                    }
+                }
+            });
+            return Task.CompletedTask;
         }
 
         #endregion

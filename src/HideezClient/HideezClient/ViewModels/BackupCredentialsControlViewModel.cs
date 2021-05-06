@@ -156,13 +156,23 @@ namespace HideezClient.ViewModels
 
                         if (passwordResult != null)
                         {
-                            var restoreProc = new CredentialsRestoreProcedure();
+                            try
+                            {
+                                _messenger.Publish(new DisablePasswordManagerSyncOnChange(_activeDevice.Device.Id));
 
-                            restoreProc.ProgressChanged += RestoreProc_ProgressChanged;
+                                var restoreProc = new CredentialsRestoreProcedure();
 
-                            await restoreProc.Run(_activeDevice.Device.Storage, filename, passwordResult.Password);
+                                restoreProc.ProgressChanged += RestoreProc_ProgressChanged;
 
-                            await _messenger.Publish(new SetResultUIBackupPasswordMessage(true));
+                                await restoreProc.Run(_activeDevice.Device.Storage, filename, passwordResult.Password);
+
+                                await _messenger.Publish(new SetResultUIBackupPasswordMessage(true));
+                                await _messenger.Publish(new ForcePasswordManagerSync(_activeDevice.Device.Id));
+                            }
+                            finally
+                            {
+                                _messenger.Publish(new EnablePasswordManagerSyncOnChange(_activeDevice.Device.Id));
+                            }
                         }
 
                         break;

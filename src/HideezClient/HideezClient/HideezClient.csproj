@@ -414,6 +414,9 @@
     <Compile Include="Messages\Dialogs\Wipe\StartWipeMessage.cs" />
     <Compile Include="Messages\Dialogs\Wipe\HideWipeDialogMessage.cs" />
     <Compile Include="Messages\Dialogs\Wipe\ShowWipeDialogMessage.cs" />
+    <Compile Include="Messages\ForcePasswordManagerSync.cs" />
+    <Compile Include="Messages\EnablePasswordManagerSyncOnChange.cs" />
+    <Compile Include="Messages\DisablePasswordManagerSyncOnChange.cs" />
     <Compile Include="Messages\ShowActivateMainWindowMessage.cs" />
     <Compile Include="Messages\Hotkeys\AddHotkeyMessage.cs" />
     <Compile Include="Messages\Hotkeys\DeleteHotkeyMessage.cs" />
