@@ -456,53 +456,46 @@ namespace HideezClient.Modules
             }
         }
 
-        Task OnHideDialog(HideDialogMessage message)
+        async Task OnHideDialog(HideDialogMessage message)
         {
-            HideDialog(message.DialogType);
-
-            return Task.CompletedTask;
+            var dialog = _dialogs.FirstOrDefault(d => d.GetType() == message.DialogType);
+            if (dialog != null)
+            {
+                try
+                {
+                    await dialog.Close();
+                }
+                catch { }
+            }
         }
 
         void HideDialog(Type dialogType)
         {
             lock (hideDialogLock)
             {
-                var dialog = _dialogs.FirstOrDefault(d => d.GetType() == dialogType);
-                if (dialog != null)
-                {
-                    UIDispatcher.Invoke(() =>
-                    {
-                        try
-                        {
-                            dialog?.Close();
-                        }
-                        catch { }
-                    });
-                }
+                
             }
         }
 
-        private Task OnHideAllDialogs(HideAllDialogsMessage arg)
+        private async Task OnHideAllDialogs(HideAllDialogsMessage arg)
         {
-            foreach(var dialog in _dialogs)
+            foreach (var dialog in _dialogs)
             {
-                UIDispatcher.Invoke(() =>
+                try
                 {
-                    try
-                    {
-                        dialog?.Close();
-                    }
-                    catch { }
-                });
+                    await dialog?.Close();
+                }
+                catch { }
             }
-
-            return Task.CompletedTask;
         }
 
 
         bool ContainsDialogType(Type type)
         {
-            return _dialogs.FirstOrDefault(d => d.GetType() == type) != null;
+            lock (hideDialogLock)
+            {
+                return _dialogs.FirstOrDefault(d => d.GetType() == type) != null;
+            }
         }
         #endregion
 
