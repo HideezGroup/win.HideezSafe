@@ -2,11 +2,9 @@
 using Hideez.SDK.Communication.Connection;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Log;
-using Microsoft.Win32;
+using HideezMiddleware.Modules.ServiceEvents.Messages;
+using Meta.Lib.Modules.PubSub;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +12,8 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
 {
     public abstract class ConnectionFlowProcessorBase : Logger
     {
+        protected IMetaPubSub _messenger;
+
         int _workflowInterlock = 0;
         CancellationTokenSource _cts;
 
@@ -26,16 +26,48 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
 
         public bool IsRunning { get; protected set; }
 
-        public ConnectionFlowProcessorBase(string name, ILog log) : base(name, log)
+        public ConnectionFlowProcessorBase(IMetaPubSub messenger, string name, ILog log) : base(name, log)
         {
-            SessionSwitchMonitor.SessionSwitch += SessionSwitchMonitor_SessionSwitch;
+            _messenger = messenger;
+
+            _messenger.Subscribe<SessionSwitchMonitor_SessionSwitchMessage>(OnSessionSwitch);
+            _messenger.Subscribe<PowerEventMonitor_SystemQuerySuspendMessage>(OnSystemQuerySuspend);
+            _messenger.Subscribe<PowerEventMonitor_SystemSuspendingMessage>(OnSystemSuspending);
+            _messenger.Subscribe<PowerEventMonitor_SystemLeftSuspendedModeMessage>(OnSystemLeavingSuspend);
         }
 
-        void SessionSwitchMonitor_SessionSwitch(int sessionId, SessionSwitchReason reason)
+        private Task OnSessionSwitch(SessionSwitchMonitor_SessionSwitchMessage arg)
         {
             // Cancel the workflow if session switches to an unlocked (or different one)
             // Keep in mind, that workflow can cancel itself due to successful workstation unlock
             Cancel("Session switched");
+
+            return Task.CompletedTask;
+        }
+
+        private Task OnSystemQuerySuspend(PowerEventMonitor_SystemQuerySuspendMessage arg)
+        {
+            // Cancel the workflow if system is preparing to suspending
+            Cancel("System preparing to suspend");
+
+            return Task.CompletedTask;
+        }
+
+        private Task OnSystemSuspending(PowerEventMonitor_SystemSuspendingMessage arg)
+        {
+            // Cancel the workflow if system is suspending
+            Cancel("System suspending");
+
+            return Task.CompletedTask;
+        }
+
+        private Task OnSystemLeavingSuspend(PowerEventMonitor_SystemLeftSuspendedModeMessage arg)
+        {
+            // Cancel the workflow if, for some reason, there is one 
+            // when system is leaving suspended mode
+            Cancel("System left suspended mode");
+
+            return Task.CompletedTask;
         }
 
         protected void OnVaultDisconnectedDuringFlow(object sender, EventArgs e)

@@ -20,6 +20,7 @@ using System.Linq;
 using Hideez.SDK.Communication.Connection;
 using HideezMiddleware.Utils.WorkstationHelper;
 using HideezMiddleware.DeviceLogging;
+using Meta.Lib.Modules.PubSub;
 
 namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
 {
@@ -69,8 +70,9 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
             ConnectionFlowSubprocessorsStruct subprocs,
             IWorkstationHelper workstationHelper,
             DeviceLogManager deviceLogManager,
+            IMetaPubSub messenger,
             ILog log)
-            : base(nameof(EnterpriseConnectionFlowProcessor), log)
+            : base(messenger, nameof(EnterpriseConnectionFlowProcessor), log)
         {
             _deviceManager = deviceManager;
             _workstationUnlocker = workstationUnlocker;

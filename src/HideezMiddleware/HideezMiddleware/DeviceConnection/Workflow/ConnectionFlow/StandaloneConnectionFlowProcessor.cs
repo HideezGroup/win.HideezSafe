@@ -11,6 +11,7 @@ using HideezMiddleware.Localize;
 using HideezMiddleware.ScreenActivation;
 using HideezMiddleware.Tasks;
 using HideezMiddleware.Utils.WorkstationHelper;
+using Meta.Lib.Modules.PubSub;
 using System;
 using System.Linq;
 using System.Text;
@@ -55,8 +56,9 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
             IWorkstationHelper workstationHelper,
             IDeviceProximitySettingsProvider proximitySettingsProvider,
             DeviceLogManager deviceLogManager,
+            IMetaPubSub messenger,
             ILog log)
-            : base(nameof(StandaloneConnectionFlowProcessor), log)
+            : base(messenger, nameof(StandaloneConnectionFlowProcessor), log)
         {
             _deviceManager = deviceManager;
             _workstationUnlocker = workstationUnlocker;

@@ -7,6 +7,7 @@ using HideezMiddleware.Settings;
 using Hideez.SDK.Communication.Device;
 using HideezMiddleware.Utils.WorkstationHelper;
 using HideezMiddleware.DeviceLogging;
+using Meta.Lib.Modules.PubSub;
 
 namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
 {
@@ -23,6 +24,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
         private readonly ILocalDeviceInfoCache _localDeviceInfoCache;
         private readonly IWorkstationHelper _workstationHelper;
         private readonly DeviceLogManager _deviceLogManager;
+        private readonly IMetaPubSub _messenger;
         private readonly ILog _log;
 
         public EnterpriseConnectionFlowProcessorFactory(
@@ -37,6 +39,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
             ILocalDeviceInfoCache localDeviceInfoCache,
             IWorkstationHelper workstationHelper,
             DeviceLogManager deviceLogManager,
+            IMetaPubSub messenger,
             ILog log)
         {
             _deviceManager = deviceManager;
@@ -50,6 +53,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
             _localDeviceInfoCache = localDeviceInfoCache;
             _workstationHelper = workstationHelper;
             _deviceLogManager = deviceLogManager;
+            _messenger = messenger;
             _log = log;
         }
 
@@ -80,6 +84,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                 flowSubprocessors,
                 _workstationHelper,
                 _deviceLogManager,
+                _messenger,
                 _log);
         }
     }

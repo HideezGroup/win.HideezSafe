@@ -5,6 +5,7 @@ using Hideez.SDK.Communication.Proximity.Interfaces;
 using HideezMiddleware.DeviceLogging;
 using HideezMiddleware.ScreenActivation;
 using HideezMiddleware.Utils.WorkstationHelper;
+using Meta.Lib.Modules.PubSub;
 
 namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
 {
@@ -18,6 +19,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
         private readonly IWorkstationHelper _workstationHelper;
         private readonly IDeviceProximitySettingsProvider _proximitySettingsProvider;
         private readonly DeviceLogManager _deviceLogManager;
+        private readonly IMetaPubSub _messenger;
         private readonly ILog _log;
 
         public StandaloneConnectionFlowProcessorFactory(
@@ -29,6 +31,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
             IWorkstationHelper workstationHelper,
             IDeviceProximitySettingsProvider proximitySettingsProvider,
             DeviceLogManager deviceLogManager,
+            IMetaPubSub messenger,
             ILog log)
         {
             _deviceManager = deviceManager;
@@ -39,6 +42,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
             _workstationHelper = workstationHelper;
             _proximitySettingsProvider = proximitySettingsProvider;
             _deviceLogManager = deviceLogManager;
+            _messenger = messenger;
             _log = log;
         }
 
@@ -61,6 +65,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                 _workstationHelper,
                 _proximitySettingsProvider,
                 _deviceLogManager,
+                _messenger,
                 _log);
         }
     }
