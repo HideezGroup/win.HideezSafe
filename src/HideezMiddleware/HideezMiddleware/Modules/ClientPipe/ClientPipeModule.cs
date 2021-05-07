@@ -100,6 +100,7 @@ namespace HideezMiddleware.Modules.ClientPipe
             _messenger.Subscribe(GetSafeHandler<SessionSwitchMonitor_SessionSwitchMessage>(OnSessionSwitch));
             _messenger.Subscribe(GetSafeHandler<LoadUserProximitySettingsMessage>(LoadUserProximitySettings));
             _messenger.Subscribe(GetSafeHandler<SaveUserProximitySettingsMessage>(SaveUserProximitySettings));
+            _messenger.Subscribe(GetSafeHandler<RemoveUserProximitySettingsMessage>(RemoveUserProximitySettings));
         }
 
         private void Error(Exception ex, string message = "")
@@ -239,6 +240,16 @@ namespace HideezMiddleware.Modules.ClientPipe
         {
             var settings = _userProximtiySettingsManager.Settings;
             settings.SetProximitySettings(msg.UserDeviceProximitySettings);
+            _userProximtiySettingsManager.SaveSettings(settings);
+
+            return Task.CompletedTask;
+        }
+
+
+        private Task RemoveUserProximitySettings(RemoveUserProximitySettingsMessage msg)
+        {
+            var settings = _userProximtiySettingsManager.Settings;
+            settings.RemoveProximitySettings(msg.DeviceConnectionId);
             _userProximtiySettingsManager.SaveSettings(settings);
 
             return Task.CompletedTask;

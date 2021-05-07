@@ -33,6 +33,7 @@ using HideezClient.Tasks;
 using HideezClient.Messages.Dialogs.Wipe;
 using HideezClient.Messages.Dialogs;
 using HideezClient.Dialogs;
+using Hideez.SDK.Communication.BLE;
 
 namespace HideezClient.Models
 {
@@ -1520,6 +1521,8 @@ namespace HideezClient.Models
                         var reply = await _remoteDevice.Wipe(new byte[0]);
 
                         var msg = await _metaMessenger.When<WipeFinishedMessage>(30_000, cancellationToken:cts.Token);
+
+                        await _metaMessenger.PublishOnServer(new RemoveUserProximitySettingsMessage(BleUtils.MacToConnectionId(Mac)));
 
                         return true;
                     }
