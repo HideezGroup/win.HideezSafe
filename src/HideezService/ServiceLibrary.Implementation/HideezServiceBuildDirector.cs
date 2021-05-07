@@ -10,6 +10,7 @@ namespace ServiceLibrary.Implementation
 
             builder.AddFatalExceptionHandling();
             builder.AddEnterpriseResources();
+            builder.AddHSServiceCheck();
             builder.AddEnterpriseProximitySettingsSupport();
             builder.AddHES();
             builder.AddEnterpriseConnectionFlow();
@@ -33,6 +34,7 @@ namespace ServiceLibrary.Implementation
 
             builder.AddFatalExceptionHandling();
             builder.AddStandaloneResources();
+            builder.AddHSServiceCheck();
             builder.AddStandaloneProximitySettingsSupport();
             builder.AddStandaloneConnectionFlow();
             if (featuresList.EnableDongleSupport)

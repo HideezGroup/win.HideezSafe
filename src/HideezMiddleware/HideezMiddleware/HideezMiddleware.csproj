@@ -88,6 +88,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Text.Encodings.Web, Version=5.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Text.Encodings.Web.5.0.1\lib\net461\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
@@ -283,6 +284,7 @@
     <Compile Include="Modules\Hes\Messages\HesAppConnection_LiftHwVaultStorageLockMessage.cs" />
     <Compile Include="Modules\Hes\Messages\HesAppConnection_LockHwVaultStorageMessage.cs" />
     <Compile Include="Modules\Hes\Messages\HesAppConnection_AlarmMessage.cs" />
+    <Compile Include="Modules\HSServiceCheck\HSServiceCheckModule.cs" />
     <Compile Include="Modules\IModule.cs" />
     <Compile Include="Modules\ModuleBase.cs" />
     <Compile Include="Modules\ReconnectAndWorkstationLock\ReconnectAndWorkstationLockModule.cs" />

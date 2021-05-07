@@ -28,6 +28,7 @@ using HideezMiddleware.Modules.DeviceManagement;
 using HideezMiddleware.Modules.FatalExceptionHandler;
 using HideezMiddleware.Modules.Hes;
 using HideezMiddleware.Modules.Hes.Messages;
+using HideezMiddleware.Modules.HSServiceCheck;
 using HideezMiddleware.Modules.ReconnectAndWorkstationLock;
 using HideezMiddleware.Modules.RemoteUnlock;
 using HideezMiddleware.Modules.Rfid;
@@ -505,6 +506,12 @@ namespace ServiceLibrary.Implementation
         {
             var applicationUpdateModule = _container.Resolve<UpdateCheckModule>();
             AddModule(applicationUpdateModule);
+        }
+
+        public void AddHSServiceCheck()
+        {
+            var hsServiceCheckModule = _container.Resolve<HSServiceCheckModule>();
+            AddModule(hsServiceCheckModule);
         }
 
         public void End()
