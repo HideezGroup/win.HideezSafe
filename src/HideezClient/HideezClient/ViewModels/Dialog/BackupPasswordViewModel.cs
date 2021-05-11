@@ -1,21 +1,19 @@
 ﻿using HideezClient.Extension;
 using HideezClient.Messages;
 using HideezClient.Messages.Dialogs.BackupPassword;
-using HideezClient.Messages.Dialogs.MasterPassword;
-using HideezClient.Modules.DeviceManager;
 using HideezMiddleware.Localize;
 using HideezClient.Mvvm;
 using Meta.Lib.Modules.PubSub;
 using MvvmExtensions.Attributes;
 using MvvmExtensions.Commands;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using HideezClient.Messages.Dialogs;
+using HideezClient.Dialogs;
 
 namespace HideezClient.ViewModels.Dialog
 {
@@ -112,6 +110,12 @@ namespace HideezClient.ViewModels.Dialog
             set { Set(ref _progressMessage, value); }
         }
 
+        [DependsOn(nameof(IsError), nameof(IsSuccessful))]
+        public bool IsFinished
+        {
+            get => IsError || IsSuccessful;
+        }
+
         public int MaxLenghtPassword
         {
             get { return 32; }
@@ -160,6 +164,20 @@ namespace HideezClient.ViewModels.Dialog
             }
         }
 
+        public ICommand CloseCommand
+        {
+            get
+            {
+                return new DelegateCommand
+                {
+                    CommandAction = x =>
+                    {
+                        Task.Run(OnCloseCommand);
+                    },
+                };
+            }
+        }
+
         public ICommand ShowInFolderCommand
         {
             get
@@ -172,14 +190,6 @@ namespace HideezClient.ViewModels.Dialog
                     },
                 };
             }
-        }
-
-        void OnShowInFolder()
-        {
-            var index = _fileName.LastIndexOf('\\');
-            string folderPath = _fileName.Substring(0, index);
-
-            Process.Start(folderPath);
         }
         #endregion
 
@@ -299,6 +309,21 @@ namespace HideezClient.ViewModels.Dialog
             _metaMessenger.Publish(new BackupPasswordCancelledMessage(_deviceId));
         }
 
+        void OnCloseCommand()
+        {
+            _metaMessenger.Publish(new HideDialogMessage(typeof(BackupPasswordDialog)));
+        }
+
+        void OnShowInFolder()
+        {
+            var index = _fileName.LastIndexOf('\\');
+            string folderPath = _fileName.Substring(0, index);
+
+            Process.Start(folderPath);
+
+            _metaMessenger.Publish(new HideDialogMessage(typeof(BackupPasswordDialog)));
+        }
+
         void ClearPasswords()
         {
             SecureCurrentPassword?.Clear();
@@ -311,6 +336,7 @@ namespace HideezClient.ViewModels.Dialog
         void ResetProgress()
         {
             ClearPasswords();
+            NeedInputPassword = true;
             InProgress = false;
             IsSuccessful = false;
             IsError = false;

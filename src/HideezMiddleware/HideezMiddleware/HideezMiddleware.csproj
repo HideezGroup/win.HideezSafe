@@ -214,6 +214,7 @@
     <Compile Include="IPC\IncommingMessages\RemoteDevice\RemoteConnection_VerifyCommandMessage.cs" />
     <Compile Include="IPC\IncommingMessages\RemoteDevice\RemoteConnection_DeviceCommandMessageReply.cs" />
     <Compile Include="IPC\IncommingMessages\RemoveDeviceMessage.cs" />
+    <Compile Include="IPC\IncommingMessages\RemoveUserProximitySettingsMessage.cs" />
     <Compile Include="IPC\IncommingMessages\SaveUserProximitySettingsMessage.cs" />
     <Compile Include="IPC\IncommingMessages\SendActivationCodeMessage.cs" />
     <Compile Include="IPC\IncommingMessages\SetSoftwareVaultUnlockModuleStateMessage.cs" />

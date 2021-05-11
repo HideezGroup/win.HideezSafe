@@ -174,6 +174,8 @@ namespace HideezClient.ViewModels
                                 _messenger.Publish(new EnablePasswordManagerSyncOnChange(_activeDevice.Device.Id));
                             }
                         }
+                        else
+                            await _messenger.Publish(new HideDialogMessage(typeof(BackupPasswordDialog)));
 
                         break;
                     }
@@ -187,7 +189,6 @@ namespace HideezClient.ViewModels
                     {
                         _log.WriteLine(ex);
                         await _messenger.Publish(new ShowErrorNotificationMessage(TranslationSource.Instance["BackupPassword.Error.WrongPassword"], notificationId: Device.Id));
-                        await _messenger.Publish(new HideDialogMessage(typeof(BackupPasswordDialog)));
                     }
                     catch (NotSupportedException)
                     {

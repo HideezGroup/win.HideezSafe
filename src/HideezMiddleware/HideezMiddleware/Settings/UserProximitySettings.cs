@@ -92,6 +92,15 @@ namespace HideezMiddleware.Settings
             DevicesProximity = devicesProximityList.ToArray();
         }
 
+        public void RemoveProximitySettings(string id)
+        {
+            var devicesProximityList = DevicesProximity.ToList(); DevicesProximity.ToList();
+
+            devicesProximityList.RemoveAll(s => s.Id == id);
+
+            DevicesProximity = devicesProximityList.ToArray();
+        }
+
         public override object Clone()
         {
             return new UserProximitySettings(this);

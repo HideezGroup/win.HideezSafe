@@ -33,6 +33,7 @@ using HideezClient.Tasks;
 using HideezClient.Messages.Dialogs.Wipe;
 using HideezClient.Messages.Dialogs;
 using HideezClient.Dialogs;
+using Hideez.SDK.Communication.BLE;
 
 namespace HideezClient.Models
 {
@@ -68,9 +69,7 @@ namespace HideezClient.Models
         uint storageFreeSize;
         Version firmwareVersion;
         Version bootloaderVersion;
-        int pinAttemptsRemain;
         bool isCanUnlock;
-        int minPinLength;
         int unlockAttemptsRemain;
         double proximity = 0;
         int battery = 0;
@@ -329,8 +328,7 @@ namespace HideezClient.Models
 
         public int MinPinLength
         {
-            get { return minPinLength; }
-            private set { Set(ref minPinLength, value); }
+            get { return _remoteDevice != null ? (int)_remoteDevice?.MinPinLength : 0; }
         }
 
         public int UnlockAttemptsRemain
@@ -392,6 +390,7 @@ namespace HideezClient.Models
             switch (e)
             {
                 case nameof(AccessLevel):
+                case nameof(MinPinLength):
                 case nameof(PinAttemptsRemain):
                     RaisePropertyChanged(e);
                     break;
@@ -568,7 +567,6 @@ namespace HideezClient.Models
                 FinishedMainFlow = dto.HwVaultConnectionState == HwVaultConnectionState.Online;
                 CanLockByProximity = dto.CanLockPyProximity;
                 IsCanUnlock = dto.IsCanUnlock;
-                MinPinLength = dto.MinPinLength;
                 UnlockAttemptsRemain = dto.UnlockAttemptsRemain;
             }
         }
@@ -1468,6 +1466,8 @@ namespace HideezClient.Models
                             var masterKey = MasterPasswordConverter.GetMasterKey(masterPassword, SerialNo);
 
                             await _remoteDevice.Access(DateTime.UtcNow, masterKey, accessParams);
+                            if (!requirePin)
+                                await _remoteDevice.ResetPin(masterKey);
                             await _remoteDevice.RefreshDeviceInfo();
 
                             return true;
@@ -1521,6 +1521,8 @@ namespace HideezClient.Models
                         var reply = await _remoteDevice.Wipe(new byte[0]);
 
                         var msg = await _metaMessenger.When<WipeFinishedMessage>(30_000, cancellationToken:cts.Token);
+
+                        await _metaMessenger.PublishOnServer(new RemoveUserProximitySettingsMessage(BleUtils.MacToConnectionId(Mac)));
 
                         return true;
                     }
