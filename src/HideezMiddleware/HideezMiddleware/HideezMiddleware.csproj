@@ -245,7 +245,6 @@
     <Compile Include="IPC\Messages\ServiceComponentsStateChangedMessage.cs" />
     <Compile Include="IPC\Messages\ServiceSettingsChangedMessage.cs" />
     <Compile Include="IPC\Messages\ShowActivationCodeUiMessage.cs" />
-    <Compile Include="IPC\Messages\ClientOpeningNotificationMessage.cs" />
     <Compile Include="IPC\Messages\UnpairDeviceMessage.cs" />
     <Compile Include="IPC\Messages\UserErrorMessage.cs" />
     <Compile Include="IPC\Messages\UserNotificationMessage.cs" />
@@ -332,6 +331,7 @@
     <Compile Include="Tasks\WaitAdvertisementProc.cs" />
     <Compile Include="UnpairProvider.cs" />
     <Compile Include="Utils\MasterPasswordConverter.cs" />
+    <Compile Include="Utils\SafeMessengerBase.cs" />
     <Compile Include="Utils\WorkstationHelper\IWorkstationHelper.cs" />
     <Compile Include="Utils\WorkstationHelper\WorkstationHelper.cs" />
     <Compile Include="Modules\ReconnectAndWorkstationLock\UniversalWorkstationLocker.cs" />
