@@ -40,6 +40,7 @@ namespace HideezClient.Modules
         private bool isMainWindowVisible;
         private readonly ISettingsManager<ApplicationSettings> _settingsManager;
         readonly INotificationsManager _notificationsManager;
+        readonly IMetaPubSub _messenger;
 
         readonly object hideDialogLock = new object();
         readonly object closedDialogLock = new object();
@@ -52,37 +53,38 @@ namespace HideezClient.Modules
         public event EventHandler<bool> MainWindowVisibleChanged;
 
         public WindowsManager(ViewModelLocator viewModelLocator, INotificationsManager notificationsManager,
-             ISettingsManager<ApplicationSettings> settingsManager, IMetaPubSub metaMessenger)
+             ISettingsManager<ApplicationSettings> settingsManager, IMetaPubSub messenger)
         {
             _viewModelLocator = viewModelLocator;
             _settingsManager = settingsManager;
             _notificationsManager = notificationsManager;
+            _messenger = messenger;
 
-            metaMessenger.Subscribe<ShowWarningNotificationMessage>(ShowWarn);
-            metaMessenger.Subscribe<ShowInfoNotificationMessage>(ShowInfo);
-            metaMessenger.Subscribe<ShowErrorNotificationMessage>(ShowError);
-            metaMessenger.Subscribe<ShowLockNotificationMessage>(ShowLockNotification);
-            metaMessenger.Subscribe<ShowLowBatteryNotificationMessage>(ShowLowBatteryNotification);
+            _messenger.Subscribe<ShowWarningNotificationMessage>(ShowWarn);
+            _messenger.Subscribe<ShowInfoNotificationMessage>(ShowInfo);
+            _messenger.Subscribe<ShowErrorNotificationMessage>(ShowError);
+            _messenger.Subscribe<ShowLockNotificationMessage>(ShowLockNotification);
+            _messenger.Subscribe<ShowLowBatteryNotificationMessage>(ShowLowBatteryNotification);
+            _messenger.Subscribe<ShowMinimizedWindowHelpNotificationMessage>(ShowMinifiedWindowHelpNofitication);
 
-            metaMessenger.TrySubscribeOnServer<WorkstationUnlockedMessage>(ClearNotifications);
+            _messenger.TrySubscribeOnServer<WorkstationUnlockedMessage>(ClearNotifications);
 
-            metaMessenger.TrySubscribeOnServer<UserNotificationMessage>((m)=>ShowInfo(new ShowInfoNotificationMessage(m.Message, notificationId:m.NotificationId)));
-            metaMessenger.TrySubscribeOnServer<UserErrorMessage>((m) => ShowError(new ShowErrorNotificationMessage(m.Message, notificationId: m.NotificationId)));
-            metaMessenger.TrySubscribeOnServer<ClientOpeningNotificationMessage>(ShowClientOpeningNotification);
+            _messenger.TrySubscribeOnServer<UserNotificationMessage>((m)=>ShowInfo(new ShowInfoNotificationMessage(m.Message, notificationId:m.NotificationId)));
+            _messenger.TrySubscribeOnServer<UserErrorMessage>((m) => ShowError(new ShowErrorNotificationMessage(m.Message, notificationId: m.NotificationId)));
 
-            metaMessenger.Subscribe<ShowButtonConfirmUiMessage>(ShowButtonConfirmAsync, msg => !ContainsDialogType(typeof(PinDialog)));
-            metaMessenger.Subscribe<ShowPinUiMessage>(ShowPinAsync, msg => !ContainsDialogType(typeof(PinDialog)));
-            metaMessenger.Subscribe<ShowMasterPasswordUiMessage>(ShowMasterPasswordAsync, msg => !ContainsDialogType(typeof(MasterPasswordDialog)));
-            metaMessenger.Subscribe<ShowBackupPasswordUiMessage>(ShowBackupPasswordAsync, msg => !ContainsDialogType(typeof(BackupPasswordDialog)));
-            metaMessenger.Subscribe<ShowWipeDialogMessage>(ShowWipeDialogAsync, msg => !ContainsDialogType(typeof(WipeDialog)));
+            _messenger.Subscribe<ShowButtonConfirmUiMessage>(ShowButtonConfirmAsync, msg => !ContainsDialogType(typeof(PinDialog)));
+            _messenger.Subscribe<ShowPinUiMessage>(ShowPinAsync, msg => !ContainsDialogType(typeof(PinDialog)));
+            _messenger.Subscribe<ShowMasterPasswordUiMessage>(ShowMasterPasswordAsync, msg => !ContainsDialogType(typeof(MasterPasswordDialog)));
+            _messenger.Subscribe<ShowBackupPasswordUiMessage>(ShowBackupPasswordAsync, msg => !ContainsDialogType(typeof(BackupPasswordDialog)));
+            _messenger.Subscribe<ShowWipeDialogMessage>(ShowWipeDialogAsync, msg => !ContainsDialogType(typeof(WipeDialog)));
 
-            metaMessenger.Subscribe<HideDialogMessage>(OnHideDialog);
-            metaMessenger.Subscribe<HideAllDialogsMessage>(OnHideAllDialogs);
+            _messenger.Subscribe<HideDialogMessage>(OnHideDialog);
+            _messenger.Subscribe<HideAllDialogsMessage>(OnHideAllDialogs);
 
-            metaMessenger.TrySubscribeOnServer<ShowActivationCodeUiMessage>(ShowActivationDialogAsync, msg => !ContainsDialogType(typeof(ActivationDialog)));
-            metaMessenger.TrySubscribeOnServer<ShowClientMainWindowMessage>((p) => ActivateMainWindow());
+            _messenger.TrySubscribeOnServer<ShowActivationCodeUiMessage>(ShowActivationDialogAsync, msg => !ContainsDialogType(typeof(ActivationDialog)));
+            _messenger.TrySubscribeOnServer<ShowClientMainWindowMessage>((p) => ActivateMainWindow());
 
-            metaMessenger.Subscribe<ShowActivateMainWindowMessage>((p) => ActivateMainWindow());
+            _messenger.Subscribe<ShowActivateMainWindowMessage>((p) => ActivateMainWindow());
         }
 
         #region MainWindow
@@ -229,12 +231,15 @@ namespace HideezClient.Modules
             IsMainWindowVisible = true;
         }
 
-        private void OnMainWindowVisibleChanged(bool isVisivle)
+        private void OnMainWindowVisibleChanged(bool isVisible)
         {
             try
             {
-                MainWindowVisibleChanged?.Invoke(this, isVisivle);
-                log.WriteLine($"Main window is visible changed: {isVisivle}");
+                MainWindowVisibleChanged?.Invoke(this, isVisible);
+                log.WriteLine($"Main window is visible changed: {isVisible}");
+
+                if (!isVisible)
+                    _ = _messenger.Publish(new MainWindowClosedMessage());
             }
             catch (Exception ex)
             {
@@ -320,9 +325,9 @@ namespace HideezClient.Modules
             return UIDispatcher.Invoke(() => _notificationsManager.ShowAccountNotFoundNotification(title ?? GetTitle(), message));
         }
 
-        private Task ShowClientOpeningNotification(ClientOpeningNotificationMessage arg)
+        private Task ShowMinifiedWindowHelpNofitication(ShowMinimizedWindowHelpNotificationMessage msg)
         {
-            UIDispatcher.Invoke(() => _notificationsManager.ShowClientOpeningFromTaskbarNotification());
+            UIDispatcher.Invoke(() => _notificationsManager.ShowMinifiedWindowHelpNotification());
             return Task.CompletedTask;
         }
 

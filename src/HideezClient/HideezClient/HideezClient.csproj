@@ -107,6 +107,9 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=2.8.0.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CommandLineParser.2.8.0\lib\net461\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
     </Reference>
@@ -450,6 +453,7 @@
     <Compile Include="Messages\ShowInfoNotificationMessage.cs" />
     <Compile Include="Messages\Dialogs\MasterPassword\ShowMasterPasswordUiMessage.cs" />
     <Compile Include="Messages\Dialogs\Pin\ShowPinUiMessage.cs" />
+    <Compile Include="Messages\ShowMinimizedWindowHelpNotificationMessage.cs" />
     <Compile Include="Messages\ShowWarningNotificationMessage.cs" />
     <Compile Include="Messages\StartApplicationUpdateMessage.cs" />
     <Compile Include="Messages\SubroutineFinished.cs" />

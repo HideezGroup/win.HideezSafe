@@ -147,7 +147,7 @@
             Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run"                                         
             Type="string"
             Name="Hideez Client"
-            Value="[INSTALLFOLDER]HideezClient.exe"/>
+            Value="[INSTALLFOLDER]HideezClient.exe --nowindow=true"/>
     </Component>
   </DirectoryRef>
       
@@ -219,7 +219,13 @@
     <Property Id="WixShellExecTarget" Value="[#HideezClient.exe]" />
 
     <CustomAction Id="AssignDriverInstallerProperty" Property="CSRDRIVERPATH" Value="[INSTALLFOLDER]driver\DPInst.exe" />
-    <CustomAction Id="LaunchInstalledApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+    <CustomAction Id="LaunchInstalledApplication"
+                  FileKey="HideezClient.exe"
+                  ExeCommand="--fresh=true"
+                  Execute="immediate"
+                  Impersonate="yes"
+                  Return="asyncNoWait" />
+    <CustomAction Id="SilentlyLaunchInstalledApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes"/>
     <CustomAction Id="SetupServiceTriggerAction" Directory="INSTALLFOLDER" Execute="commit" Impersonate="no" ExeCommand="cmd.exe /c &quot;sc triggerinfo &quot;Hideez Service&quot; start/namedpipe/hideezsafe3&quot;" Return="check" />
     
     <InstallExecuteSequence>
@@ -243,7 +249,7 @@
       </Custom>
       
       <!-- Launch application after upgrade and passive install -->
-      <Custom Action="LaunchInstalledApplication" After="InstallFinalize">REINSTALL OR WIX_UPGRADE_DETECTED AND UILevel = 3</Custom>
+      <Custom Action="SilentlyLaunchInstalledApplication" After="InstallFinalize">REINSTALL OR WIX_UPGRADE_DETECTED AND UILevel = 3</Custom>
 
       <!-- Shutdown Hideez Client on update, reinstall or uninstall -->
       <Custom Action="WixCloseApplications" Before="InstallValidate" ></Custom>
@@ -473,6 +479,14 @@
       <Component Id="HideezService.System.ValueTuple.dll" Guid="{6E67F395-06C3-420C-844F-E041B76F9A07}" Win64="$(var.Win64)">
         <File Id="HideezService.System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.HideezServiceHost_TargetDir)System.ValueTuple.dll" />
       </Component>
+      
+      <Component Id="HideezService.System.Text.Encodings.Web.dll" Guid="{CAB7C674-515F-4290-8576-6903310A3186}" Win64="$(var.Win64)">
+        <File Id="HideezService.System.Text.Encodings.Web.dll" Name="System.Text.Encodings.Web.dll" Source="$(var.HideezServiceHost_TargetDir)System.Text.Encodings.Web.dll" />
+      </Component>
+  
+      <Component Id="HideezService.System.Text.Json.dll" Guid="{649CD5DF-78B8-49D8-A446-39A9BF0D87C4}" Win64="$(var.Win64)">
+        <File Id="HideezService.System.Text.Json.dll" Name="System.Text.Json.dll" Source="$(var.HideezServiceHost_TargetDir)System.Text.Json.dll" />
+      </Component>  
     
     </ComponentGroup>
   </Fragment>
@@ -828,6 +842,30 @@
       <Component Id="System.ValueTuple.dll" Guid="{3B605A6A-2FAA-4A0C-86BF-220A4460AF64}" Win64="$(var.Win64)">
         <File Id="System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.HideezClient_TargetDir)System.ValueTuple.dll" />
       </Component>
+      
+      <Component Id="CommandLine.dll" Guid="{8881D481-5CF2-4E4C-84F4-8BD794093B9B}" Win64="$(var.Win64)">
+        <File Id="CommandLine.dll" Name="CommandLine.dll" Source="$(var.HideezClient_TargetDir)CommandLine.dll" />
+      </Component>
+    
+      <Component Id="Polly.dll" Guid="{50F092AE-68A2-4399-9A89-F24B31D389B6}" Win64="$(var.Win64)">
+        <File Id="Polly.dll" Name="Polly.dll" Source="$(var.HideezClient_TargetDir)Polly.dll" />
+      </Component>
+    
+      <Component Id="Polly.Contrib.DuplicateRequestCollapser.dll" Guid="{FAF88FE1-A171-485C-B13C-E7C77A3DC71C}" Win64="$(var.Win64)">
+        <File Id="Polly.Contrib.DuplicateRequestCollapser.dll" Name="Polly.Contrib.DuplicateRequestCollapser.dll" Source="$(var.HideezClient_TargetDir)Polly.Contrib.DuplicateRequestCollapser.dll" />
+      </Component>
+
+      <Component Id="System.Text.Encodings.Web.dll" Guid="{95DE7D77-D8FE-4CFC-B2B1-4A404DE9ED43}" Win64="$(var.Win64)">
+        <File Id="System.Text.Encodings.Web.dll" Name="System.Text.Encodings.Web.dll" Source="$(var.HideezClient_TargetDir)System.Text.Encodings.Web.dll" />
+      </Component>
+  
+      <Component Id="System.Text.Json.dll" Guid="{93BD0A8B-7B40-4BF2-9BCB-440AC4117FFF}" Win64="$(var.Win64)">
+        <File Id="System.Text.Json.dll" Name="System.Text.Json.dll" Source="$(var.HideezClient_TargetDir)System.Text.Json.dll" />
+      </Component>  
+  
+      <Component Id="Microsoft.Bcl.AsyncInterfaces.dll" Guid="{2F684EDB-26E5-4817-846E-8CBA188F45CB}" Win64="$(var.Win64)">
+        <File Id="Microsoft.Bcl.AsyncInterfaces.dll" Name="Microsoft.Bcl.AsyncInterfaces.dll" Source="$(var.HideezClient_TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" />
+      </Component>    
   
     </ComponentGroup>
   </Fragment>

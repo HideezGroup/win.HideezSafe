@@ -231,11 +231,11 @@ namespace HideezClient.Modules.NotificationsManager
             return result;
         }
 
-        public void ShowClientOpeningFromTaskbarNotification()
+        public void ShowMinifiedWindowHelpNotification()
         {
             Screen screen = GetCurrentScreen();
 
-            var options = new NotificationOptions { CloseTimeout = TimeSpan.FromSeconds(10) };
+            var options = new NotificationOptions { CloseTimeout = TimeSpan.FromSeconds(20) };
 
             OpenClientFromTaskbarNotification notification = new OpenClientFromTaskbarNotification(options);
 

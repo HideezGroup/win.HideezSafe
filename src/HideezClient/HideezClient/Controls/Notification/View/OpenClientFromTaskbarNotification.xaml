@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:l="clr-namespace:HideezClient.Modules.Localize"
     xmlns:local="clr-namespace:HideezClient.Controls"
-    MinWidth="545"
+    MinWidth="645"
     MinHeight="110"
     Background="{DynamicResource NotificationBackground}"
     FontSize="16"
@@ -22,8 +22,8 @@
 
         <ContentPresenter
             Tag="DarkBackground"
-            Width="80"
-            Height="80"
+            Width="193"
+            Height="153"
             VerticalAlignment="Center">
             <ContentPresenter.Content>
                 <Image 

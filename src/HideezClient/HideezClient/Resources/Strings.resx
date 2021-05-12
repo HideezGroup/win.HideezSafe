@@ -1304,6 +1304,8 @@ Would you like to perform application update now?</value>
     <value>Hotkeys</value>
   </data>
   <data name="Notification.OpeningFromTaskbar" xml:space="preserve">
-    <value>Hideez Client can be opened from the taskbar.</value>
+    <value>After window is closed, Hideez Client will continue to run in background.
+ 
+You can open it again by clicking with left mouse button on its tray icon.</value>
   </data>
 </root>

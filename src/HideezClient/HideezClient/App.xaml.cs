@@ -55,6 +55,8 @@ using HideezClient.ViewModels.Dialog;
 using HideezClient.Resources;
 using HideezClient.Modules.HideDialogsAdapter;
 using HideezClient.Messages.Hotkeys;
+using HideezClient.Modules.Subroutines;
+using CommandLine;
 
 namespace HideezClient
 {
@@ -63,7 +65,14 @@ namespace HideezClient
     /// </summary>
     public partial class App : Application, ISingleInstance
     {
+        public class StartupOptions
+        {
+            [Option("nowindow", Default = false, Required = false, HelpText = "Don't show application window on start.")]
+            public bool NoWindow { get; set; }
+        }
+
         public static Logger _log = LogManager.GetCurrentClassLogger(nameof(App));
+        private SubroutineContainer _subroutineContainer;
         private IStartupHelper _startupHelper;
         private IWorkstationManager _workstationManager;
         private IWindowsManager _windowsManager;
@@ -148,6 +157,16 @@ namespace HideezClient
             Cleanup();
         }
 
+        void HandleStartupArguments(string[] args)
+        {
+            var cmdOptions = Parser.Default.ParseArguments<StartupOptions>(args);
+            cmdOptions.WithParsed(o =>
+            {
+                if (!o.NoWindow)
+                    Container.Resolve<ShowMainWindowAfterStartupSubroutine>();                    
+            });
+        }
+
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -210,6 +229,7 @@ namespace HideezClient
 
             _metaMessenger.Subscribe<ConnectedToServerEvent>(OnConnectedToServer);
 
+            _subroutineContainer = Container.Resolve<SubroutineContainer>();
             _serviceWatchdog = Container.Resolve<IServiceWatchdog>();
             _serviceWatchdog.Start();
             _deviceManager = Container.Resolve<IDeviceManager>();
@@ -237,6 +257,8 @@ namespace HideezClient
             // Better to load it before its required (for main domain extraction)
             await Task.Run(URLHelper.PreloadPublicSuffixAsync);
 
+            HandleStartupArguments(e.Args);
+
             // Handle first launch
             if (settings.IsFirstLaunch)
             {
@@ -249,6 +271,8 @@ namespace HideezClient
             _windowsManager = Container.Resolve<IWindowsManager>();
             await _windowsManager.InitializeMainWindowAsync();
             await _metaMessenger.TryConnectToServer("HideezServicePipe");
+
+            await _metaMessenger.Publish(new ApplicationStartupFinishedMessage());
         }
 
         private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
@@ -288,6 +312,7 @@ namespace HideezClient
         private void OnFirstLaunch()
         {
             _log.WriteLine("First Hideez Client launch");
+            Container.Resolve<ShowMinimizedWindowNotificationSubroutine>();
         }
 
         private void InitializeDIContainer()
@@ -347,6 +372,7 @@ namespace HideezClient
             Container.RegisterType<IHotkeyManager, HotkeyManager>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IHotkeySettingsController, HotkeySettingsController>(new ContainerControlledLifetimeManager());
             Container.RegisterType<IHotkeyStatesMonitor, HotkeyStatesMonitor>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<SubroutineContainer>(new ContainerControlledLifetimeManager());
 
             // Settings
             Container.RegisterType<ISettingsManager<ApplicationSettings>, HSSettingsManager<ApplicationSettings>>(new ContainerControlledLifetimeManager()

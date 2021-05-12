@@ -58,11 +58,10 @@
               Value="[$(var.BootstrapperPlatformProgramFilesFolder)]Hideez\Client" />
 
     <!-- Ask to launch application after install -->
-    <Variable Name="LaunchTarget"
-              Value="[InstallFolder]\HideezClient.exe"/>
-
+    <Variable Name="LaunchTarget" Value="[InstallFolder]\HideezClient.exe" />
+    
     <!-- Install version option -->
-    <Variable Name="StandaloneInstallRadio" Type="numeric" Value="1" bal:Overridable="no"/> 
+    <Variable Name="StandaloneInstallRadio" Type="numeric" Value="1" bal:Overridable="no"/>
     <Variable Name="EnterpriseInstallRadio" Type="numeric" Value="0" bal:Overridable="no"/>
     
     <!-- Vault connection option -->
