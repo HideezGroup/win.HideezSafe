@@ -119,10 +119,20 @@ namespace HideezClient.ViewModels
                     }
                 }
             }
-            catch(Exception ex)
+            catch (OperationCanceledException ex)
             {
-                await _messenger.Publish(new SetResultUIBackupPasswordMessage(false));
                 _log.WriteLine(ex);
+                await _messenger.Publish(new HideDialogMessage(typeof(BackupPasswordDialog)));
+            }
+            catch (TimeoutException)
+            {
+                _log.WriteLine("GET BACKUP PASSWORD TIMEOUT", LogErrorSeverity.Error);
+                await _messenger.Publish(new HideDialogMessage(typeof(BackupPasswordDialog)));
+            }
+            catch (Exception ex)
+            {
+                _log.WriteLine(ex);
+                await _messenger.Publish(new SetResultUIBackupPasswordMessage(false, ex.Message));
             }
             finally
             {
@@ -182,8 +192,12 @@ namespace HideezClient.ViewModels
                     catch (OperationCanceledException ex)
                     {
                         _log.WriteLine(ex);
-                        await _messenger.Publish(new SetResultUIBackupPasswordMessage(false));
+                        await _messenger.Publish(new HideDialogMessage(typeof(BackupPasswordDialog)));
                         break;
+                    }
+                    catch (TimeoutException)
+                    {
+                        _log.WriteLine("GET BACKUP PASSWORD TIMEOUT", LogErrorSeverity.Error);
                     }
                     catch (HideezException ex) when (ex.ErrorCode == HideezErrorCode.FileCorruptOrPasswordIncorrect)
                     {
