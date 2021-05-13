@@ -87,6 +87,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
 
             bool workflowFinishedSuccessfully = false;
             bool deleteVaultBondOnError = false;
+            bool notificationsClearing = false;
             string errorMessage = null;
             IDevice device = null;
 
@@ -180,6 +181,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                     case HideezErrorCode.GetPinTimeout:
                     case HideezErrorCode.GetActivationCodeTimeout:
                         // Silent handling
+                        notificationsClearing = true;
                         WriteLine(ex);
                         break;
                     default:
@@ -222,7 +224,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                 _screenActivator?.StopPeriodicScreenActivation();
             }
 
-            await WorkflowCleanup(errorMessage, connectionId, device, workflowFinishedSuccessfully, deleteVaultBondOnError);
+            await WorkflowCleanup(errorMessage, connectionId, device, workflowFinishedSuccessfully, deleteVaultBondOnError, notificationsClearing);
 
             IsRunning = false;
             Finished?.Invoke(this, flowId);
@@ -230,7 +232,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
             WriteLine($"Main workflow end ({connectionId.Id}, {(DefaultConnectionIdProvider)connectionId.IdProvider})");
         }
 
-        async Task WorkflowCleanup(string errorMessage, ConnectionId connectionId, IDevice device, bool workflowFinishedSuccessfully, bool deleteVaultBond)
+        async Task WorkflowCleanup(string errorMessage, ConnectionId connectionId, IDevice device, bool workflowFinishedSuccessfully, bool deleteVaultBond, bool notificationsClearing)
         {
             // Cleanup
             try
@@ -278,6 +280,12 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                         WriteLine($"Main workflow failed, Disconnecting ({device.Id})");
                         await _deviceManager.Disconnect(device.DeviceConnection);
                     }
+                }
+
+                if (notificationsClearing)
+                {
+                    await _ui.SendError(string.Empty, device.Id);
+                    await _ui.SendNotification(string.Empty, device.Id);
                 }
             }
             catch (Exception ex)
