@@ -1108,7 +1108,7 @@ namespace HideezClient.Models
                             var attemptsLeft = PinAttemptsRemain - 1;
                             var newPin = Encoding.UTF8.GetString(procResult.Pin);
                             var oldPin = Encoding.UTF8.GetString(procResult.OldPin);
-                            var setPinResult = await _remoteDevice.SetPin(newPin, oldPin);
+                            var setPinResult = await _remoteDevice.ChangePin(newPin, oldPin);
 
                             if (setPinResult == HideezErrorCode.Ok)
                             {

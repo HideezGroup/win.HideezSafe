@@ -217,6 +217,7 @@ namespace HideezClient.ViewModels.Dialog
         Task SetResultUIBackupPasswordAsync(SetResultUIBackupPasswordMessage arg)
         {
             InProgress = false;
+            NeedInputPassword = false;
 
             if (arg.IsSuccessful)
                 IsSuccessful = true;

@@ -1308,4 +1308,7 @@ Would you like to perform application update now?</value>
  
 You can open it again by clicking with left mouse button on its tray icon.</value>
   </data>
+  <data name="MasterPassword.Error.PasswordsDontMatch" xml:space="preserve">
+    <value>The new master password and confirmation password does not match</value>
+  </data>
 </root>

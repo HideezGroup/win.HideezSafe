@@ -48,10 +48,6 @@ namespace HideezClient.Tasks
 
                 return await _tcs.Task.TimeoutAfter(timeout);
             }
-            catch (Exception)
-            {
-                return null;
-            }
             finally
             {
                 await _messenger.Unsubscribe<SendBackupPasswordMessage>(OnBackupPasswordReceived);
