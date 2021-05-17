@@ -62,7 +62,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow
                 ltkErrorOccured = true;
             }
 
-            if (device == null)
+            if (device == null || !device.IsConnected)
             {
                 ct.ThrowIfCancellationRequested();
 
@@ -93,7 +93,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow
 
                 // Only for csr
                 // After second failed connect with csr we delete bond and try to create new pair
-                if (device == null && rebondOnFail)
+                if ((device == null || !device.IsConnected) && rebondOnFail)
                 {
                     ct.ThrowIfCancellationRequested();
 
