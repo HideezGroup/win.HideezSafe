@@ -759,74 +759,42 @@
                     <Border
                         Padding="24"
                         Style="{StaticResource SettingsSectionBorderStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="32" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="8" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <TextBlock
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Text="{l:Localization BackupCredentials.Restore.Title}" />
-
-                            <Rectangle
-                                Grid.Row="2"
-                                Grid.Column="0"
-                                SnapsToDevicePixels="True"
-                                Stroke="#1BA2DC"
-                                StrokeDashArray="8 6"
-                                StrokeLineJoin="Round"
-                                StrokeThickness="1" />
-
-                            <Grid
-                                Grid.Row="2"
-                                Grid.Column="0"
-                                Margin="32,16"
-                                HorizontalAlignment="Stretch">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="32" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel
-                                    HorizontalAlignment="Center"
-                                    Orientation="Horizontal">
-                                    <iconPacks:PackIconMaterial
-                                        Margin="8"
-                                        VerticalAlignment="Center"
-                                        Foreground="{StaticResource IcoButtonBrush}"
-                                        Kind="File" />
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        Text="{l:Localization BackupCredentials.RestoreFromFile}" />
-                                </StackPanel>
-                                <Button
-                                    Grid.Column="2"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding RestoreCredentialsCommand}"
-                                    Content="{l:Localization BackupCredentials.Button.SelectFile}"
-                                    Style="{StaticResource ConfirmButtonStyle}" />
-                            </Grid>
-
-                            <TextBlock
-                                Grid.Row="0"
-                                Grid.Column="2"
-                                Text="{l:Localization BackupCredentials.Backup.Title}"/>
+                        <StackPanel Orientation="Horizontal">
                             <Button
-                                Grid.Row="2"
-                                Grid.Column="2"
                                 VerticalAlignment="Center"
                                 Command="{Binding BackupCredentialsCommand}"
-                                Content="{l:Localization BackupCredentials.Button.Backup}"
-                                Style="{StaticResource ConfirmButtonStyle}" />
-                        </Grid>
+                                Style="{StaticResource ConfirmButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconFontAwesome 
+                                        Kind="CopySolid" 
+                                        Margin="0,0,0,-2"
+                                        Width="18"
+                                        Height="18"
+                                        VerticalAlignment="Center"/>
+                                    <TextBlock 
+                                        Margin="8,0,0,0"
+                                        Text="{l:Localization BackupCredentials.Button.Backup}" />
+                                </StackPanel>
+                            </Button>
+
+                            <Button
+                                Margin="32,0,0,0"
+                                VerticalAlignment="Center"
+                                Command="{Binding RestoreCredentialsCommand}"
+                                Style="{StaticResource ConfirmButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial 
+                                        Kind="Restore" 
+                                        Margin="0,0,0,-2"
+                                        Width="18"
+                                        Height="18"
+                                        VerticalAlignment="Center"/>
+                                    <TextBlock 
+                                        Margin="8,0,0,0"
+                                        Text="{l:Localization BackupCredentials.Button.Restore}" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
                     </Border>
                 </StackPanel>
             </controls:StandaloneModeContainer>

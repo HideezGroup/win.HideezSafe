@@ -1161,7 +1161,7 @@ Would you like to perform application update now?</value>
     <value>Restore</value>
   </data>
   <data name="BackupCredentials.RestoreFromFile" xml:space="preserve">
-    <value>Restore from file</value>
+    <value>Restore from Backup</value>
   </data>
   <data name="BackupCredentials.Title" xml:space="preserve">
     <value>Backup / Restore credentials</value>
@@ -1310,5 +1310,8 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
   </data>
   <data name="MasterPassword.Error.PasswordsDontMatch" xml:space="preserve">
     <value>The new master password and confirmation password does not match</value>
+  </data>
+  <data name="BackupCredentials.Button.Restore" xml:space="preserve">
+    <value>Restore from Backup</value>
   </data>
 </root>

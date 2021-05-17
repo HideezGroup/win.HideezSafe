@@ -128,7 +128,7 @@
 Firmware minimum 3.6.10</value>
   </data>
   <data name="DP.HideezKey.Header" xml:space="preserve">
-    <value>Hideez Key 2 Updated</value>
+    <value>Hideez Key</value>
   </data>
   <data name="HKP.Description1" xml:space="preserve">
     <value>Insert Hideez Bluetooth Dongle to USB Port</value>
