@@ -154,7 +154,7 @@ namespace HideezMiddleware.Modules.UpdateCheck
             {
                 var uri = new Uri(updateInfo.Url);
                 string filename = Path.GetFileName(uri.LocalPath);
-                string folderPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+                string folderPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName().Replace(".", ""));
                 string targetPath = Path.Combine(folderPath, filename);
 
                 byte[] downloadedData;
