@@ -63,7 +63,7 @@ namespace HideezMiddleware.Settings.SettingsProvider
 
         public int GetProximityTimeout(ConnectionId connectionId)
         {
-            return GetLockProximity(connectionId) * 2;
+            return GetLockTimeout(connectionId) * 2;
 
         }
 
