@@ -241,6 +241,19 @@
 
                                         <StackPanel Orientation="Horizontal" Visibility="{Binding IsInEditState, Converter={StaticResource InvertBooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
                                             <TextBlock
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                Background="Transparent"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                ToolTip="Domain Login for this Web-site or App is formatted to the correct format"
+                                                Foreground="{StaticResource DarkForeground}"
+                                                Text="@" 
+                                                Visibility="{Binding IsFormatted, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                            <Rectangle Width="3" />
+
+                                            <TextBlock
                                                 x:Name="PART_ItemTextBlock"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"

@@ -88,7 +88,17 @@
                 <ItemsControl ItemsSource="{Binding AppsUrls}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Background="Transparent"
+                                    FontWeight="Bold"
+                                    Foreground="{StaticResource DarkForeground}"
+                                    ToolTip="Domain Login for this Web-site or App is formatted to the correct format"
+                                    Text="@" 
+                                    Visibility="{Binding IsFormatted, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Rectangle Width="3" />
+                                <TextBlock Text="{Binding Title}" />
+                            </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

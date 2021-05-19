@@ -332,6 +332,11 @@ namespace HideezClient.PageViewModels
             return source != null && toCheck != null && source.IndexOf(toCheck, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
 
+        private bool Contains(AppViewModel source, string toCheck)
+        {
+            return source != null && toCheck != null && source.Title.IndexOf(toCheck, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        }
+
         private void HandleError(Exception ex, string message)
         {
             log.WriteLine(ex);

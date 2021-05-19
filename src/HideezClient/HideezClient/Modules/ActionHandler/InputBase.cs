@@ -25,7 +25,7 @@ namespace HideezClient.Modules.ActionHandler
     abstract class InputBase : IInputAlgorithm
     {
         private readonly Logger log = LogManager.GetCurrentClassLogger(nameof(InputBase));
-        private AppInfo currentAppInfo;
+        protected AppInfo currentAppInfo;
 
         protected readonly IInputHandler inputHandler;
         protected readonly ITemporaryCacheAccount temporaryCacheAccount;
