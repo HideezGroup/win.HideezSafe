@@ -1309,4 +1309,7 @@ Would you like to perform application update now?</value>
   <data name="MasterPassword.Error.PasswordsDontMatch" xml:space="preserve">
     <value>The new master password and confirmation password does not match</value>
   </data>
+  <data name="Tooltip.DomainLoginSpecialFormatting" xml:space="preserve">
+    <value>Domain Login for this Web-site or App will be formatted to the correct format</value>
+  </data>
 </root>

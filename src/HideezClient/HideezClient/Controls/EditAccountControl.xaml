@@ -246,7 +246,7 @@
                                                 Background="Transparent"
                                                 FontSize="16"
                                                 FontWeight="Bold"
-                                                ToolTip="Domain Login for this Web-site or App is formatted to the correct format"
+                                                ToolTip="{l:Localization Tooltip.DomainLoginSpecialFormatting}"
                                                 Foreground="{StaticResource DarkForeground}"
                                                 Text="@" 
                                                 Visibility="{Binding IsFormatted, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>
@@ -260,7 +260,19 @@
                                                 Background="Transparent"
                                                 FontSize="16"
                                                 Foreground="{StaticResource DarkForeground}"
-                                                Text="{Binding Title}" />
+                                                Tag="{Binding IsUrl}"
+                                                Text="{Binding Title}"
+                                                MouseLeftButtonUp="TextBlock_MouseLeftButtonUp">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsUrl}" Value="True">
+                                                                <Setter Property="Cursor" Value="Hand"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
 
                                             <Rectangle Width="8" />
 

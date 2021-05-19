@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HideezClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,6 +77,16 @@ namespace HideezClient.Controls
             {
                 if (!c.IsDropDownOpen)
                     e.Handled = true;
+            }
+        }
+
+        private void TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is TextBlock textBlock && (bool)textBlock.Tag)
+            {
+                string url = textBlock.Text;
+                if (!string.IsNullOrWhiteSpace(url))
+                    (DataContext as EditAccountViewModel)?.OpenUrl("https://" + url);
             }
         }
     }
