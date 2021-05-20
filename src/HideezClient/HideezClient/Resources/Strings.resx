@@ -1332,4 +1332,7 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
   <data name="ProximitySettings.UnlockMode.WaitForInput" xml:space="preserve">
     <value>Wait for user activity</value>
   </data>
+  <data name="Tooltip.DomainLoginSpecialFormatting" xml:space="preserve">
+    <value>Domain Login for this Web-site or App will be formatted to the correct format</value>
+  </data>
 </root>

@@ -38,12 +38,48 @@ namespace HideezClient.Modules.ActionHandler
         {
             if (account != null && !string.IsNullOrWhiteSpace(account.Login))
             {
-                await SimulateInput(account.Login);
+                var login = GetLogin(account);
+                await SimulateInput(login);
                 SetCache(account);
                 return true;
             }
 
             return false;
+        }
+
+        string GetLogin(Account account)
+        {
+            if(!string.IsNullOrWhiteSpace(currentAppInfo.Domain))
+            {
+                var url = account.Domains.FirstOrDefault(d => d == "@" + currentAppInfo.Domain);
+                if (url != null)
+                    return GetFormattedLogin(account.Login);
+            }
+            else
+            {
+                var app = account.Apps.FirstOrDefault(d => d == "@" + currentAppInfo.Description);
+                if (app != null)
+                    return GetFormattedLogin(account.Login);
+            }
+
+            return account.Login;
+        }
+
+        string GetFormattedLogin(string login)
+        {
+            var loginParts = login.Split('/');
+
+            if (loginParts.Length != 2)
+                loginParts = login.Split('\\');
+
+            if (loginParts.Length == 2)
+            {
+                string domain = loginParts[0];
+                string username = loginParts[1];
+                return username + '@' + domain;
+            }
+
+            return login;
         }
 
         /// <summary>

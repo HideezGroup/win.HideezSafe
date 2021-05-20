@@ -241,13 +241,38 @@
 
                                         <StackPanel Orientation="Horizontal" Visibility="{Binding IsInEditState, Converter={StaticResource InvertBooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
                                             <TextBlock
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                Background="Transparent"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                ToolTip="{l:Localization Tooltip.DomainLoginSpecialFormatting}"
+                                                Foreground="{StaticResource DarkForeground}"
+                                                Text="@" 
+                                                Visibility="{Binding IsFormatted, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                            <Rectangle Width="3" />
+
+                                            <TextBlock
                                                 x:Name="PART_ItemTextBlock"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
                                                 Background="Transparent"
                                                 FontSize="16"
                                                 Foreground="{StaticResource DarkForeground}"
-                                                Text="{Binding Title}" />
+                                                Tag="{Binding IsUrl}"
+                                                Text="{Binding Title}"
+                                                MouseLeftButtonUp="TextBlock_MouseLeftButtonUp">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsUrl}" Value="True">
+                                                                <Setter Property="Cursor" Value="Hand"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
 
                                             <Rectangle Width="8" />
 

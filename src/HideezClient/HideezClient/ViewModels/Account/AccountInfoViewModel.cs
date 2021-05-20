@@ -4,24 +4,26 @@ using HideezClient.Utilities;
 using ReactiveUI.Fody.Helpers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace HideezClient.ViewModels
 {
-    public class AccountInfoViewModel
+    class AccountInfoViewModel
     {
         private readonly AccountRecord accountRecord;
+        private readonly IAppHelper _appHelper;
 
-        public AccountInfoViewModel(AccountRecord accountRecord)
+        public AccountInfoViewModel(AccountRecord accountRecord, IAppHelper appHelper)
         {
             this.accountRecord = accountRecord;
-
+            _appHelper = appHelper;
             if (accountRecord.Apps != null)
             {
-                AppsUrls.AddRange(AccountUtility.Split(accountRecord.Apps));
+                AppsUrls.AddRange(AccountUtility.Split(accountRecord.Apps).Select(u => new AppViewModel(u)));
             }
             if (accountRecord.Urls != null)
             {
-                AppsUrls.AddRange(AccountUtility.Split(accountRecord.Urls));
+                AppsUrls.AddRange(AccountUtility.Split(accountRecord.Urls).Select(u => new AppViewModel(u, true)));
             }
         }
 
@@ -33,7 +35,12 @@ namespace HideezClient.ViewModels
         public string Login { get { return accountRecord.Login; } }
         public bool HasOpt { get { return accountRecord.Flags.HasOtp; } }
         public bool IsPrimary { get { return accountRecord.IsPrimary; } }
-        public ObservableCollection<string> AppsUrls { get; } = new ObservableCollection<string>();
+        public ObservableCollection<AppViewModel> AppsUrls { get; } = new ObservableCollection<AppViewModel>();
         public AccountRecord AccountRecord { get { return accountRecord; } }
+
+        public void OpenUrl(string url)
+        {
+            _appHelper.OpenUrl(url);
+        }
     }
 }

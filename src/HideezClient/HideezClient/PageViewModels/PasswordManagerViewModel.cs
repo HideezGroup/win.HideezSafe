@@ -46,15 +46,17 @@ namespace HideezClient.PageViewModels
         readonly IQrScannerHelper qrScannerHelper;
         readonly IWindowsManager windowsManager;
         readonly ISettingsManager<ApplicationSettings> _settingsManager;
+        private readonly IAppHelper _appHelper;
         readonly IMetaPubSub _metaMessenger;
 
         public PasswordManagerViewModel(IWindowsManager windowsManager, IQrScannerHelper qrScannerHelper, 
-            IMetaPubSub metaMessenger, IActiveDevice activeDevice, ISettingsManager<ApplicationSettings> settingsManager)
+            IMetaPubSub metaMessenger, IActiveDevice activeDevice, ISettingsManager<ApplicationSettings> settingsManager, IAppHelper appHelper)
         {
             this.windowsManager = windowsManager;
             this.qrScannerHelper = qrScannerHelper;
             _metaMessenger = metaMessenger;
             _settingsManager = settingsManager;
+            _appHelper = appHelper;
 
             _metaMessenger.Subscribe<ActiveDeviceChangedMessage>(OnActiveDeviceChanged);
             _metaMessenger.Subscribe<AddAccountForAppMessage>(OnAddAccountForApp);
@@ -203,7 +205,7 @@ namespace HideezClient.PageViewModels
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var vm = new EditAccountViewModel(Device, windowsManager, qrScannerHelper, _metaMessenger)
+                var vm = new EditAccountViewModel(Device, windowsManager, qrScannerHelper, _metaMessenger, _appHelper)
                 {
                     DeleteAccountCommand = this.DeleteAccountCommand,
                     CancelCommand = this.CancelCommand,
@@ -254,7 +256,7 @@ namespace HideezClient.PageViewModels
 
         private void OnAddAccount()
         {
-            EditAccount = new EditAccountViewModel(Device, windowsManager, qrScannerHelper, _metaMessenger)
+            EditAccount = new EditAccountViewModel(Device, windowsManager, qrScannerHelper, _metaMessenger, _appHelper)
             {
                 DeleteAccountCommand = this.DeleteAccountCommand,
                 CancelCommand = this.CancelCommand,
@@ -286,7 +288,7 @@ namespace HideezClient.PageViewModels
             var record = Device.AccountsRecords.FirstOrDefault(r => r.StorageId == SelectedAccount.AccountRecord.StorageId);
             if (record != null)
             {
-                EditAccount = new EditAccountViewModel(Device, record, windowsManager, qrScannerHelper, _metaMessenger)
+                EditAccount = new EditAccountViewModel(Device, record, windowsManager, qrScannerHelper, _metaMessenger, _appHelper)
                 {
                     DeleteAccountCommand = this.DeleteAccountCommand,
                     CancelCommand = this.CancelCommand,
@@ -302,7 +304,7 @@ namespace HideezClient.PageViewModels
 
         private void OnFilterAccount()
         {
-            var filteredAccounts = Device.AccountsRecords.Select(r => new AccountInfoViewModel(r)).Where(a => a.IsVisible).Where(a => Contains(a, SearchQuery));
+            var filteredAccounts = Device.AccountsRecords.Select(r => new AccountInfoViewModel(r, _appHelper)).Where(a => a.IsVisible).Where(a => Contains(a, SearchQuery));
             filteredAccounts = filteredAccounts.OrderBy(a => a.Name).OrderByDescending(a => a.IsEditable); // Editable accounts will be shown first in the list
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -330,6 +332,11 @@ namespace HideezClient.PageViewModels
         private bool Contains(string source, string toCheck)
         {
             return source != null && toCheck != null && source.IndexOf(toCheck, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        }
+
+        private bool Contains(AppViewModel source, string toCheck)
+        {
+            return source != null && toCheck != null && source.Title.IndexOf(toCheck, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
 
         private void HandleError(Exception ex, string message)

@@ -34,7 +34,7 @@ namespace HideezClient.ViewModels
         readonly IQrScannerHelper _qrScannerHelper;
         readonly IWindowsManager _windowsManager;
         readonly IMetaPubSub _metaMessenger;
-
+        private readonly IAppHelper _appHelper;
         bool isUpdateAppsUrls;
         DeviceViewModel _device;
         int generatePasswordLength = 16;
@@ -43,20 +43,22 @@ namespace HideezClient.ViewModels
         bool canScanOtpSecretQrCode = true;
         readonly AccountRecord cache;
 
-        public EditAccountViewModel(DeviceViewModel device, IWindowsManager windowsManager, IQrScannerHelper qrScannerHelper, IMetaPubSub metaMessenger)
-            : this(device, null, windowsManager, qrScannerHelper, metaMessenger)
+        public EditAccountViewModel(DeviceViewModel device, IWindowsManager windowsManager, IQrScannerHelper qrScannerHelper, IMetaPubSub metaMessenger, IAppHelper appHelper)
+            : this(device, null, windowsManager, qrScannerHelper, metaMessenger, appHelper)
         { }
 
         public EditAccountViewModel(DeviceViewModel device, 
             AccountRecord accountRecord, 
             IWindowsManager windowsManager, 
             IQrScannerHelper qrScannerHelper,
-            IMetaPubSub metaMessenger)
+            IMetaPubSub metaMessenger,
+            IAppHelper appHelper)
         {
             _windowsManager = windowsManager;
             _qrScannerHelper = qrScannerHelper;
             _device = device;
             _metaMessenger = metaMessenger;
+            _appHelper = appHelper;
 
             if (accountRecord == null)
             {
@@ -263,8 +265,8 @@ namespace HideezClient.ViewModels
             }
         }
 
-        public IEnumerable<string> Apps { get { return AppsAndUrls.Where(x => !x.IsUrl).Select(x => x.Title); } }
-        public IEnumerable<string> Urls { get { return AppsAndUrls.Where(x => x.IsUrl).Select(x => x.Title); } }
+        public IEnumerable<string> Apps { get { return AppsAndUrls.Where(x => !x.IsUrl).Select(x => x.FullTitle); } }
+        public IEnumerable<string> Urls { get { return AppsAndUrls.Where(x => x.IsUrl).Select(x => x.FullTitle); } }
         public ObservableCollection<AppViewModel> AppsAndUrls { get; } = new ObservableCollection<AppViewModel>();
         public IEnumerable<string> Logins { get { return _device?.AccountsRecords.Select(a => a.Login).Distinct(); } }
         public ObservableCollection<AppInfo> OpenedApps { get; } = new ObservableCollection<AppInfo>();
@@ -601,6 +603,11 @@ namespace HideezClient.ViewModels
             AccountRecord.Urls = AccountUtility.JoinAppsOrUrls(Urls);
             this.RaisePropertyChanged(nameof(Urls));
             this.RaisePropertyChanged(nameof(Apps));
+        }
+
+        public void OpenUrl(string url)
+        {
+            _appHelper.OpenUrl(url);
         }
     }
 }

@@ -88,7 +88,29 @@
                 <ItemsControl ItemsSource="{Binding AppsUrls}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Background="Transparent"
+                                    FontWeight="Bold"
+                                    Foreground="{StaticResource DarkForeground}"
+                                    ToolTip="{l:Localization Tooltip.DomainLoginSpecialFormatting}"
+                                    Text="@" 
+                                    Visibility="{Binding IsFormatted, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Rectangle Width="3" />
+                                <TextBlock Text="{Binding Title}"
+                                           Tag="{Binding IsUrl}"
+                                           MouseLeftButtonUp="TextBlock_MouseLeftButtonUp">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsUrl}" Value="True">
+                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

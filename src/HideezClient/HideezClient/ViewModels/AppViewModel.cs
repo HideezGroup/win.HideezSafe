@@ -19,7 +19,12 @@ namespace HideezClient.ViewModels
         public AppViewModel(string title, bool isUrl = false)
         {
             this.IsUrl = isUrl;
-            this.Title = title;
+            FullTitle = title;
+
+            if(IsFormatted)
+                Title = FullTitle.Substring(1);
+            else
+                Title = FullTitle;
 
             this.WhenAnyValue(x => x.Title).Subscribe(x =>
             {
@@ -27,6 +32,7 @@ namespace HideezClient.ViewModels
                 this.RaisePropertyChanged(nameof(CanApply));
                 this.RaisePropertyChanged(nameof(CanEdit));
                 this.RaisePropertyChanged(nameof(CanDelete));
+                this.RaisePropertyChanged(nameof(IsFormatted));
             });
 
             this.WhenAnyValue(x => x.EditableTitle).Subscribe(x =>
@@ -42,22 +48,32 @@ namespace HideezClient.ViewModels
 
         [Reactive] public bool IsInEditState { get; set; }
         [Reactive] public string Title { get; set; }
+        [Reactive] public string FullTitle { get; set; }
         [Reactive] public string EditableTitle { get; set; }
         [Reactive] public bool IsUrl { get; set; }
 
         public bool CanCancel { get; } = true;
-        public bool CanApply { get { return !string.IsNullOrWhiteSpace(EditableTitle) && Title != EditableTitle; } }
+        public bool CanApply { get { return !string.IsNullOrWhiteSpace(EditableTitle) && FullTitle != EditableTitle; } }
         public bool CanEdit { get; } = true;
         public bool CanDelete { get; } = true;
+
+        public bool IsFormatted => FullTitle.StartsWith("@");
 
         #endregion
 
         public void ApplyChanges()
         {
             if (IsUrl)
-                Title = Hideez.ARM.UrlUtils.GetDomainFromUrl(EditableTitle) ?? EditableTitle;
+                FullTitle = Hideez.ARM.UrlUtils.GetDomainFromUrl(EditableTitle) ?? EditableTitle;
             else
-                Title = EditableTitle;
+                FullTitle = EditableTitle;
+
+            this.RaisePropertyChanged(nameof(IsFormatted));
+
+            if (IsFormatted)
+                Title = FullTitle.Substring(1);
+            else
+                Title = FullTitle;
 
             IsInEditState = false;
         }
@@ -65,13 +81,13 @@ namespace HideezClient.ViewModels
         public void Edit()
         {
             IsInEditState = true;
-            EditableTitle = Title;
+            EditableTitle = FullTitle;
         }
 
         public void CancelEdit()
         {
             IsInEditState = false;
-            EditableTitle = Title;
+            EditableTitle = FullTitle;
         }
     }
 }
