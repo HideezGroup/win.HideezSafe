@@ -338,7 +338,7 @@ Vault is not connected</value>
     <value>mailto:support@hideez.com</value>
   </data>
   <data name="Exception.FieldNotSecure" xml:space="preserve">
-    <value>Password entry cancelled. Field not protected.</value>
+    <value>Password entry cancelled. Selected field is not protected.</value>
   </data>
   <data name="Exception.AccountNotFound" xml:space="preserve">
     <value>Account not found for {0}</value>
@@ -1313,5 +1313,11 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
   </data>
   <data name="BackupCredentials.Button.Restore" xml:space="preserve">
     <value>Restore from Backup</value>
+  </data>
+  <data name="Settings.CheckBox.LimitPasswordToProtectedFields" xml:space="preserve">
+    <value>Limit password entry to protected fields.</value>
+  </data>
+  <data name="GeneralSettings.Title" xml:space="preserve">
+    <value>General</value>
   </data>
 </root>

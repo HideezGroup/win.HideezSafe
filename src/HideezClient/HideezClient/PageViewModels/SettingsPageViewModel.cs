@@ -14,5 +14,8 @@ namespace HideezClient.PageViewModels
 
         [Dependency]
         public ReconnectPairedVaultsControlViewModel PairedVaultsReconnect { get; set; }
+
+        [Dependency]
+        public SecureFieldEntrySettingViewModel SecureFieldEntry { get; set; }
     }
 }

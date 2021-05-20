@@ -67,11 +67,13 @@ namespace HideezClient.Modules.ActionHandler
         /// </summary>
         protected async override Task<bool> BeforeCondition(string[] devicesId)
         {
-            var isProtected = ((!settingsManager.Settings.LimitPasswordEntry || settingsManager.Settings.LimitPasswordEntry && inputCache.IsProtectedPasswordField));
-            if (!isProtected)
+            if (settingsManager.Settings.LimitPasswordEntry && !inputCache.IsProtectedPasswordField)
+            { 
                 throw new FieldNotSecureException();
+            }
+
             // Debug.WriteLine($"### InputPassword.InputHandler.IsProtectedPasswordField: {inputHandler.IsProtectedPasswordField}");
-            return await base.BeforeCondition(devicesId) && isProtected;
+            return await base.BeforeCondition(devicesId);
         }
 
         /// <summary>

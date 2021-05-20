@@ -595,6 +595,7 @@
     <Compile Include="PageViewModels\PasswordManagerViewModel.cs" />
     <Compile Include="ViewModels\Dialog\PinViewModel.cs" />
     <Compile Include="ViewModels\Account\AccountInfoViewModel.cs" />
+    <Compile Include="ViewModels\SecureFieldEntrySettingViewModel.cs" />
     <Compile Include="ViewModels\ServiceViewModel.cs" />
     <Compile Include="ViewModels\SoftwareUnlockSettingViewModel.cs" />
     <Compile Include="ViewModels\ReconnectPairedVaultsControlViewModel.cs" />

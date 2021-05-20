@@ -10,7 +10,7 @@
     xmlns:controls="clr-namespace:HideezClient.Controls"
     xmlns:ma="http://metro.mahapps.com/winfx/xaml/controls"
     Title="SettingsPage"
-    d:DesignHeight="450"
+    d:DesignHeight="1500"
     d:DesignWidth="800"
     DataContext="{Binding SettingsPage, Mode=OneWay, Source={StaticResource Locator}}"
     Style="{DynamicResource PageStyle}"
@@ -53,6 +53,8 @@
                 Margin="0,16"
                 Style="{DynamicResource SeparatorStyle}" />-->
             <StackPanel Grid.Row="2">
+                <controls:StandaloneModeContainer Height="12" />
+
                 <Border
                     Style="{StaticResource SettingsBorderStyle}"
                     Visibility="{Binding Path=Service.IsServiceConnected, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
@@ -69,6 +71,15 @@
                     </Border>
                 </controls:EnterpriseModeContainer>
 
+                <!-- General Settings -->
+                <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        FontSize="24"
+                        Foreground="{StaticResource DarkForeground}"
+                        Margin="31,2,0,2"
+                        Text="{l:Localization GeneralSettings.Title}" />
+
                 <!-- Enable Mobile Authenticator unlock -->
                 <Border 
                     Style="{StaticResource SettingsBorderStyle}"
@@ -77,6 +88,14 @@
                         Style="{StaticResource CheckboxStyle}"
                         Content="{l:Localization Settings.CheckBox.EnableSoftwareVaultUnlockModule}"
                         IsChecked="{Binding Path=SoftwareUnlock.IsChecked}" />
+                </Border>
+
+                <Border 
+                    Style="{StaticResource SettingsBorderStyle}">
+                    <CheckBox 
+                        Style="{StaticResource CheckboxStyle}"
+                        Content="{l:Localization Settings.CheckBox.LimitPasswordToProtectedFields}"
+                        IsChecked="{Binding Path=SecureFieldEntry.IsChecked}" />
                 </Border>
 
                 <!-- Hotkey Settings -->
