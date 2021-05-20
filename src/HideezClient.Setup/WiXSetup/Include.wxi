@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
-  <?define AppVersion = "3.8.5" ?>
+  <?define AppVersion = "3.8.6" ?>
   <?define Manufacturer = "Hideez Group Inc" ?>
   <?define UpgradeCode = "{3E5A742F-9C34-4A3B-9432-6A48DF216855}" ?>
   <?define Copyright = "(c) 2017 Hideez Group Inc. All rights reserved." ?>
