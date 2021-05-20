@@ -13,6 +13,7 @@ namespace HideezMiddleware.Settings
         public int LockProximity { get; set; }
         public int UnlockProximity { get; set; }
         public bool EnabledLockByProximity { get; set; }
+        public bool EnabledUnlock { get; set; }
         public bool EnabledUnlockByProximity { get; set; }
         public bool DisabledDisplayAuto { get; set; }
 
@@ -25,8 +26,9 @@ namespace HideezMiddleware.Settings
                     LockProximity = SdkConfig.DefaultLockProximity,
                     UnlockProximity = SdkConfig.DefaultUnlockProximity,
                     EnabledLockByProximity = false,
+                    EnabledUnlock = false,
                     EnabledUnlockByProximity = false,
-                    DisabledDisplayAuto = false
+                    DisabledDisplayAuto = false,
                 };
             }
         }

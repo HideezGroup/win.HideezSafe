@@ -9,13 +9,16 @@ using HideezClient.Modules.ServiceProxy;
 using HideezClient.ViewModels;
 using HideezClient.ViewModels.Controls;
 using HideezMiddleware.ApplicationModeProvider;
+using HideezMiddleware.ConnectionModeProvider;
 using HideezMiddleware.IPC.IncommingMessages;
+using HideezMiddleware.Localize;
 using HideezMiddleware.Settings;
 using Meta.Lib.Modules.PubSub;
 using MvvmExtensions.Commands;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -30,6 +33,15 @@ namespace HideezClient.PageViewModels
 {
     class DeviceSettingsPageViewModel : ReactiveObject, IWeakEventListener
     {
+        public class UnlockModeOption
+        {
+            public string Title { get; set; }
+
+            public bool EnabledUnlockByProximity { get; set; }
+
+            public bool DisabledDisplayAuto { get; set; }
+        }
+
         readonly IServiceProxy serviceProxy;
         readonly IWindowsManager windowsManager;
         readonly Logger log = LogManager.GetCurrentClassLogger(nameof(DeviceSettingsPageViewModel));
@@ -42,7 +54,8 @@ namespace HideezClient.PageViewModels
             IWindowsManager windowsManager,
             IActiveDevice activeDevice,
             IMetaPubSub metaMessenger,
-            IApplicationModeProvider applicationModeProvider)
+            IApplicationModeProvider applicationModeProvider,
+            IConnectionModeProvider connectionModeProvider)
         {
             this.serviceProxy = serviceProxy;
             this.windowsManager = windowsManager;
@@ -94,10 +107,32 @@ namespace HideezClient.PageViewModels
             ProcessResultViewModel = new ProgressIndicatorWithResultViewModel();
 
 
+            // Tap and CPManual modes are mutually exclusive, but actually serve the same purpose
+            if (connectionModeProvider.IsCsrMode)
+                UnlockModeOptionsList.Add(new UnlockModeOption { Title = TranslationSource.Instance["ProximitySettings.UnlockMode.Tap"] });
+            else if (connectionModeProvider.IsWinBleMode)
+                UnlockModeOptionsList.Add(new UnlockModeOption { Title = TranslationSource.Instance["ProximitySettings.UnlockMode.CPManual"] });
+            // To be implemented
+            /*UnlockModeOptionsList.Add(new UnlockModeOption 
+            { 
+                Title = TranslationSource.Instance["ProximitySettings.UnlockMode.WaitForInput"],
+                DisabledDisplayAuto = true,
+                EnabledUnlockByProximity = true
+            });*/
+            UnlockModeOptionsList.Add(new UnlockModeOption 
+            { 
+                Title = TranslationSource.Instance["ProximitySettings.UnlockMode.Automatic"], 
+                EnabledUnlockByProximity = true 
+            });
+
             this.WhenAnyValue(x => x.CredentialsHasChanges).Subscribe(o => OnSettingsChanged());
 
-            this.WhenAnyValue(x => x.LockProximity, x => x.UnlockProximity, x => x.EnabledUnlockByProximity,
-                x => x.EnabledLockByProximity, x => x.DisabledDisplayAuto).Where(t => t.Item1 != 0 && t.Item2 != 0)
+            this.WhenAnyValue(x => x.LockProximity, 
+                x => x.UnlockProximity, 
+                x => x.EnabledUnlock,
+                x => x.EnabledLockByProximity,
+                x => x.SelectedUnlockModeOption)
+                .Where(t => t.Item1 != 0 && t.Item2 != 0)
                 .Subscribe(o => OnSettingsChanged());
 
             this.ObservableForProperty(vm => vm.HasChanges).Subscribe(vm => OnHasChangesChanged());
@@ -130,8 +165,7 @@ namespace HideezClient.PageViewModels
         [Reactive] public int LockProximity { get; set; }
         [Reactive] public int UnlockProximity { get; set; }
         [Reactive] public bool EnabledLockByProximity { get; set; }
-        [Reactive] public bool EnabledUnlockByProximity { get; set; }
-        [Reactive] public bool DisabledDisplayAuto { get; set; }
+        [Reactive] public bool EnabledUnlock { get; set; }
         [Reactive] public bool CredentialsHasChanges { get; set; }
         [Reactive] public bool HasChanges { get; set; }
         [Reactive] public bool InProgress { get; set; }
@@ -140,6 +174,10 @@ namespace HideezClient.PageViewModels
         [Reactive] public bool IsEditableCredentials { get; set; }
         [Reactive] public string UserName { get; set; }
         [Reactive] public ProgressIndicatorWithResultViewModel ProcessResultViewModel { get; set; }
+
+        [Reactive] public List<UnlockModeOption> UnlockModeOptionsList { get; set; } = new List<UnlockModeOption>();
+        [Reactive] public UnlockModeOption SelectedUnlockModeOption { get; set; }
+
 
         public ObservableCollection<StateControlViewModel> Indicators { get; } = new ObservableCollection<StateControlViewModel>();
 
@@ -240,11 +278,11 @@ namespace HideezClient.PageViewModels
             {
                 ProcessResultViewModel.InProgress = true;
 
-                if (CredentialsHasChanges && EnabledUnlockByProximity)
+                if (CredentialsHasChanges && EnabledUnlock)
                     await SaveOrUpdateAccount(password);
                 if (_proximityHasChanges)
                 {
-                    if (!EnabledUnlockByProximity && _oldSettings != null && _oldSettings.EnabledUnlockByProximity)
+                    if (!EnabledUnlock && _oldSettings != null && _oldSettings.EnabledUnlockByProximity)
                     {
                         var currentAccount = Device.AccountsRecords.FirstOrDefault(a => a.IsPrimary);
                         if (currentAccount != null)
@@ -271,8 +309,11 @@ namespace HideezClient.PageViewModels
             LockProximity = _oldSettings.LockProximity;
             UnlockProximity = _oldSettings.UnlockProximity;
             EnabledLockByProximity = _oldSettings.EnabledLockByProximity;
-            EnabledUnlockByProximity = _oldSettings.EnabledUnlockByProximity;
-            DisabledDisplayAuto = _oldSettings.DisabledDisplayAuto;
+            EnabledUnlock = _oldSettings.EnabledUnlockByProximity;
+            SelectedUnlockModeOption = UnlockModeOptionsList.FirstOrDefault(m =>
+            m.EnabledUnlockByProximity == _oldSettings.EnabledUnlockByProximity
+            && m.DisabledDisplayAuto == _oldSettings.DisabledDisplayAuto) 
+                ?? UnlockModeOptionsList.First();
 
             IsEditableCredentials = false;
             HasChanges = false;
@@ -282,13 +323,16 @@ namespace HideezClient.PageViewModels
         {
             if (_oldSettings != null)
             {
-                if (LockProximity != _oldSettings.LockProximity || UnlockProximity != _oldSettings.UnlockProximity
-                    || EnabledLockByProximity != _oldSettings.EnabledLockByProximity || EnabledUnlockByProximity != _oldSettings.EnabledUnlockByProximity
-                    || DisabledDisplayAuto != _oldSettings.DisabledDisplayAuto)
+                if (LockProximity != _oldSettings.LockProximity 
+                    || UnlockProximity != _oldSettings.UnlockProximity
+                    || EnabledLockByProximity != _oldSettings.EnabledLockByProximity 
+                    || EnabledUnlock != _oldSettings.EnabledUnlockByProximity
+                    || SelectedUnlockModeOption.EnabledUnlockByProximity != _oldSettings.EnabledUnlockByProximity
+                    || SelectedUnlockModeOption.DisabledDisplayAuto != _oldSettings.DisabledDisplayAuto)
                     _proximityHasChanges = true;
                 else _proximityHasChanges = false;
 
-                if (EnabledUnlockByProximity && !_oldSettings.EnabledUnlockByProximity)
+                if (EnabledUnlock && !_oldSettings.EnabledUnlock)
                     UpdateIsEditableCredentials();
 
                 HasChanges = CredentialsHasChanges || _proximityHasChanges;
@@ -340,9 +384,15 @@ namespace HideezClient.PageViewModels
                     var reply = await _metaMessenger.ProcessOnServer<LoadUserProximitySettingsMessageReply>(new LoadUserProximitySettingsMessage(BleUtils.MacToConnectionId(Device.Mac)));
                     LockProximity = reply.UserDeviceProximitySettings.LockProximity;
                     UnlockProximity = reply.UserDeviceProximitySettings.UnlockProximity;
+                    
                     EnabledLockByProximity = reply.UserDeviceProximitySettings.EnabledLockByProximity;
-                    EnabledUnlockByProximity = reply.UserDeviceProximitySettings.EnabledUnlockByProximity;
-                    DisabledDisplayAuto = reply.UserDeviceProximitySettings.DisabledDisplayAuto;
+                    EnabledUnlock = reply.UserDeviceProximitySettings.EnabledUnlockByProximity;
+
+                    SelectedUnlockModeOption = UnlockModeOptionsList.FirstOrDefault(m =>
+                    m.EnabledUnlockByProximity == reply.UserDeviceProximitySettings.EnabledUnlockByProximity
+                    && m.DisabledDisplayAuto == reply.UserDeviceProximitySettings.DisabledDisplayAuto) 
+                        ?? UnlockModeOptionsList.First();
+
                     _oldSettings = reply.UserDeviceProximitySettings;
                 }
             }
@@ -358,9 +408,10 @@ namespace HideezClient.PageViewModels
             {
                 var newSettings = UserDeviceProximitySettings.DefaultSettings;
                 newSettings.Id = BleUtils.MacToConnectionId(Device.Mac);
-                newSettings.DisabledDisplayAuto = DisabledDisplayAuto;
                 newSettings.EnabledLockByProximity = EnabledLockByProximity;
-                newSettings.EnabledUnlockByProximity = EnabledUnlockByProximity;
+                newSettings.EnabledUnlock = EnabledUnlock;
+                newSettings.DisabledDisplayAuto = SelectedUnlockModeOption.DisabledDisplayAuto;
+                newSettings.EnabledUnlockByProximity = SelectedUnlockModeOption.EnabledUnlockByProximity;
                 newSettings.LockProximity = LockProximity;
                 newSettings.UnlockProximity = UnlockProximity;
 

@@ -119,12 +119,5 @@ namespace HideezMiddleware.Settings.SettingsProvider
             var deviceSettings = _userProximitySettings.GetProximitySettings(id);
             return deviceSettings.EnabledUnlockByProximity;
         }
-
-        public bool IsDisabledAutoDisplay(ConnectionId connectionId)
-        {
-            var id = GetSettingsIdFromConnectionId(connectionId);
-            var deviceSettings = _userProximitySettings.GetProximitySettings(id);
-            return deviceSettings.DisabledDisplayAuto;
-        }
     }
 }

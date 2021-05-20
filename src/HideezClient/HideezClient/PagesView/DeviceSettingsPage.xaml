@@ -346,22 +346,34 @@
                                             Margin="0,0,0,18"
                                             IsChecked="{Binding EnabledLockByProximity}" />
                                         <CheckBox 
-                                            Style="{StaticResource CheckboxStyle}"
-                                            Content="{l:Localization ProximitySettings.CheckBox.DisableDisplayAutomatically}"
-                                            Margin="0,0,0,18"
-                                            IsChecked="{Binding DisabledDisplayAuto}" />
-                                        <CheckBox 
                                             x:Name="EnableUnlockCheckBox"
                                             Style="{StaticResource CheckboxStyle}"
                                             Content="{l:Localization ProximitySettings.CheckBox.EnableUnlockPC}"
-                                            Margin="0,0,0,18"
-                                            IsChecked="{Binding EnabledUnlockByProximity}" >
+                                            Margin="0,0,0,8"
+                                            IsChecked="{Binding EnabledUnlock}" >
                                         </CheckBox>
+                                        <StackPanel Visibility="{Binding EnabledUnlock, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock
+                                                Style="{StaticResource LabelStyle}"
+                                                HorizontalAlignment="Left"
+                                                Text="Unlock mode" 
+                                                Margin="0,10,0,8" />
+                                            <ComboBox
+                                                Style="{StaticResource ComboBoxStyle}"
+                                                Margin="0,0,0,18"
+                                                HorizontalAlignment="Left"
+                                                MinWidth="200"
+                                                IsTabStop="True"
+                                                DisplayMemberPath="Title"
+                                                ItemsSource="{Binding UnlockModeOptionsList}"
+                                                SelectedItem="{Binding SelectedUnlockModeOption}" />
+                                        </StackPanel>
+
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" >
                                         <StackPanel.Style>
                                             <Style TargetType="StackPanel">
-                                                <Setter Property="Visibility" Value="Hidden" />
+                                                <Setter Property="Visibility" Value="Collapsed" />
                                                 <Style.Triggers>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>

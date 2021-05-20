@@ -99,7 +99,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                 await _ui.SendNotification(string.Empty, connectionId.Id);
 
                 // Start periodic screen activator to raise the "curtain"
-                if (_workstationHelper.IsActiveSessionLocked() && !_proximitySettingsProvider.IsDisabledAutoDisplay(connectionId))
+                if (_workstationHelper.IsActiveSessionLocked())
                 {
                     _screenActivator?.ActivateScreen();
                     _screenActivator?.StartPeriodicScreenActivation(0);

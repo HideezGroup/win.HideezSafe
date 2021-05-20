@@ -1320,4 +1320,16 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
   <data name="GeneralSettings.Title" xml:space="preserve">
     <value>General</value>
   </data>
+  <data name="ProximitySettings.UnlockMode.Automatic" xml:space="preserve">
+    <value>Automatic Unlock</value>
+  </data>
+  <data name="ProximitySettings.UnlockMode.CPManual" xml:space="preserve">
+    <value>Initiate Unlock on the PC Lock screen</value>
+  </data>
+  <data name="ProximitySettings.UnlockMode.Tap" xml:space="preserve">
+    <value>Tap &amp; Go</value>
+  </data>
+  <data name="ProximitySettings.UnlockMode.WaitForInput" xml:space="preserve">
+    <value>Wait for user activity</value>
+  </data>
 </root>
