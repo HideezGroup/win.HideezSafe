@@ -1335,4 +1335,10 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
   <data name="Tooltip.DomainLoginSpecialFormatting" xml:space="preserve">
     <value>Domain Login for this Web-site or App will be formatted to the correct format</value>
   </data>
+  <data name="MessageBox.DisablingUnlock.Caption" xml:space="preserve">
+    <value>Disabled PC Unlock</value>
+  </data>
+  <data name="MessageBox.DisablingUnlock.Message" xml:space="preserve">
+    <value>Disabling PC Unlock will remove unlock credentials from your Hideez Vault storage. Disable anyway?</value>
+  </data>
 </root>

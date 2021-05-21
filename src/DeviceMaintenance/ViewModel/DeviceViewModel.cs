@@ -3,8 +3,6 @@ using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.Connection;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.LongOperations;
-using HideezMiddleware.Modules.FwUpdateCheck;
-using HideezMiddleware.Modules.FwUpdateCheck.Messages;
 using Meta.Lib.Modules.PubSub;
 using MvvmExtensions.Attributes;
 using MvvmExtensions.PropertyChangedMonitoring;
@@ -208,7 +206,10 @@ namespace DeviceMaintenance.ViewModel
 
                 CurrentState = State.Connected;
                 SetDevice(res.Device);
-                await _hub.Publish(new DeviceConnectedEvent(this));
+
+                //not awaiting, because if device is in boot updating will start immediately 
+                //and block connection of other devices.
+                _hub.Publish(new DeviceConnectedEvent(this));
             }
             catch (Exception ex)
             {
@@ -230,7 +231,7 @@ namespace DeviceMaintenance.ViewModel
                 CurrentState = State.EnteringBoot;
 
                 var res = await _hub.Process<EnterBootResponse>(
-                    new EnterBootCommand(this, filePath, _device, _longOperation));
+                    new EnterBootCommand(this, filePath, _device, _longOperation), r => r.DeviceId == _device.Id);
 
                 CurrentState = State.Updating;
 

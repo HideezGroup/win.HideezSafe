@@ -7,6 +7,7 @@ using HideezMiddleware;
 using HideezMiddleware.ConnectionModeProvider;
 using HideezMiddleware.Modules.FwUpdateCheck;
 using HideezMiddleware.Modules.FwUpdateCheck.Messages;
+using HideezMiddleware.Threading;
 using Meta.Lib.Modules.PubSub;
 using Microsoft.Win32;
 using MvvmExtensions.Attributes;
@@ -44,7 +45,7 @@ namespace DeviceMaintenance.ViewModel
         readonly ConcurrentDictionary<DeviceModelInfo, FwUpdateInfo[]> _fwVersions =
             new ConcurrentDictionary<DeviceModelInfo, FwUpdateInfo[]>();
 
-        int _advConnectionInterlock = 0;
+        readonly SemaphoreQueue _deviceCreateSemaphore = new SemaphoreQueue(1, 1);
         private DeviceModelInfo _selectedModel;
         private FwUpdateInfo _selectedVersion;
 
@@ -505,37 +506,35 @@ namespace DeviceMaintenance.ViewModel
 
         async Task CreateDeviceViewModel(ConnectionId connectionId)
         {
-            if (Interlocked.CompareExchange(ref _advConnectionInterlock, 1, 0) == 0)
+            await _deviceCreateSemaphore.WaitAsync();
+            DeviceViewModel deviceViewModel = null;
+            try
             {
-                DeviceViewModel deviceViewModel = null;
-                try
+                bool added = false;
+                deviceViewModel = _devices.GetOrAdd(connectionId.Id, (id) =>
                 {
-                    bool added = false;
-                    deviceViewModel = _devices.GetOrAdd(connectionId.Id, (id) =>
-                    {
-                        added = true;
-                        bool isBonded = ConnectionManager.IsBonded(id);
-                        return new DeviceViewModel(connectionId, isBonded, _hub);
-                    });
+                    added = true;
+                    bool isBonded = ConnectionManager.IsBonded(id);
+                    return new DeviceViewModel(connectionId, isBonded, _hub);
+                });
 
-                    deviceViewModel.PropertyChanged += DeviceViewModel_PropertyChanged;
+                deviceViewModel.PropertyChanged += DeviceViewModel_PropertyChanged;
 
-                    if (added)
-                    {
-                        NotifyPropertyChanged(nameof(Devices));
-                    }
-
-                    await deviceViewModel.TryConnect();
-                }
-                catch (Exception ex)
+                if (added)
                 {
-                    if (deviceViewModel != null)
-                        deviceViewModel.CustomError = ex.Message;
+                    NotifyPropertyChanged(nameof(Devices));
                 }
-                finally
-                {
-                    Interlocked.Exchange(ref _advConnectionInterlock, 0);
-                }
+
+                await deviceViewModel.TryConnect();
+            }
+            catch (Exception ex)
+            {
+                if (deviceViewModel != null)
+                    deviceViewModel.CustomError = ex.Message;
+            }
+            finally
+            {
+                _deviceCreateSemaphore.Release();
             }
         }
 

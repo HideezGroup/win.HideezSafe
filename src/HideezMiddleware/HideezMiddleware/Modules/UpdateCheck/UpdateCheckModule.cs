@@ -15,6 +15,8 @@ namespace HideezMiddleware.Modules.UpdateCheck
 {
     public sealed class UpdateCheckModule : ModuleBase
     {
+        const string REG_UPDATE_ADDRESS = "custom_update_srv_address";
+
         private readonly Version _currentProductVersion = Assembly.GetEntryAssembly().GetName().Version;
         private readonly string _updateConfigUrl = "http://update.hideez.com/update/hideezclient/update.xml";
         private readonly RegistryKey _registryKey;
@@ -78,7 +80,8 @@ namespace HideezMiddleware.Modules.UpdateCheck
         {
             try
             {
-                WebRequest webRequest = WebRequest.Create(_updateConfigUrl);
+                string updateConfigUrl = GetUpdateUrl();
+                WebRequest webRequest = WebRequest.Create(updateConfigUrl);
                 WebResponse webResponse = webRequest.GetResponse();
 
                 var receivedAppCastDocument = new XmlDocument();
@@ -105,6 +108,16 @@ namespace HideezMiddleware.Modules.UpdateCheck
                 // Any number of errors may prevent us from getting an update config
                 return null;
             }
+        }
+
+        // Returns custom url to update if it exists
+        string GetUpdateUrl()
+        {
+            var regUrl = _registryKey.GetValue(REG_UPDATE_ADDRESS) as string;
+            if (!string.IsNullOrWhiteSpace(regUrl))
+                return regUrl;
+            else
+                return _updateConfigUrl;
         }
 
         /// <summary>

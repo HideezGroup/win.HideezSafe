@@ -136,7 +136,7 @@ namespace DeviceMaintenance.ViewModel
             var imageUploader = new FirmwareImageUploader(
                 cmd.FirmwareFilePath, _deviceManager, cmd.Device as Device, cmd.LongOperation, _log);
             await imageUploader.EnterBoot();
-            await _hub.Publish(new EnterBootResponse(imageUploader));
+            await _hub.Publish(new EnterBootResponse(imageUploader, cmd.Device.Id));
         }
 
         async Task OnDeviceWipedEvent(DeviceWipedEvent arg)

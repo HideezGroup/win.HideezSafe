@@ -274,22 +274,34 @@ namespace HideezClient.PageViewModels
 
         public async Task SaveSettings(SecureString password)
         {
+            bool isCompleted = true;
             try
             {
                 ProcessResultViewModel.InProgress = true;
 
-                if (CredentialsHasChanges && EnabledUnlock)
-                    await SaveOrUpdateAccount(password);
                 if (_proximityHasChanges)
                 {
-                    if (!EnabledUnlock && _oldSettings != null && _oldSettings.EnabledUnlockByProximity)
+                    if (!EnabledUnlock && _oldSettings != null && _oldSettings.EnabledUnlock)
                     {
-                        var currentAccount = Device.AccountsRecords.FirstOrDefault(a => a.IsPrimary);
-                        if (currentAccount != null)
-                            await Device.DeleteAccountAsync(currentAccount);
+                        var isConfirmed = await windowsManager.ShowDisabledUnlockPromptAsync();
+                        if (isConfirmed)
+                        {
+                            var currentAccount = Device.AccountsRecords.FirstOrDefault(a => a.IsPrimary);
+                            if (currentAccount != null)
+                                await Device.DeleteAccountAsync(currentAccount);
+                        }
+                        else
+                        {
+                            isCompleted = false;
+                            return;
+                        }
                     }
                     await SaveOrUpdateSettings();
                 }
+
+                if (CredentialsHasChanges && EnabledUnlock)
+                    await SaveOrUpdateAccount(password);
+
                 ProcessResultViewModel.Result = ProcessResult.Successful;
             }
             catch
@@ -298,8 +310,12 @@ namespace HideezClient.PageViewModels
             }
             finally
             {
-                HasChanges = false;
-                IsEditableCredentials = false;
+                if (isCompleted)
+                {
+                    HasChanges = false;
+                    IsEditableCredentials = false;
+                }
+
                 ProcessResultViewModel.InProgress = false;
             }
         }
@@ -309,7 +325,7 @@ namespace HideezClient.PageViewModels
             LockProximity = _oldSettings.LockProximity;
             UnlockProximity = _oldSettings.UnlockProximity;
             EnabledLockByProximity = _oldSettings.EnabledLockByProximity;
-            EnabledUnlock = _oldSettings.EnabledUnlockByProximity;
+            EnabledUnlock = _oldSettings.EnabledUnlock;
             SelectedUnlockModeOption = UnlockModeOptionsList.FirstOrDefault(m =>
             m.EnabledUnlockByProximity == _oldSettings.EnabledUnlockByProximity
             && m.DisabledDisplayAuto == _oldSettings.DisabledDisplayAuto) 
@@ -326,7 +342,7 @@ namespace HideezClient.PageViewModels
                 if (LockProximity != _oldSettings.LockProximity 
                     || UnlockProximity != _oldSettings.UnlockProximity
                     || EnabledLockByProximity != _oldSettings.EnabledLockByProximity 
-                    || EnabledUnlock != _oldSettings.EnabledUnlockByProximity
+                    || EnabledUnlock != _oldSettings.EnabledUnlock
                     || SelectedUnlockModeOption.EnabledUnlockByProximity != _oldSettings.EnabledUnlockByProximity
                     || SelectedUnlockModeOption.DisabledDisplayAuto != _oldSettings.DisabledDisplayAuto)
                     _proximityHasChanges = true;
@@ -386,7 +402,7 @@ namespace HideezClient.PageViewModels
                     UnlockProximity = reply.UserDeviceProximitySettings.UnlockProximity;
                     
                     EnabledLockByProximity = reply.UserDeviceProximitySettings.EnabledLockByProximity;
-                    EnabledUnlock = reply.UserDeviceProximitySettings.EnabledUnlockByProximity;
+                    EnabledUnlock = reply.UserDeviceProximitySettings.EnabledUnlock;
 
                     SelectedUnlockModeOption = UnlockModeOptionsList.FirstOrDefault(m =>
                     m.EnabledUnlockByProximity == reply.UserDeviceProximitySettings.EnabledUnlockByProximity
