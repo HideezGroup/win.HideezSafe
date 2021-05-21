@@ -303,13 +303,13 @@
           <RegistryValue Type="string" Name="client_hes_address" Value="[HESADDRESS]" />
         </RegistryKey>
       </Component>
-		
-		<Component Id="CustomUpdateServerAddress" Guid="{63B08D55-89FB-4C47-9A72-C014EF09C1EB}">
+      <!-- -->
+
+      <Component Id="CustomUpdateServerAddress" Guid="{63B08D55-89FB-4C47-9A72-C014EF09C1EB}">
         <RegistryKey Root="HKLM" Key="SOFTWARE\Hideez\Client" >
-          <RegistryValue Type="string" Name="custom_update_svr_address" Value="" />
+          <RegistryValue Type="string" Name="custom_update_srv_address" Value="" />
         </RegistryKey>
       </Component>
-      <!-- -->
       
       <Component Id="HideezService.Crypto.dll" Guid="{93E3D49F-2F34-4D64-B832-AFFDF6C530F4}" Win64="$(var.Win64)">
         <File Id="HideezService.Crypto.dll" Name="Crypto.dll" Source="$(var.Binaries_Dir)Crypto.dll" />

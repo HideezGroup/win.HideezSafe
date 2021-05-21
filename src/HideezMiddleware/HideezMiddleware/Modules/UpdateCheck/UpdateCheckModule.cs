@@ -15,7 +15,7 @@ namespace HideezMiddleware.Modules.UpdateCheck
 {
     public sealed class UpdateCheckModule : ModuleBase
     {
-        const string REG_UPDATE_ADDRESS = "custom_update_svr_address";
+        const string REG_UPDATE_ADDRESS = "custom_update_srv_address";
 
         private readonly Version _currentProductVersion = Assembly.GetEntryAssembly().GetName().Version;
         private readonly string _updateConfigUrl = "http://update.hideez.com/update/hideezclient/update.xml";
