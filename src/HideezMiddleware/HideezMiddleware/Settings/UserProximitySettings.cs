@@ -46,7 +46,8 @@ namespace HideezMiddleware.Settings
                     UnlockProximity = settings.UnlockProximity,
                     EnabledLockByProximity = settings.EnabledLockByProximity,
                     EnabledUnlockByProximity = settings.EnabledUnlockByProximity,
-                    DisabledDisplayAuto = settings.DisabledDisplayAuto
+                    DisabledDisplayAuto = settings.DisabledDisplayAuto,
+                    EnabledUnlock = settings.EnabledUnlock
                 });
             }
 
