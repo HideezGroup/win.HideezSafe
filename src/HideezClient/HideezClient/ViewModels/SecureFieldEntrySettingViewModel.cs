@@ -2,7 +2,7 @@
 using HideezClient.Mvvm;
 using HideezMiddleware.Settings;
 using System;
-
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace HideezClient.ViewModels
@@ -19,9 +19,13 @@ namespace HideezClient.ViewModels
             {
                 if (_isChecked != value)
                 {
+                    var oldValue = _isChecked;
                     _isChecked = value;
+
+                    if (_isChecked != _appSettingsManager.Settings.LimitPasswordEntry)
+                        TrySaveChanges(oldValue, value);
+
                     NotifyPropertyChanged();
-                    Task.Run(() => SaveChanges(_isChecked)).ConfigureAwait(false);
                 }
             }
         }
@@ -44,15 +48,34 @@ namespace HideezClient.ViewModels
             IsChecked = _appSettingsManager.Settings.LimitPasswordEntry;
         }
 
-        void SaveChanges(bool newValue)
+        void TrySaveChanges(bool oldValue, bool newValue)
         {
+            bool uacSuccess = false;
             try
             {
-                var settings = _appSettingsManager.Settings;
-                settings.LimitPasswordEntry = newValue;
-                _appSettingsManager.SaveSettings(settings);
+                var proc = new Process();
+                proc.StartInfo.FileName = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                proc.StartInfo.UseShellExecute = true;
+                proc.StartInfo.Verb = "runas";
+                proc.StartInfo.Arguments = App.ImmediateShutdownParam;
+                uacSuccess = proc.Start();
             }
             catch (Exception) { }
+
+            if (uacSuccess)
+            {
+                try
+                {
+                    var settings = _appSettingsManager.Settings;
+                    settings.LimitPasswordEntry = newValue;
+                    _appSettingsManager.SaveSettings(settings);
+                }
+                catch (Exception) { }
+            }
+            else
+            {
+                IsChecked = oldValue;
+            }
         }
     }
 }

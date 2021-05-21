@@ -57,6 +57,7 @@ using HideezClient.Modules.HideDialogsAdapter;
 using HideezClient.Messages.Hotkeys;
 using HideezClient.Modules.Subroutines;
 using CommandLine;
+using System.Linq;
 
 namespace HideezClient
 {
@@ -65,6 +66,8 @@ namespace HideezClient
     /// </summary>
     public partial class App : Application, ISingleInstance
     {
+        public readonly static string ImmediateShutdownParam = "--imsh";
+
         public class StartupOptions
         {
             [Option("nowindow", Default = false, Required = false, HelpText = "Don't show application window on start.")]
@@ -283,9 +286,12 @@ namespace HideezClient
         /// <summary>
         /// Application Entry Point.
         /// </summary>
-        [System.STAThreadAttribute()]
-        private static void Main()
+        [STAThread()]
+        private static void Main(string[] args)
         {
+            if (args.Contains("--imsh")) // Immediate Shutdown
+                return;
+
             if (SingleInstance<App>.InitializeAsFirstInstance("{EB9E0C35-8DC5-459D-80C2-93DCE0036C91}"))
             {
                 var application = new App();
