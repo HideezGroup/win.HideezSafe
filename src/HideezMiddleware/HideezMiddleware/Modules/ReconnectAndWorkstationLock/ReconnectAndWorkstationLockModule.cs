@@ -55,7 +55,7 @@ namespace HideezMiddleware.Modules.ReconnectAndWorkstationLock
             _messenger.Subscribe(GetSafeHandler<HesAppConnection_AlarmMessage>(HesAppConnection_Alarm));
 
             proximityMonitorManager.Start();
-            _deviceReconnectManager.Start();
+            //_deviceReconnectManager.Start(); // Reconnect feature is disabled until further notice
             _workstationLockProcessor.Start();
         }
 

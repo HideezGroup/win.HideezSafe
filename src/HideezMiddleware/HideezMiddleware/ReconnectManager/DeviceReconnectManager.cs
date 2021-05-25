@@ -60,7 +60,6 @@ namespace HideezMiddleware.ReconnectManager
         void DeviceManager_DeviceRemoved(object sender, DeviceRemovedEventArgs e)
         {
             DisableDeviceReconnect(e.Device);
-
             SafeInvoke(DeviceDisconnected, e.Device);
         }
 
@@ -78,18 +77,15 @@ namespace HideezMiddleware.ReconnectManager
 
         void ProximityMonitorManager_DeviceConnectionLost(object sender, IDevice device)
         {
-            if (IsEnabled)
+            // Reconnect is performed only if manager is enabled and we are in unlocked windows session
+            // Certain operations explicitly deny device reconnect and so CanReconnect will be FALSE during them
+            if (IsEnabled && !_workstationHelper.IsActiveSessionLocked() && CanReconnect(device.Id))
             {
-                // Reconnect is performed only if manager is enabled and we are in unlocked windows session
-                // Certain operations explicitly deny device reconnect and so CanReconnect will be FALSE during them
-                if (!_workstationHelper.IsActiveSessionLocked() && CanReconnect(device.Id))
-                {
-                    Task.Run(() => Reconnect(device));
-                }
-                else
-                {
-                    SafeInvoke(DeviceDisconnected, device);
-                }
+                Task.Run(() => Reconnect(device));
+            }
+            else
+            {
+                SafeInvoke(DeviceDisconnected, device);
             }
         }
 
