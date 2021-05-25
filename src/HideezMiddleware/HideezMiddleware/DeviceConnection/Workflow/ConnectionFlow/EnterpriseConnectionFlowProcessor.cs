@@ -102,7 +102,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
             Cancel("Workstation access retracted");
         }
 
-        protected override async Task MainWorkflow(ConnectionId connectionId, bool rebondOnConnectionFail, bool tryUnlock, Action<WorkstationUnlockResult> onUnlockAttempt, CancellationToken ct)
+        protected override async Task MainWorkflow(ConnectionId connectionId, ConnectionFlowOptions options, Action<WorkstationUnlockResult> onUnlockAttempt, CancellationToken ct)
         {
             // Ignore MainFlow requests for devices that are already connected
             // IsConnected-true indicates that device already finished main flow or is in progress
@@ -140,7 +140,10 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                         .Run(SdkConfig.WorkstationUnlockerConnectTimeout, ct);
                 }
 
-                device = await _subp.VaultConnectionProcessor.ConnectVault(connectionId, rebondOnConnectionFail, ct);
+                if (options.UseReconnectProcedure)
+                    device = await _subp.VaultConnectionProcessor.ReconnectVault(connectionId, ct);
+                else
+                    device = await _subp.VaultConnectionProcessor.ConnectVault(connectionId, options.RebondOnConnectionFail, ct);
                 device.Disconnected += OnVaultDisconnectedDuringFlow;
                 device.OperationCancelled += OnCancelledByVaultButton;
 
@@ -182,7 +185,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
 
                 var osAccUpdateTask = _subp.AccountsUpdateProcessor.UpdateAccounts(device, vaultInfo, true);
 
-                if (tryUnlock)
+                if (options.TryUnlock)
                 {
                     var sid = _workstationHelper.GetSessionId();
                     var state = _workstationHelper.GetSessionLockState(sid);
@@ -193,7 +196,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                 else
                     WriteLine("Skip unlock step");
 
-                if (_workstationUnlocker.IsConnected && _workstationHelper.IsActiveSessionLocked() && tryUnlock)
+                if (_workstationUnlocker.IsConnected && _workstationHelper.IsActiveSessionLocked() && options.TryUnlock)
                 {
                     await Task.WhenAll(_subp.UserAuthorizationProcessor.AuthorizeUser(device, ct), osAccUpdateTask);
 

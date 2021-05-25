@@ -1,9 +1,6 @@
 ﻿using Hideez.SDK.Communication.Interfaces;
-using Hideez.SDK.Communication.Log;
-using Hideez.SDK.Communication.Utils;
 using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace HideezMiddleware.ReconnectManager
@@ -25,7 +22,7 @@ namespace HideezMiddleware.ReconnectManager
             try
             {
                 _connectionFlowProcessor.DeviceFinilizingMainFlow += ConnectionFlowProcessor_DeviceFinilizingMainFlow;
-                await _connectionFlowProcessor.Connect(_device.DeviceConnection.Connection.ConnectionId);
+                await _connectionFlowProcessor.Reconnect(_device.DeviceConnection.Connection.ConnectionId);
                 return _isReconnectSuccessful;
             }
             catch (Exception)

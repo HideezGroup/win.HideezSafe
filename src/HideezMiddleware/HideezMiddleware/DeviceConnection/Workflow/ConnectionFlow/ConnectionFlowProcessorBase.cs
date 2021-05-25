@@ -99,7 +99,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                 try
                 {
                     _cts = new CancellationTokenSource();
-                    await MainWorkflow(connectionId, false, false, null, _cts.Token);
+                    await MainWorkflow(connectionId, ConnectionFlowOptions.None, null, _cts.Token);
                 }
                 finally
                 {
@@ -111,6 +111,31 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                 }
             }
 
+        }
+
+        public async Task Reconnect(ConnectionId connectionId)
+        {
+            // ignore, if already performing workflow for any device
+            if (Interlocked.CompareExchange(ref _workflowInterlock, 1, 0) == 0)
+            {
+                try
+                {
+                    _cts = new CancellationTokenSource();
+                    var workflowOptions = new ConnectionFlowOptions
+                    {
+                        UseReconnectProcedure = true,
+                    };
+                    await MainWorkflow(connectionId, workflowOptions, null, _cts.Token);
+                }
+                finally
+                {
+                    _cts.Cancel();
+                    _cts.Dispose();
+                    _cts = null;
+
+                    Interlocked.Exchange(ref _workflowInterlock, 0);
+                }
+            }
         }
 
         public async Task ConnectAndUnlock(ConnectionId connectionId, Action<WorkstationUnlockResult> onSuccessfulUnlock)
@@ -121,7 +146,12 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                 try
                 {
                     _cts = new CancellationTokenSource();
-                    await MainWorkflow(connectionId, connectionId.IdProvider == (byte)DefaultConnectionIdProvider.Csr, true, onSuccessfulUnlock, _cts.Token);
+                    var workflowOptions = new ConnectionFlowOptions
+                    {
+                        RebondOnConnectionFail = connectionId.IdProvider == (byte)DefaultConnectionIdProvider.Csr,
+                        TryUnlock = true,
+                    };
+                    await MainWorkflow(connectionId, workflowOptions, onSuccessfulUnlock, _cts.Token);
                 }
                 finally
                 {
@@ -134,6 +164,6 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
             }
         }
 
-        protected abstract Task MainWorkflow(ConnectionId connectionId, bool rebondOnConnectionFail, bool tryUnlock, Action<WorkstationUnlockResult> onUnlockAttempt, CancellationToken ct);
+        protected abstract Task MainWorkflow(ConnectionId connectionId, ConnectionFlowOptions options, Action<WorkstationUnlockResult> onUnlockAttempt, CancellationToken ct);
     }
 }

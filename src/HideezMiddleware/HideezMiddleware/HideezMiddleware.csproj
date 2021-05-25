@@ -141,6 +141,7 @@
     <Compile Include="DeviceConnection\Workflow\AccountsUpdateProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\ActivationProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\CacheVaultInfoProcessor.cs" />
+    <Compile Include="DeviceConnection\Workflow\ConnectionFlow\ConnectionFlowOptions.cs" />
     <Compile Include="DeviceConnection\Workflow\ConnectionFlow\EnterpriseConnectionFlowProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\ConnectionFlow\ConnectionFlowProcessorBase.cs" />
     <Compile Include="DeviceConnection\Workflow\ConnectionFlow\EnterpriseConnectionFlowProcessorFactory.cs" />

@@ -7,7 +7,7 @@ namespace HideezMiddleware.Settings
     {
         public SdkSettings()
         {
-            SettingsVersion = new Version(1, 3);
+            SettingsVersion = new Version(1, 4);
         }
 
         public SdkSettings(SdkSettings copy)
@@ -34,6 +34,7 @@ namespace HideezMiddleware.Settings
             ConnectDeviceTimeout = copy.ConnectDeviceTimeout;
             DeviceInitializationTimeout = copy.DeviceInitializationTimeout;
             SystemStateEventWaitTimeout = copy.SystemStateEventWaitTimeout;
+            ReconnectDeviceTimeout = copy.ReconnectDeviceTimeout;
 
             DeviceBusyTransmitTimeout = copy.DeviceBusyTransmitTimeout;
             DeviceBusyTransmitInterval = copy.DeviceBusyTransmitInterval;
@@ -53,7 +54,7 @@ namespace HideezMiddleware.Settings
         [Setting]
         public int WorkstationUnlockerConnectTimeout { get; set; } = 5_000;
         [Setting]
-        public int ReconnectDelay { get; set; } = 2_000;
+        public int ReconnectDelay { get; set; } = 1_000;
 
         [Setting]
         public int HesRequestTimeout { get; set; } = 30_000;
@@ -75,6 +76,9 @@ namespace HideezMiddleware.Settings
         public int DeviceInitializationTimeout { get; set; } = 15_000;
         [Setting]
         public int SystemStateEventWaitTimeout { get; set; } = 2_000;
+        [Setting]
+        public int ReconnectDeviceTimeout { get; set; } = 4_000;
+        
 
         [Setting]
         public int DeviceBusyTransmitTimeout { get; set; } = 90;

@@ -29,12 +29,20 @@ namespace HideezMiddleware.DeviceConnection.Workflow
         public async Task<IDevice> ConnectVault(ConnectionId connectionId, bool rebondOnFail, CancellationToken ct)
         {
             if (connectionId.IdProvider == (byte)DefaultConnectionIdProvider.Csr)
-                return await ConnectVaultByCsr(connectionId, rebondOnFail, ct);
+                return await ConnectVaultByCsr(connectionId, SdkConfig.ConnectDeviceTimeout, true, rebondOnFail, ct);
             else
                 return await ConnectVaultByWinBle(connectionId, ct);
         }
 
-        async Task<IDevice> ConnectVaultByCsr(ConnectionId connectionId, bool rebondOnFail, CancellationToken ct)
+        public async Task<IDevice> ReconnectVault(ConnectionId connectionId, CancellationToken ct)
+        {
+            if (connectionId.IdProvider == (byte)DefaultConnectionIdProvider.Csr)
+                return await ConnectVaultByCsr(connectionId, SdkConfig.ReconnectDeviceTimeout, false, false, ct);
+            else
+                throw new NotSupportedException();
+        }
+
+        async Task<IDevice> ConnectVaultByCsr(ConnectionId connectionId, int connectionTimeout, bool retryOnFail, bool rebondOnFail, CancellationToken ct)
         {
             ct.ThrowIfCancellationRequested();
 
@@ -45,8 +53,6 @@ namespace HideezMiddleware.DeviceConnection.Workflow
 
             bool ltkErrorOccured = false;
             IDevice device = null;
-
-            var connectionTimeout = SdkConfig.ConnectDeviceTimeout;
 
             try
             {
@@ -62,7 +68,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow
                 ltkErrorOccured = true;
             }
 
-            if (device == null || !device.IsConnected)
+            if ((device == null || !device.IsConnected) && retryOnFail)
             {
                 ct.ThrowIfCancellationRequested();
 
