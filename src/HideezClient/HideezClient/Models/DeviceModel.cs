@@ -1455,12 +1455,12 @@ namespace HideezClient.Models
                                 Pin_Connect = requirePin,
                                 PinMaxTries = 5,
                                 PinMinLength = requirePin ? 4 : 0,
+                                PinExpirationPeriod = requirePin ? expirationSeconds : 0,
 
                                 Button_Bond = requireButton,
                                 Button_Channel = requireButton,
                                 Button_Connect = requireButton,
-
-                                PinExpirationPeriod = requirePin || requireButton ? expirationSeconds : 0,
+                                ButtonExpirationPeriod = requireButton ? expirationSeconds : 0,
                             };
 
                             var masterKey = MasterPasswordConverter.GetMasterKey(masterPassword, SerialNo);

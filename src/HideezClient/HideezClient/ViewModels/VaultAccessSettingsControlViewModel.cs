@@ -231,6 +231,8 @@ namespace HideezClient.ViewModels
                 SavedRequirePin = profile.PinReq > 0;
                 if (SavedRequirePin)
                     SavedSelectedTimeout = TimeoutOptionsList.FirstOrDefault(o => o.TimeoutSeconds == profile.PinExpirationPeriod);
+                else if (SavedRequireButton)
+                    SavedSelectedTimeout = TimeoutOptionsList.FirstOrDefault(o => o.TimeoutSeconds == profile.ButtonExpirationPeriod);
                 else
                     SavedSelectedTimeout = TimeoutOptionsList.FirstOrDefault(o => o.TimeoutSeconds == profile.MasterKeyExpirationPeriod);
 
