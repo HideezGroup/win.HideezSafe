@@ -1122,7 +1122,7 @@ Would you like to perform application update now?</value>
     <value>Successful! Your credentials restored from '{0}'</value>
   </data>
   <data name="BackupPassword.EnterPassword.Warning" xml:space="preserve">
-    <value>Warning! All your credentials will be rewritten!</value>
+    <value>Warning! All your credentials will be overwritten!</value>
   </data>
   <data name="Vault.Error.MasterPass.InvalidMasterPass" xml:space="preserve">
     <value>The entered master password is incorrect</value>
@@ -1315,7 +1315,7 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
     <value>Restore from Backup</value>
   </data>
   <data name="Settings.CheckBox.LimitPasswordToProtectedFields" xml:space="preserve">
-    <value>Limit password entry to protected fields.</value>
+    <value>Enter passwords only to secure fields</value>
   </data>
   <data name="GeneralSettings.Title" xml:space="preserve">
     <value>General</value>

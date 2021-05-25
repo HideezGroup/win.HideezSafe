@@ -62,8 +62,8 @@ namespace HideezClient.Modules.ActionHandler
         }
 
         /// <summary>
-        /// If enable "Limit password entry to protected fields" and current field is protected password return true
-        /// If disabled "Limit password entry to protected fields" return true
+        /// If enable "Enter passwords only to secure fields" and current field is protected password return true
+        /// If disabled "Enter passwords only to secure fields" return true
         /// </summary>
         protected async override Task<bool> BeforeCondition(string[] devicesId)
         {
