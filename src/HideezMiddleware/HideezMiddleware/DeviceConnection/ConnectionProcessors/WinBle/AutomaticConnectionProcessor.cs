@@ -7,25 +7,22 @@ using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Log;
 using Hideez.SDK.Communication.Proximity.Interfaces;
 using HideezMiddleware.CredentialProvider;
-using HideezMiddleware.DeviceConnection.Workflow;
+using HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle;
 using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
 using HideezMiddleware.IPC.IncommingMessages;
 using HideezMiddleware.Localize;
-using HideezMiddleware.Settings;
 using HideezMiddleware.Tasks;
-using HideezMiddleware.Threading;
 using HideezMiddleware.Utils.WorkstationHelper;
 using Meta.Lib.Modules.PubSub;
-using Microsoft.Win32;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using WinBle;
 
-namespace HideezMiddleware.DeviceConnection
+namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
 {
-    public sealed class WinBleAutomaticConnectionProcessor : BaseConnectionProcessor
+    public sealed class AutomaticConnectionProcessor : BaseConnectionProcessor
     {
         readonly WinBleConnectionManager _winBleConnectionManager;
         readonly WinBleConnectionManagerWrapper _winBleConnectionManagerWrapper;
@@ -42,7 +39,7 @@ namespace HideezMiddleware.DeviceConnection
         int _isConnecting = 0;
         bool isRunning = false;
 
-        public WinBleAutomaticConnectionProcessor(
+        public AutomaticConnectionProcessor(
             ConnectionFlowProcessorBase connectionFlowProcessor,
             WinBleConnectionManager winBleConnectionManager,
             WinBleConnectionManagerWrapper winBleConnectionManagerWrapper,
@@ -67,33 +64,6 @@ namespace HideezMiddleware.DeviceConnection
             _messenger = messenger ?? throw new ArgumentNullException(nameof(_messenger));
         }
 
-        #region IDisposable
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        bool disposed = false;
-        void Dispose(bool disposing)
-        {
-            if (disposed)
-                return;
-
-            if (disposing)
-            {
-                _winBleConnectionManager.AdvertismentReceived -= BleConnectionManager_AdvertismentReceived;
-            }
-
-            disposed = true;
-        }
-
-        ~WinBleAutomaticConnectionProcessor()
-        {
-            Dispose(false);
-        }
-        #endregion
-
         public override void Start()
         {
             lock (_lock)
@@ -101,33 +71,12 @@ namespace HideezMiddleware.DeviceConnection
                 if (!isRunning)
                 {
                     _winBleConnectionManagerWrapper.AdvertismentReceived += BleConnectionManager_AdvertismentReceived;
-                    _winBleConnectionManager.ControllerRemoved += BleConnectionManager_ControllerRemoved;
+                    _credentialProviderProxy.ProviderActivated += CredentialProviderProxy_ProviderActivated;
                     _credentialProviderProxy.CommandLinkPressed += CredentialProviderProxy_CommandLinkPressed;
-                    SessionSwitchMonitor.SessionSwitch += SessionSwitchMonitor_SessionSwitch;
                     _messenger.Subscribe<ConnectPairedVaultsMessage>(OnConnectPairedVaults);
                     isRunning = true;
                     WriteLine("Started");
                 }
-            }
-        }
-
-        private async Task OnConnectPairedVaults(ConnectPairedVaultsMessage arg)
-        {
-            WriteLine("Connect paired vaults request");
-            _advIgnoreListMonitor.Clear();
-            await WaitAdvertisementAndConnectByProximity();
-        }
-
-        private void SessionSwitchMonitor_SessionSwitch(int sessionId, Microsoft.Win32.SessionSwitchReason reason)
-        {
-            switch (reason)
-            {
-                case SessionSwitchReason.SessionLogon:
-                case SessionSwitchReason.SessionUnlock:
-                    _advIgnoreListMonitor.Clear();
-                    break;
-                default:
-                    break;
             }
         }
 
@@ -137,15 +86,24 @@ namespace HideezMiddleware.DeviceConnection
             {
                 isRunning = false;
                 _winBleConnectionManagerWrapper.AdvertismentReceived -= BleConnectionManager_AdvertismentReceived;
-                _winBleConnectionManager.ControllerRemoved -= BleConnectionManager_ControllerRemoved;
+                _credentialProviderProxy.ProviderActivated -= CredentialProviderProxy_ProviderActivated;
                 _credentialProviderProxy.CommandLinkPressed -= CredentialProviderProxy_CommandLinkPressed;
-                SessionSwitchMonitor.SessionSwitch -= SessionSwitchMonitor_SessionSwitch;
                 _messenger.Unsubscribe<ConnectPairedVaultsMessage>(OnConnectPairedVaults);
                 WriteLine("Stopped");
             }
         }
 
-        private async void CredentialProviderProxy_CommandLinkPressed(object sender, EventArgs e)
+        async void CredentialProviderProxy_ProviderActivated(object sender, EventArgs e)
+        {
+            if (_winBleConnectionManager.ConnectionControllers.Count != 0 && _winBleConnectionManager.State == BluetoothAdapterState.PoweredOn)
+            {
+                WriteLine("Provider activated");
+                _advIgnoreListMonitor.Clear();
+                await WaitAdvertisementAndConnectByProximity();
+            }
+        }
+
+        async void CredentialProviderProxy_CommandLinkPressed(object sender, EventArgs e)
         {
             if (_winBleConnectionManager.ConnectionControllers.Count != 0 && _winBleConnectionManager.State == BluetoothAdapterState.PoweredOn)
             {
@@ -155,14 +113,16 @@ namespace HideezMiddleware.DeviceConnection
             }
         }
 
-        private void BleConnectionManager_ControllerRemoved(object sender, ControllerRemovedEventArgs e)
-        {
-            _advIgnoreListMonitor.Remove(e.Controller.Id);
-        }
-
         async void BleConnectionManager_AdvertismentReceived(object sender, AdvertismentReceivedEventArgs e)
         {
             await ConnectByProximity(e);
+        }
+
+        async Task OnConnectPairedVaults(ConnectPairedVaultsMessage arg)
+        {
+            WriteLine("Connect paired vaults request");
+            _advIgnoreListMonitor.Clear();
+            await WaitAdvertisementAndConnectByProximity();
         }
 
         async Task WaitAdvertisementAndConnectByProximity()
@@ -170,7 +130,7 @@ namespace HideezMiddleware.DeviceConnection
             // Interlock prevents start of multiple or subsequent procedures if impatient user clicks commandLink multiple times
             if (Interlocked.CompareExchange(ref _commandLinkInterlock, 1, 0) == 0)
             {
-                var notifId = nameof(WinBleAutomaticConnectionProcessor);
+                var notifId = nameof(AutomaticConnectionProcessor);
                 try
                 {
                     await _ui.SendError("", notifId);
@@ -197,38 +157,9 @@ namespace HideezMiddleware.DeviceConnection
             }
         }
 
-        private void BleConnectionManager_BondedControllerRemoved(object sender, ControllerRemovedEventArgs e)
-        {
-            // Call to IgnoreForTime is added because advertisements may arrive shortly after
-            // bond removal is finished, causing an attempt to connect unpaired device which 
-            // always results in failure
-            _advIgnoreListMonitor.Remove(e.Controller.Id);
-            _advIgnoreListMonitor.IgnoreForTime(e.Controller.Id, 2);
-        }
-
-
-        async void BleConnectionManager_ConnectedBondedControllerAdded(object sender, ControllerAddedEventArgs e)
-        {
-            if (!isRunning)
-                return;
-
-            if (e.Controller == null)
-                return;
-
-            if (_isConnecting == 1)
-                return;
-
-            if (_workstationHelper.IsActiveSessionLocked())
-                return;
-
-            if (_advIgnoreListMonitor.IsIgnored(e.Controller.Id))
-                return;
-
-            await Connect(e.Controller.Connection.ConnectionId);
-        }
-
         async Task ConnectByProximity(AdvertismentReceivedEventArgs adv, bool isCommandLinkPressed = false)
         {
+            // Standard checks
             if (!isRunning)
                 return;
 
@@ -238,6 +169,7 @@ namespace HideezMiddleware.DeviceConnection
             if (_isConnecting == 1)
                 return;
 
+            // Proximity related checks
             if (_advIgnoreListMonitor.IsIgnored(adv.Id))
                 return;
 

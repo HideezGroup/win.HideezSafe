@@ -47,6 +47,7 @@ namespace HideezMiddleware.CredentialProvider
         LogonResult = 106,
         CheckActivationCode = 107,
         CheckPassword= 108,
+        CommandLinkPressed = 109
     }
 
     public class CredentialProviderProxy : Logger, IWorkstationUnlocker, IClientUiProxy
@@ -65,7 +66,9 @@ namespace HideezMiddleware.CredentialProvider
 
         public event EventHandler<ActivationCodeEventArgs> ActivationCodeCancelled { add { } remove { } }
 
-        public event EventHandler<EventArgs> CommandLinkPressed;
+        public event EventHandler<EventArgs> ProviderActivated; // 101
+
+        public event EventHandler<EventArgs> CommandLinkPressed; // 109
 
         public event EventHandler<PasswordEventArgs> PasswordReceived; 
 
@@ -144,6 +147,11 @@ namespace HideezMiddleware.CredentialProvider
                     var strings = ParseParams(buf, readBytes, expectedParamCount: 2);
                     OnCheckPassword(strings[0], strings[1]);
                 }
+                else if (code == CredentialProviderEventCode.CommandLinkPressed)
+                {
+                    var strings = ParseParams(buf, readBytes, expectedParamCount: 1);
+                    OnCommandLinkPressed(strings[0]);
+                }
             }
             catch (Exception ex)
             {
@@ -180,7 +188,7 @@ namespace HideezMiddleware.CredentialProvider
         {
             WriteLine($"LogonWorkstationAsync: {login}");
 
-            SafeInvoke(CommandLinkPressed, EventArgs.Empty);
+            SafeInvoke(ProviderActivated, EventArgs.Empty);
         }
 
         void OnCheckPin(string deviceId, string pin)
@@ -214,6 +222,12 @@ namespace HideezMiddleware.CredentialProvider
                 DeviceId = deviceId,
                 Password = password
             });
+        }
+
+        void OnCommandLinkPressed(string login)
+        {
+            WriteLine($"CommandLinkPressed: {login}");
+            SafeInvoke(CommandLinkPressed, EventArgs.Empty);
         }
         #endregion CP Message handlers 
 

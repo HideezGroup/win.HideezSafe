@@ -14,6 +14,9 @@ using HideezMiddleware.ClientManagement;
 using HideezMiddleware.ConnectionModeProvider;
 using HideezMiddleware.CredentialProvider;
 using HideezMiddleware.DeviceConnection;
+using HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle;
+using HideezMiddleware.DeviceConnection.ConnectionProcessors.Other;
+using HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle;
 using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
 using HideezMiddleware.DeviceLogging;
 using HideezMiddleware.IPC.DTO;
@@ -283,7 +286,7 @@ namespace ServiceLibrary.Implementation
 
         public void AddEnterpriseProximitySettingsSupport()
         {
-            _container.RegisterType<IDeviceProximitySettingsProvider, UnlockProximitySettingsProvider>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IDeviceProximitySettingsProvider, EnterpriseProximitySettingsProvider>(new ContainerControlledLifetimeManager());
         }
 
         public void AddStandaloneProximitySettingsSupport()
@@ -403,28 +406,37 @@ namespace ServiceLibrary.Implementation
             var proximitySettingsProvider = _container.Resolve<IDeviceProximitySettingsProvider>();
             var advIgnoreCsrList = new AdvertisementIgnoreList(csrBleConnectionManager, proximitySettingsProvider, SdkConfig.DefaultLockTimeout, log);
             var deviceManager = _container.Resolve<DeviceManager>();
-            var workstationUnlocker = _container.Resolve<IWorkstationUnlocker>();
+            var credentialProviderProxy = _container.Resolve<CredentialProviderProxy>();
 
             var tapConnectionProcessor = new TapConnectionProcessor(connectionFlow, csrBleConnectionManager, messenger, log);
-            _container.RegisterInstance(tapConnectionProcessor, new ContainerControlledLifetimeManager());
+            var activityConnectionProcessor = new ActivityConnectionProcessor(
+                connectionFlow,
+                csrBleConnectionManager,
+                proximitySettingsProvider,
+                advIgnoreCsrList,
+                deviceManager,
+                credentialProviderProxy,
+                messenger,
+                log);
             var proximityConnectionProcessor = new ProximityConnectionProcessor(
                 connectionFlow,
                 csrBleConnectionManager,
                 proximitySettingsProvider,
                 advIgnoreCsrList,
                 deviceManager,
-                workstationUnlocker,
+                credentialProviderProxy,
                 messenger,
                 log);
-            _container.RegisterInstance(proximityConnectionProcessor, new ContainerControlledLifetimeManager());
 
             var connectionManagersCoordinator = _container.Resolve<ConnectionManagersCoordinator>();
             var connectionManagersRestarter = _container.Resolve<ConnectionManagerRestarter>(); 
             var csrModule = new CsrModule(
                 connectionManagersCoordinator,
                 connectionManagersRestarter,
+                advIgnoreCsrList,
                 csrBleConnectionManager,
                 tapConnectionProcessor,
+                activityConnectionProcessor,
                 proximityConnectionProcessor,
                 messenger,
                 log);
@@ -445,26 +457,34 @@ namespace ServiceLibrary.Implementation
             // WinBle rssi messages arrive much less frequently than when using csr. Empirically calculated 20s rssi clear delay to be acceptable.
             var advIgnoreWinBleList = new AdvertisementIgnoreList(winBleConnectionManagerWrapper, proximitySettingsProvider, 20, log);
             var deviceManager = _container.Resolve<DeviceManager>();
-            var credProvProxy = _container.Resolve<CredentialProviderProxy>();
+            var credentialProviderProxy = _container.Resolve<CredentialProviderProxy>();
             var uiManager = _container.Resolve<IClientUiManager>();
             var workstationHelper = _container.Resolve<IWorkstationHelper>();
 
-            var winBleAutomaticConnectionProcessor = new WinBleAutomaticConnectionProcessor(
+            var activityConnectionProcessor = new ActivityConnectionProcessor(
+                connectionFlow,
+                winBleConnectionManagerWrapper,
+                proximitySettingsProvider,
+                advIgnoreWinBleList,
+                deviceManager,
+                credentialProviderProxy,
+                messenger,
+                log);
+            var automaticConnectionProcessor = new AutomaticConnectionProcessor(
                 connectionFlow, 
                 winBleConnectionManager, 
                 winBleConnectionManagerWrapper,
                 advIgnoreWinBleList,
                 proximitySettingsProvider, 
                 deviceManager, 
-                credProvProxy, 
+                credentialProviderProxy, 
                 uiManager,
                 workstationHelper,
                 messenger,
                 log);
-            _container.RegisterInstance(winBleAutomaticConnectionProcessor, new ContainerControlledLifetimeManager());
 
             var commandLinkVisibilityController = new CommandLinkVisibilityController(
-                credProvProxy,
+                credentialProviderProxy,
                 winBleConnectionManager,
                 connectionFlow, 
                 log);
@@ -477,7 +497,8 @@ namespace ServiceLibrary.Implementation
                 connectionManagersRestarter,
                 advIgnoreWinBleList,
                 winBleConnectionManagerWrapper,
-                winBleAutomaticConnectionProcessor,
+                activityConnectionProcessor,
+                automaticConnectionProcessor,
                 commandLinkVisibilityController,
                 messenger,
                 log);

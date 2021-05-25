@@ -1,5 +1,6 @@
 ﻿using Hideez.SDK.Communication.Log;
 using HideezMiddleware.DeviceConnection;
+using HideezMiddleware.DeviceConnection.ConnectionProcessors.Other;
 using HideezMiddleware.IPC.Messages;
 using HideezMiddleware.Modules.Rfid.Messages;
 using HideezMiddleware.Modules.ServiceEvents.Messages;

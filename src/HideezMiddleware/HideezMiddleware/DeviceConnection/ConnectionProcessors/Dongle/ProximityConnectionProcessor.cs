@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,25 +6,23 @@ using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.BLE;
 using Hideez.SDK.Communication.Connection;
 using Hideez.SDK.Communication.Device;
-using Hideez.SDK.Communication.HES.Client;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Log;
 using Hideez.SDK.Communication.Proximity.Interfaces;
-using Hideez.SDK.Communication.Utils;
+using HideezMiddleware.CredentialProvider;
 using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
-using HideezMiddleware.Settings;
 using Meta.Lib.Modules.PubSub;
 
-namespace HideezMiddleware.DeviceConnection
+namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle
 {
 
-    public sealed class ProximityConnectionProcessor : BaseConnectionProcessor, IDisposable
+    public sealed class ProximityConnectionProcessor : BaseConnectionProcessor
     {
         readonly IBleConnectionManager _bleConnectionManager;
         readonly IDeviceProximitySettingsProvider _proximitySettingsProvider;
         readonly AdvertisementIgnoreList _advIgnoreListMonitor;
         readonly DeviceManager _deviceManager;
-        readonly IWorkstationUnlocker _workstationUnlocker;
+        readonly CredentialProviderProxy _credentialProviderProxy;
         readonly object _lock = new object();
 
         int _isConnecting = 0;
@@ -37,7 +34,7 @@ namespace HideezMiddleware.DeviceConnection
             IDeviceProximitySettingsProvider proximitySettingsProvider,
             AdvertisementIgnoreList advIgnoreListMonitor,
             DeviceManager deviceManager,
-            IWorkstationUnlocker workstationUnlocker,
+            CredentialProviderProxy credentialProviderProxy,
             IMetaPubSub messenger,
             ILog log) 
             : base(connectionFlowProcessor, SessionSwitchSubject.Proximity, nameof(ProximityConnectionProcessor), messenger, log)
@@ -46,35 +43,8 @@ namespace HideezMiddleware.DeviceConnection
             _proximitySettingsProvider = proximitySettingsProvider ?? throw new ArgumentNullException(nameof(_proximitySettingsProvider));
             _advIgnoreListMonitor = advIgnoreListMonitor ?? throw new ArgumentNullException(nameof(advIgnoreListMonitor));
             _deviceManager = deviceManager ?? throw new ArgumentNullException(nameof(deviceManager));
-            _workstationUnlocker = workstationUnlocker ?? throw new ArgumentNullException(nameof(workstationUnlocker));
+            _credentialProviderProxy = credentialProviderProxy ?? throw new ArgumentNullException(nameof(credentialProviderProxy));
         }
-
-        #region IDisposable
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        bool disposed = false;
-        void Dispose(bool disposing)
-        {
-            if (disposed)
-                return;
-
-            if (disposing)
-            {
-                _bleConnectionManager.AdvertismentReceived -= BleConnectionManager_AdvertismentReceived;
-            }
-
-            disposed = true;
-        }
-
-        ~ProximityConnectionProcessor()
-        {
-            Dispose(false);
-        }
-        #endregion
 
         public override void Start()
         {
@@ -106,6 +76,7 @@ namespace HideezMiddleware.DeviceConnection
 
         async Task ConnectByProximity(AdvertismentReceivedEventArgs adv)
         {
+            // Standard checks
             if (!isRunning)
                 return;
 
@@ -115,17 +86,16 @@ namespace HideezMiddleware.DeviceConnection
             if (_isConnecting == 1)
                 return;
 
+            // Proximity related checks
+            if (_advIgnoreListMonitor.IsIgnored(adv.Id))
+                return;
+
             var connectionId = new ConnectionId(adv.Id, (byte)DefaultConnectionIdProvider.Csr);
-            
             if (!_proximitySettingsProvider.IsEnabledUnlockByProximity(connectionId))
                 return;
 
             var proximity = BleUtils.RssiToProximity(adv.Rssi);
-
             if (proximity < _proximitySettingsProvider.GetUnlockProximity(connectionId))
-                return;
-
-            if (_advIgnoreListMonitor.IsIgnored(adv.Id))
                 return;
 
             if (Interlocked.CompareExchange(ref _isConnecting, 1, 0) == 0)
@@ -135,17 +105,17 @@ namespace HideezMiddleware.DeviceConnection
                     var device = _deviceManager.Devices.FirstOrDefault(d => d.Id == adv.Id && !(d is IRemoteDeviceProxy) && !d.IsBoot);
 
                     // Unlocked Workstation, Device not found OR Device not connected - dont add to ignore
-                    if (!_workstationUnlocker.IsConnected && (device == null || (device != null && !device.IsConnected)))
+                    if (!_credentialProviderProxy.IsConnected && (device == null || (device != null && !device.IsConnected)))
                         return;
 
                     try
                     {
                         // Unlocked Workstation, Device connected - add to ignore
-                        if (!_workstationUnlocker.IsConnected && device != null && device.IsConnected)
+                        if (!_credentialProviderProxy.IsConnected && device != null && device.IsConnected)
                             return;
 
                         // Locked Workstation, Device not found OR not connected - connect add to ignore
-                        if (_workstationUnlocker.IsConnected && (device == null || (device != null && !device.IsConnected)))
+                        if (_credentialProviderProxy.IsConnected && (device == null || (device != null && !device.IsConnected)))
                         {
                             await ConnectAndUnlockByConnectionId(connectionId);
                         }

@@ -37,9 +37,10 @@ namespace HideezClient.PageViewModels
         {
             public string Title { get; set; }
 
+            public bool EnabledUnlockByActivation { get; set; }
+
             public bool EnabledUnlockByProximity { get; set; }
 
-            public bool DisabledDisplayAuto { get; set; }
         }
 
         readonly IServiceProxy serviceProxy;
@@ -112,13 +113,11 @@ namespace HideezClient.PageViewModels
                 UnlockModeOptionsList.Add(new UnlockModeOption { Title = TranslationSource.Instance["ProximitySettings.UnlockMode.Tap"] });
             else if (connectionModeProvider.IsWinBleMode)
                 UnlockModeOptionsList.Add(new UnlockModeOption { Title = TranslationSource.Instance["ProximitySettings.UnlockMode.CPManual"] });
-            // To be implemented
-            /*UnlockModeOptionsList.Add(new UnlockModeOption 
+            UnlockModeOptionsList.Add(new UnlockModeOption 
             { 
                 Title = TranslationSource.Instance["ProximitySettings.UnlockMode.WaitForInput"],
-                DisabledDisplayAuto = true,
-                EnabledUnlockByProximity = true
-            });*/
+                EnabledUnlockByActivation = true
+            });
             UnlockModeOptionsList.Add(new UnlockModeOption 
             { 
                 Title = TranslationSource.Instance["ProximitySettings.UnlockMode.Automatic"], 
@@ -328,7 +327,7 @@ namespace HideezClient.PageViewModels
             EnabledUnlock = _oldSettings.EnabledUnlock;
             SelectedUnlockModeOption = UnlockModeOptionsList.FirstOrDefault(m =>
             m.EnabledUnlockByProximity == _oldSettings.EnabledUnlockByProximity
-            && m.DisabledDisplayAuto == _oldSettings.DisabledDisplayAuto) 
+            && m.EnabledUnlockByActivation == _oldSettings.EnabledUnlockByActivation) 
                 ?? UnlockModeOptionsList.First();
 
             IsEditableCredentials = false;
@@ -343,8 +342,8 @@ namespace HideezClient.PageViewModels
                     || UnlockProximity != _oldSettings.UnlockProximity
                     || EnabledLockByProximity != _oldSettings.EnabledLockByProximity 
                     || EnabledUnlock != _oldSettings.EnabledUnlock
-                    || SelectedUnlockModeOption.EnabledUnlockByProximity != _oldSettings.EnabledUnlockByProximity
-                    || SelectedUnlockModeOption.DisabledDisplayAuto != _oldSettings.DisabledDisplayAuto)
+                    || SelectedUnlockModeOption.EnabledUnlockByActivation != _oldSettings.EnabledUnlockByActivation 
+                    || SelectedUnlockModeOption.EnabledUnlockByProximity != _oldSettings.EnabledUnlockByProximity)
                     _proximityHasChanges = true;
                 else _proximityHasChanges = false;
 
@@ -405,8 +404,8 @@ namespace HideezClient.PageViewModels
                     EnabledUnlock = reply.UserDeviceProximitySettings.EnabledUnlock;
 
                     SelectedUnlockModeOption = UnlockModeOptionsList.FirstOrDefault(m =>
-                    m.EnabledUnlockByProximity == reply.UserDeviceProximitySettings.EnabledUnlockByProximity
-                    && m.DisabledDisplayAuto == reply.UserDeviceProximitySettings.DisabledDisplayAuto) 
+                    m.EnabledUnlockByActivation == reply.UserDeviceProximitySettings.EnabledUnlockByActivation
+                    && m.EnabledUnlockByProximity == reply.UserDeviceProximitySettings.EnabledUnlockByProximity) 
                         ?? UnlockModeOptionsList.First();
 
                     _oldSettings = reply.UserDeviceProximitySettings;
@@ -426,7 +425,7 @@ namespace HideezClient.PageViewModels
                 newSettings.Id = BleUtils.MacToConnectionId(Device.Mac);
                 newSettings.EnabledLockByProximity = EnabledLockByProximity;
                 newSettings.EnabledUnlock = EnabledUnlock;
-                newSettings.DisabledDisplayAuto = SelectedUnlockModeOption.DisabledDisplayAuto;
+                newSettings.EnabledUnlockByActivation = SelectedUnlockModeOption.EnabledUnlockByActivation;
                 newSettings.EnabledUnlockByProximity = SelectedUnlockModeOption.EnabledUnlockByProximity;
                 newSettings.LockProximity = LockProximity;
                 newSettings.UnlockProximity = UnlockProximity;

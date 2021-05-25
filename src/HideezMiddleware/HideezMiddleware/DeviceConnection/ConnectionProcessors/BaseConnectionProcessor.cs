@@ -7,7 +7,7 @@ using Meta.Lib.Modules.PubSub;
 using System;
 using System.Threading.Tasks;
 
-namespace HideezMiddleware.DeviceConnection
+namespace HideezMiddleware.DeviceConnection.ConnectionProcessors
 {
     public abstract class BaseConnectionProcessor : Logger, IConnectionProcessor
     {

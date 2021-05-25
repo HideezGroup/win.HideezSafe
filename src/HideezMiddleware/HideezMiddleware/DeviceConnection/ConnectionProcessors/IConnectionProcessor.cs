@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HideezMiddleware.DeviceConnection
+namespace HideezMiddleware.DeviceConnection.ConnectionProcessors
 {
     public interface IConnectionProcessor
     {

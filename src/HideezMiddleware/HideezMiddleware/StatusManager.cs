@@ -37,7 +37,7 @@ namespace HideezMiddleware
             _messenger.Subscribe<WinBleStatusChangedMessage>(WinBleAdapterStatusChanged);
             _messenger.Subscribe<HesAppConnection_HubConnectionStateChangedMessage>(HesConnectionStateChanged);
             _messenger.Subscribe<TBConnection_StateChangedMessage>(TBConnectionStateChanged);
-            _messenger.Subscribe<WorkstationUnlocker_ConnectedMessage>(WorkstationUnlockerConnected);
+            _messenger.Subscribe<CredentialProvider_ConnectedMessage>(WorkstationUnlockerConnected);
             _messenger.Subscribe<RefreshStatusMessage>(RefreshStatus);
         }
 
@@ -87,7 +87,7 @@ namespace HideezMiddleware
             await SendStatusToUI();
         }
 
-        private async Task WorkstationUnlockerConnected(WorkstationUnlocker_ConnectedMessage arg)
+        private async Task WorkstationUnlockerConnected(CredentialProvider_ConnectedMessage arg)
         {
             await Task.Delay(200);
             await SendStatusToUI();

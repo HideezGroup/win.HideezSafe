@@ -577,7 +577,7 @@ namespace HideezClient.Models
             {
                 try
                 {
-                    await InitRemoteAndLoadStorageAsync(false);
+                    await InitRemoteAndLoadStorageAsync(true);
                 }
                 catch (Exception ex)
                 {
@@ -601,8 +601,8 @@ namespace HideezClient.Models
         /// <summary>
         /// Create and authorize remote device, then load credentials storage from this device
         /// </summary>
-        /// <param name="authorizeDevice">If false, skip remote device authorization step. Default is true.</param>
-        public async Task InitRemoteAndLoadStorageAsync(bool authorizeDevice = true)
+        /// <param name="skipNormalAuth">If true, skip remote vault authorization step</param>
+        public async Task InitRemoteAndLoadStorageAsync(bool skipNormalAuth = false)
         {
             if (Interlocked.CompareExchange(ref _interlockedRemote, 1, 0) == 0)
             {
@@ -655,18 +655,43 @@ namespace HideezClient.Models
                                             $"locked:{_remoteDevice.AccessLevel.IsLocked})");
                                     }
                                     else
-                                        _log.WriteLine($"({_remoteDevice.SerialNo}) access level is null");
+                                        _log.WriteLine($"({_remoteDevice.SerialNo}) access level is null", LogErrorSeverity.Warning);
                                 }
 
-                            if (_remoteDevice?.IsLockedByCode == true)
-                                throw new HideezException(HideezErrorCode.DeviceIsLocked);
-                            else if (authorizeDevice && !IsAuthorized && _remoteDevice?.AccessLevel != null && !_remoteDevice.AccessLevel.IsAllOk)
-                                await AuthorizeRemoteDevice(authCts.Token);
-                            else if (!authorizeDevice && !IsAuthorized && _remoteDevice?.AccessLevel != null && _remoteDevice.AccessLevel.IsAllOk)
-                                await AuthorizeRemoteDevice(authCts.Token);
-                            else if (_remoteDevice?.AccessLevel != null && _remoteDevice.AccessLevel.IsLocked)
-                                throw new HideezException(HideezErrorCode.DeviceIsLocked);
+                                if (authCts.IsCancellationRequested)
+                                {
+                                    _log.WriteLine($"Remote vault auth cancelled");
+                                    return;
+                                }
 
+                                bool performAuthorization = false;
+
+                                if (_remoteDevice?.IsLockedByCode == true)
+                                    throw new HideezException(HideezErrorCode.DeviceIsLocked);
+
+                                if (_remoteDevice?.AccessLevel != null && _remoteDevice.AccessLevel.IsLocked)
+                                    throw new HideezException(HideezErrorCode.DeviceIsLocked);
+
+                                // Authorize vaults that do not require any additional user actions
+                                if (!IsAuthorized && _remoteDevice?.AccessLevel != null && _remoteDevice.AccessLevel.IsAllOk)
+                                    performAuthorization = true;
+
+                                // If authorization is not skipped, pefrorm normal authorization for vaults that require user actions
+                                if (!skipNormalAuth && !IsAuthorized && _remoteDevice?.AccessLevel != null && !_remoteDevice.AccessLevel.IsAllOk)
+                                    performAuthorization = true;
+                                
+                                // Always authorize fresh vaults (indicated by missing user link and MasterPassword)
+                                if (_applicationMode == ApplicationMode.Standalone 
+                                    && !IsAuthorized 
+                                    && _remoteDevice?.AccessLevel != null 
+                                    && _remoteDevice.AccessLevel.IsLinkRequired
+                                    && _remoteDevice.AccessLevel.IsMasterKeyRequired)
+                                    performAuthorization = true;
+
+                                if (performAuthorization)
+                                    await AuthorizeRemoteDevice(authCts.Token);
+
+                                // Automatically load vault storage after authorization
                                 if (!authCts.IsCancellationRequested && !IsStorageLoaded)
                                     await LoadStorage();
                             }

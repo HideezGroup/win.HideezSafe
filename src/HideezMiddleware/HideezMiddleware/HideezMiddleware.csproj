@@ -136,8 +136,9 @@
     <Compile Include="ChangeServerAddressResult.cs" />
     <Compile Include="ClientManagement\ServiceClientUiManager.cs" />
     <Compile Include="CredentialProvider\CommandLinkVisibilityController.cs" />
-    <Compile Include="DeviceConnection\IConnectionProcessor.cs" />
-    <Compile Include="DeviceConnection\WinBleAutomaticConnectionProcessor.cs" />
+    <Compile Include="DeviceConnection\ConnectionProcessors\Other\ActivityConnectionProcessor.cs" />
+    <Compile Include="DeviceConnection\ConnectionProcessors\IConnectionProcessor.cs" />
+    <Compile Include="DeviceConnection\ConnectionProcessors\WinBle\AutomaticConnectionProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\AccountsUpdateProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\ActivationProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\CacheVaultInfoProcessor.cs" />
@@ -178,10 +179,10 @@
     <Compile Include="ConnectionManagerRestarter.cs" />
     <Compile Include="CredentialProvider\CredentialProviderProxy.cs" />
     <Compile Include="DeviceConnection\AdvertisementIgnoreList.cs" />
-    <Compile Include="DeviceConnection\BaseConnectionProcessor.cs" />
-    <Compile Include="DeviceConnection\ProximityConnectionProcessor.cs" />
-    <Compile Include="DeviceConnection\RfidConnectionProcessor.cs" />
-    <Compile Include="DeviceConnection\TapConnectionProcessor.cs" />
+    <Compile Include="DeviceConnection\ConnectionProcessors\BaseConnectionProcessor.cs" />
+    <Compile Include="DeviceConnection\ConnectionProcessors\Dongle\ProximityConnectionProcessor.cs" />
+    <Compile Include="DeviceConnection\ConnectionProcessors\Other\RfidConnectionProcessor.cs" />
+    <Compile Include="DeviceConnection\ConnectionProcessors\Dongle\TapConnectionProcessor.cs" />
     <Compile Include="IPC\DTO\AccessLevelDTO.cs" />
     <Compile Include="IPC\DTO\DeviceDTO.cs" />
     <Compile Include="IPC\DTO\DeviceStateDTO.cs" />
@@ -221,7 +222,7 @@
     <Compile Include="IPC\IncommingMessages\SetSoftwareVaultUnlockModuleStateMessage.cs" />
     <Compile Include="IPC\Messages\ShowClientMainWindowMessage.cs" />
     <Compile Include="IPC\Messages\ActivateScreenRequestMessage.cs" />
-    <Compile Include="IPC\Messages\CredentialProvider_CommandLinkPressedMessage.cs" />
+    <Compile Include="Modules\CredentialProvider\Messages\CredentialProvider_CommandLinkPressedMessage.cs" />
     <Compile Include="IPC\Messages\DeviceBatteryChangedMessage.cs" />
     <Compile Include="IPC\Messages\DeviceConnectionStateChangedMessage.cs" />
     <Compile Include="IPC\Messages\DeviceDisconnectedMessage.cs" />
@@ -259,7 +260,8 @@
     <Compile Include="Modules\ClientPipe\PipeDeviceConnectionHandler.cs" />
     <Compile Include="Modules\ClientPipe\PipeDeviceConnectionManager.cs" />
     <Compile Include="Modules\CredentialProvider\CredentialProviderModule.cs" />
-    <Compile Include="Modules\CredentialProvider\Messages\WorkstationUnlocker_ConnectedMessage.cs" />
+    <Compile Include="Modules\CredentialProvider\Messages\CredentialProvider_ConnectedMessage.cs" />
+    <Compile Include="Modules\CredentialProvider\Messages\CredentialProvider_ProviderActivated.cs" />
     <Compile Include="Modules\Csr\CsrModule.cs" />
     <Compile Include="Modules\Csr\Messages\CsrStatusChangedMessage.cs" />
     <Compile Include="Modules\DeviceManagement\DeviceManagementModule.cs" />
@@ -323,7 +325,7 @@
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Include="SessionUnlockMethodMonitor.cs" />
-    <Compile Include="Settings\SettingsProvider\UnlockProximitySettingsProvider.cs" />
+    <Compile Include="Settings\SettingsProvider\EnterpriseProximitySettingsProvider.cs" />
     <Compile Include="Settings\SettingsProvider\UserProximitySettingsProvider.cs" />
     <Compile Include="Settings\UserDeviceProximitySettings.cs" />
     <Compile Include="Settings\UserProximitySettings.cs" />

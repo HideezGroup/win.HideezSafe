@@ -226,7 +226,7 @@ namespace HideezClient.Modules
         private async void OnChangeActiveDevice(DeviceModel device)
         {
             _activeDevice.Device = device;
-            await device.InitRemoteAndLoadStorageAsync(true);
+            await device.InitRemoteAndLoadStorageAsync();
         }
 
         private async Task OnTechSupportAsync(string techSupportUriKey)

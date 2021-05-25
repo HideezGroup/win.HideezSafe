@@ -1,9 +1,4 @@
 ﻿using Hideez.SDK.Communication;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HideezMiddleware.Settings
 {
@@ -14,8 +9,8 @@ namespace HideezMiddleware.Settings
         public int UnlockProximity { get; set; }
         public bool EnabledLockByProximity { get; set; }
         public bool EnabledUnlock { get; set; }
+        public bool EnabledUnlockByActivation { get; set; }
         public bool EnabledUnlockByProximity { get; set; }
-        public bool DisabledDisplayAuto { get; set; }
 
         public static UserDeviceProximitySettings DefaultSettings
         {
@@ -27,8 +22,8 @@ namespace HideezMiddleware.Settings
                     UnlockProximity = SdkConfig.DefaultUnlockProximity,
                     EnabledLockByProximity = false,
                     EnabledUnlock = false,
+                    EnabledUnlockByActivation = false,
                     EnabledUnlockByProximity = false,
-                    DisabledDisplayAuto = false,
                 };
             }
         }

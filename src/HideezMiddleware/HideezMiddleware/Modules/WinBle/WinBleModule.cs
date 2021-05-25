@@ -3,10 +3,13 @@ using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Log;
 using HideezMiddleware.CredentialProvider;
 using HideezMiddleware.DeviceConnection;
+using HideezMiddleware.DeviceConnection.ConnectionProcessors.Other;
+using HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle;
 using HideezMiddleware.IPC.Messages;
 using HideezMiddleware.Modules.ServiceEvents.Messages;
 using HideezMiddleware.Modules.WinBle.Messages;
 using Meta.Lib.Modules.PubSub;
+using Microsoft.Win32;
 using System;
 using System.Threading.Tasks;
 using WinBle;
@@ -17,7 +20,8 @@ namespace HideezMiddleware.Modules.WinBle
     {
         readonly AdvertisementIgnoreList _advertisementIgnoreList;
         readonly WinBleConnectionManagerWrapper _winBleConnectionManagerWrapper;
-        readonly WinBleAutomaticConnectionProcessor _winBleAutomaticConnectionProcessor;
+        readonly ActivityConnectionProcessor _activityConnectionProcessor;
+        readonly AutomaticConnectionProcessor _winBleAutomaticConnectionProcessor;
         readonly CommandLinkVisibilityController _commandLinkVisibilityController;
         readonly ConnectionManagerRestarter _connectionManagerRestarter;
 
@@ -25,7 +29,8 @@ namespace HideezMiddleware.Modules.WinBle
             ConnectionManagerRestarter connectionManagerRestarter,
             AdvertisementIgnoreList advertisementIgnoreList,
             WinBleConnectionManagerWrapper winBleConnectionManagerWrapper,
-            WinBleAutomaticConnectionProcessor winBleAutomaticConnectionProcessor,
+            ActivityConnectionProcessor activityConnectionProcessor,
+            AutomaticConnectionProcessor winBleAutomaticConnectionProcessor,
             CommandLinkVisibilityController commandLinkVisibilityController,
             IMetaPubSub messenger,
             ILog log)
@@ -33,20 +38,36 @@ namespace HideezMiddleware.Modules.WinBle
         {
             _advertisementIgnoreList = advertisementIgnoreList;
             _winBleConnectionManagerWrapper = winBleConnectionManagerWrapper;
+            _activityConnectionProcessor = activityConnectionProcessor;
             _winBleAutomaticConnectionProcessor = winBleAutomaticConnectionProcessor;
             _commandLinkVisibilityController = commandLinkVisibilityController;
             _connectionManagerRestarter = connectionManagerRestarter;
 
+            SessionSwitchMonitor.SessionSwitch += SessionSwitchMonitor_SessionSwitch;
             _winBleConnectionManagerWrapper.AdapterStateChanged += WinBleConnectionManager_AdapterStateChanged;
+            _winBleConnectionManagerWrapper.ControllerRemoved += BleConnectionManager_ControllerRemoved;
 
             _connectionManagerRestarter.AddManager(_winBleConnectionManagerWrapper);
             connectionManagersCoordinator.AddConnectionManager(_winBleConnectionManagerWrapper);
 
-            _messenger.Subscribe(GetSafeHandler<CredentialProvider_CommandLinkPressedMessage>(CredentialProvider_CommandLinkPressedHandler));
             _messenger.Subscribe(GetSafeHandler<PowerEventMonitor_SystemSuspendingMessage>(OnSystemSuspending));
             _messenger.Subscribe(GetSafeHandler<PowerEventMonitor_SystemLeftSuspendedModeMessage>(OnSystemLeftSuspendedMode));
 
+            _activityConnectionProcessor.Start();
             _winBleAutomaticConnectionProcessor.Start();
+        }
+
+        private void SessionSwitchMonitor_SessionSwitch(int sessionId, SessionSwitchReason reason)
+        {
+            switch (reason)
+            {
+                case SessionSwitchReason.SessionLogon:
+                case SessionSwitchReason.SessionUnlock:
+                    _advertisementIgnoreList.Clear();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private async void WinBleConnectionManager_AdapterStateChanged(object sender, EventArgs e)
@@ -81,15 +102,14 @@ namespace HideezMiddleware.Modules.WinBle
             await SafePublish(new WinBleStatusChangedMessage(sender, status));
         }
 
-        private Task CredentialProvider_CommandLinkPressedHandler(CredentialProvider_CommandLinkPressedMessage msg)
+        private void BleConnectionManager_ControllerRemoved(object sender, ControllerRemovedEventArgs e)
         {
-            _advertisementIgnoreList.Clear();
-
-            return Task.CompletedTask;
+            _advertisementIgnoreList.Remove(e.Controller.Id);
         }
 
         private Task OnSystemSuspending(PowerEventMonitor_SystemSuspendingMessage arg)
         {
+            _activityConnectionProcessor.Stop();
             _winBleAutomaticConnectionProcessor.Stop();
             return Task.CompletedTask;
         }
@@ -99,10 +119,16 @@ namespace HideezMiddleware.Modules.WinBle
             WriteLine("Starting restore from suspended mode");
 
             await _winBleConnectionManagerWrapper.Stop();
+            _activityConnectionProcessor.Stop();
             _winBleAutomaticConnectionProcessor.Stop();
 
+            _activityConnectionProcessor.Start();
             _winBleAutomaticConnectionProcessor.Start();
             await _winBleConnectionManagerWrapper.Start();
+
+            _advertisementIgnoreList.Clear();
         }
+    
+
     }
 }

@@ -8,9 +8,9 @@ using Hideez.SDK.Communication.Connection;
 using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
 using Meta.Lib.Modules.PubSub;
 
-namespace HideezMiddleware.DeviceConnection
+namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle
 {
-    public sealed class TapConnectionProcessor : BaseConnectionProcessor, IDisposable
+    public sealed class TapConnectionProcessor : BaseConnectionProcessor
     {
         readonly IBleConnectionManager _bleConnectionManager;
         readonly object _lock = new object();
@@ -27,33 +27,6 @@ namespace HideezMiddleware.DeviceConnection
         {
             _bleConnectionManager = bleConnectionManager ?? throw new ArgumentNullException(nameof(bleConnectionManager));
         }
-
-        #region IDisposable
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        bool disposed = false;
-        void Dispose(bool disposing)
-        {
-            if (disposed)
-                return;
-
-            if (disposing)
-            {
-                _bleConnectionManager.AdvertismentReceived -= BleConnectionManager_AdvertismentReceived;
-            }
-
-            disposed = true;
-        }
-
-        ~TapConnectionProcessor()
-        {
-            Dispose(false);
-        }
-        #endregion
 
         public override void Start()
         {
@@ -85,33 +58,38 @@ namespace HideezMiddleware.DeviceConnection
 
         async Task UnlockByTap(AdvertismentReceivedEventArgs adv)
         {
+            // Standard Checks
             if (!isRunning)
                 return;
 
             if (adv == null)
                 return;
 
-            if (adv.Rssi > SdkConfig.TapProximityUnlockThreshold)
-            {
-                if (Interlocked.CompareExchange(ref _isConnecting, 1, 0) == 0)
-                {
-                    try
-                    {
-                        var connectionId = new ConnectionId(adv.Id, (byte)DefaultConnectionIdProvider.Csr);
-                        await ConnectAndUnlockByConnectionId(connectionId);
-                    }
-                    catch (Exception)
-                    {
-                        // Silent handling. Log is already printed inside of _connectionFlowProcessor.ConnectAndUnlock()
-                    }
-                    finally
-                    {
-                        // this delay allows a user to move away the device from the dongle
-                        // and prevents the repeated call of this method
-                        await Task.Delay(SdkConfig.DelayAfterMainWorkflow);
+            if (_isConnecting == 1)
+                return;
 
-                        Interlocked.Exchange(ref _isConnecting, 0);
-                    }
+            // Tap related checks
+            if (adv.Rssi <= SdkConfig.TapProximityUnlockThreshold)
+                return;
+
+            if (Interlocked.CompareExchange(ref _isConnecting, 1, 0) == 0)
+            {
+                try
+                {
+                    var connectionId = new ConnectionId(adv.Id, (byte)DefaultConnectionIdProvider.Csr);
+                    await ConnectAndUnlockByConnectionId(connectionId);
+                }
+                catch (Exception)
+                {
+                    // Silent handling. Log is already printed inside of _connectionFlowProcessor.ConnectAndUnlock()
+                }
+                finally
+                {
+                    // this delay allows a user to move away the device from the dongle
+                    // and prevents the repeated call of this method
+                    await Task.Delay(SdkConfig.DelayAfterMainWorkflow);
+
+                    Interlocked.Exchange(ref _isConnecting, 0);
                 }
             }
         }

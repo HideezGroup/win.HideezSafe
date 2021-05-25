@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace HideezMiddleware.Settings.SettingsProvider
 {
-    public class UnlockProximitySettingsProvider: Logger, IDeviceProximitySettingsProvider
+    public class EnterpriseProximitySettingsProvider: Logger, IDeviceProximitySettingsProvider
     {
         readonly ISettingsManager<ProximitySettings> _unlockProximitySettingsManager;
 
         ProximitySettings _unlockProximitySettings;
 
-        public UnlockProximitySettingsProvider(
+        public EnterpriseProximitySettingsProvider(
             ISettingsManager<ProximitySettings> unlockProximitySettingsManager,
             ILog log) :
             base(nameof(UserProximitySettingsProvider), log)
@@ -73,15 +73,20 @@ namespace HideezMiddleware.Settings.SettingsProvider
 
         }
 
+        public bool IsEnabledUnlock(ConnectionId connectionId)
+        {
+            return true;
+        }
+
+        public bool IsEnabledUnlockByActivity(ConnectionId connectionId)
+        {
+            return false;
+        }
+
         public bool IsEnabledUnlockByProximity(ConnectionId connectionId)
         {
             var isExistSettings = _unlockProximitySettings.DevicesProximity.Any(s => s.Mac == BleUtils.ConnectionIdToMac(connectionId.Id));
             return isExistSettings;
-        }
-
-        public bool IsDisabledAutoDisplay(ConnectionId connectionId)
-        {
-            return false;
         }
     }
 }

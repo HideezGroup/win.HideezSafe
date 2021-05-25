@@ -3,10 +3,13 @@ using Hideez.SDK.Communication.Connection;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Log;
 using HideezMiddleware.DeviceConnection;
+using HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle;
+using HideezMiddleware.DeviceConnection.ConnectionProcessors.Other;
 using HideezMiddleware.IPC.Messages;
 using HideezMiddleware.Modules.Csr.Messages;
 using HideezMiddleware.Modules.ServiceEvents.Messages;
 using Meta.Lib.Modules.PubSub;
+using Microsoft.Win32;
 using System;
 using System.Threading.Tasks;
 
@@ -14,25 +17,32 @@ namespace HideezMiddleware.Modules.Csr
 {
     public sealed class CsrModule : ModuleBase
     {
+        readonly AdvertisementIgnoreList _advertisementIgnoreList;
         private readonly BleConnectionManager _csrBleConnectionManager;
         private readonly TapConnectionProcessor _tapConnectionProcessor;
         private readonly ProximityConnectionProcessor _proximityConnectionProcessor;
+        private readonly ActivityConnectionProcessor _activityConnectionProcessor;
         private readonly ConnectionManagerRestarter _connectionManagerRestarter;
 
         public CsrModule(ConnectionManagersCoordinator connectionManagersCoordinator,
             ConnectionManagerRestarter connectionManagerRestarter,
+            AdvertisementIgnoreList advertisementIgnoreList,
             BleConnectionManager csrBleConnectionManager,
             TapConnectionProcessor tapConnectionProcessor,
+            ActivityConnectionProcessor activityConnectionProcessor,
             ProximityConnectionProcessor proximityConnectionProcessor,
             IMetaPubSub messenger,
             ILog log)
             : base(messenger, nameof(CsrModule), log)
         {
+            _advertisementIgnoreList = advertisementIgnoreList;
             _csrBleConnectionManager = csrBleConnectionManager;
             _tapConnectionProcessor = tapConnectionProcessor;
             _proximityConnectionProcessor = proximityConnectionProcessor;
+            _activityConnectionProcessor = activityConnectionProcessor;
             _connectionManagerRestarter = connectionManagerRestarter;
 
+            SessionSwitchMonitor.SessionSwitch += SessionSwitchMonitor_SessionSwitch;
             _csrBleConnectionManager.AdapterStateChanged += CsrBleConnectionManager_AdapterStateChanged;
             _csrBleConnectionManager.DiscoveryStopped += (s, e) => { }; // Event requires to have at least one handler
             _csrBleConnectionManager.DiscoveredDeviceAdded += (s, e) => { }; // Event requires intended to have at least one handler
@@ -45,7 +55,21 @@ namespace HideezMiddleware.Modules.Csr
             connectionManagersCoordinator.AddConnectionManager(_csrBleConnectionManager);
 
             _tapConnectionProcessor.Start();
+            _activityConnectionProcessor.Start();
             _proximityConnectionProcessor.Start();
+        }
+
+        private void SessionSwitchMonitor_SessionSwitch(int sessionId, SessionSwitchReason reason)
+        {
+            switch (reason)
+            {
+                case SessionSwitchReason.SessionLogon:
+                case SessionSwitchReason.SessionUnlock:
+                    _advertisementIgnoreList.Clear();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private async void CsrBleConnectionManager_AdapterStateChanged(object sender, EventArgs e)
@@ -83,6 +107,7 @@ namespace HideezMiddleware.Modules.Csr
         private Task OnSysteSuspending(PowerEventMonitor_SystemSuspendingMessage arg)
         {
             _proximityConnectionProcessor.Stop();
+            _activityConnectionProcessor.Stop();
             _tapConnectionProcessor.Stop();
             return Task.CompletedTask;
         }
@@ -92,6 +117,7 @@ namespace HideezMiddleware.Modules.Csr
             WriteLine("Starting restore from suspended mode"); 
             
             _proximityConnectionProcessor.Stop();
+            _activityConnectionProcessor.Stop();
             _tapConnectionProcessor.Stop();
 
             _connectionManagerRestarter.Stop();
@@ -104,7 +130,10 @@ namespace HideezMiddleware.Modules.Csr
 
             WriteLine("Starting connection processors");
             _proximityConnectionProcessor.Start();
+            _activityConnectionProcessor.Start();
             _tapConnectionProcessor.Start();
+
+            _advertisementIgnoreList.Clear();
         }
     }
 }

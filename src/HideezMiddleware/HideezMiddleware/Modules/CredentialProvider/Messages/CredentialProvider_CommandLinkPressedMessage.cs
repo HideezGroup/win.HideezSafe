@@ -1,9 +1,9 @@
 ﻿using Meta.Lib.Modules.PubSub;
 using System;
 
-namespace HideezMiddleware.IPC.Messages
+namespace HideezMiddleware.Modules.CredentialProvider.Messages
 {
-    public sealed class CredentialProvider_CommandLinkPressedMessage : PubSubMessageBase
+    internal sealed class CredentialProvider_CommandLinkPressedMessage : PubSubMessageBase
     {
         public object Sender { get; }
 

@@ -12,9 +12,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HideezMiddleware.DeviceConnection
+namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
 {
-    public sealed class RfidConnectionProcessor : BaseConnectionProcessor, IDisposable
+    public sealed class RfidConnectionProcessor : BaseConnectionProcessor
     {
         readonly IClientUiManager _clientUiManager;
         readonly HesAppConnection _hesConnection;
@@ -43,34 +43,6 @@ namespace HideezMiddleware.DeviceConnection
             _clientUiManager = clientUiManager ?? throw new ArgumentNullException(nameof(clientUiManager));
             _screenActivator = screenActivator;
         }
-
-        #region IDisposable
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        bool disposed = false;
-        void Dispose(bool disposing)
-        {
-            if (disposed)
-                return;
-
-            if (disposing)
-            {
-                _rfidService.RfidReceivedEvent -= RfidService_RfidReceivedEvent;
-            }
-
-            disposed = true;
-        }
-
-        ~RfidConnectionProcessor()
-        {
-            Dispose(false);
-        }
-        #endregion
-
         public override void Start()
         {
             lock (_lock)

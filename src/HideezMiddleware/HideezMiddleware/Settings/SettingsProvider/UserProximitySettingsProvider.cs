@@ -113,11 +113,25 @@ namespace HideezMiddleware.Settings.SettingsProvider
             return deviceSettings.EnabledLockByProximity;
         }
 
+        public bool IsEnabledUnlock(ConnectionId connectionId)
+        {
+            var id = GetSettingsIdFromConnectionId(connectionId);
+            var deviceSettings = _userProximitySettings.GetProximitySettings(id);
+            return deviceSettings.EnabledUnlock;
+        }
+
+        public bool IsEnabledUnlockByActivity(ConnectionId connectionId)
+        {
+            var id = GetSettingsIdFromConnectionId(connectionId);
+            var deviceSettings = _userProximitySettings.GetProximitySettings(id);
+            return deviceSettings.EnabledUnlockByActivation && deviceSettings.EnabledUnlock;
+        }
+
         public bool IsEnabledUnlockByProximity(ConnectionId connectionId)
         {
             var id = GetSettingsIdFromConnectionId(connectionId);
             var deviceSettings = _userProximitySettings.GetProximitySettings(id);
-            return deviceSettings.EnabledUnlockByProximity;
+            return deviceSettings.EnabledUnlockByProximity && deviceSettings.EnabledUnlock;
         }
     }
 }
