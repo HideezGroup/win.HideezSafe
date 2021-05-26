@@ -64,6 +64,7 @@
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -72,14 +73,14 @@
             <Label Grid.Row="0" Grid.Column="0" Content="PIN min length"/>
             <Label Grid.Row="1" Grid.Column="0" Content="PIN max tries"/>
             <!--<Label Grid.Row="2" Grid.Column="0" Content="Master key expiration period"/>-->
-            <Label Grid.Row="3" Grid.Column="0" Content="PIN expiration period"/>
-            <!--<Label Grid.Row="4" Grid.Column="0" Content="Button expiration period"/>-->
+            <Label Grid.Row="2" Grid.Column="0" Content="PIN expiration period"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="Button expiration period"/>
 
             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding PinMinLength}"/>
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding PinMaxTries}"/>
             <!--<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding MasterKeyExpirationPeriod}"/>-->
-            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding PinExpirationPeriod}"/>
-            <!--<TextBox Grid.Row="4" Grid.Column="1" Text="{Binding ButtonExpirationPeriod}"/>-->
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding PinExpirationPeriod}"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ButtonExpirationPeriod}"/>
 
         </Grid>
 

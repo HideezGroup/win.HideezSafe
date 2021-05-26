@@ -30,6 +30,8 @@ using Meta.Lib.Modules.PubSub;
 using HideezMiddleware.Utils;
 using Hideez.SDK.Communication.Backup;
 using System.Threading;
+using HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle;
+using HideezMiddleware.ConnectionModeProvider;
 
 namespace WinSampleApp.ViewModel
 {
@@ -1126,7 +1128,9 @@ namespace WinSampleApp.ViewModel
                 //_hesConnection.Start(HesAddress);
 
                 // Credential provider ==============================
-                _credentialProviderProxy = new CredentialProviderProxy(_log);
+                // Todo: Should be connection mode agnostic
+                ConnectionModeProvider connectionModeProvider = new ConnectionModeProvider(clientRegistryRoot, _log);
+                _credentialProviderProxy = new CredentialProviderProxy(connectionModeProvider, _log);
                 _credentialProviderProxy.Start();
 
                 // Service Settings Manager ==================================
@@ -1152,6 +1156,8 @@ namespace WinSampleApp.ViewModel
                     uiProxyManager,
                     null,
                     null,
+                    null,
+                    _messenger,
                     _log);
                 _connectionFlowProcessor = connectionFlowProcessorfactory.Create();
 
