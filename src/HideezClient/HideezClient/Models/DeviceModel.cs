@@ -618,32 +618,36 @@ namespace HideezClient.Models
                             void authCtsCancel(object sender, EventArgs e) { authCts.Cancel(); }
                             try
                             {
-                                RemoteDeviceShutdown += authCtsCancel;
-
-                                using (var remoteCts = new CancellationTokenSource())
+                                if (_remoteDevice == null)
                                 {
-                                    void remoteCtsCancel(object sender, EventArgs e) { remoteCts.Cancel(); }
-                                    try
-                                    {
-                                        RemoteDeviceShutdown += remoteCtsCancel;
-                                        await CreateRemoteDeviceAsync(remoteCts.Token);
+                                    RemoteDeviceShutdown += authCtsCancel;
 
-                                        if (remoteCts.IsCancellationRequested)
-                                        {
-                                            _log.WriteLine($"({SerialNo}) Remote vault creation cancelled");
-                                            return;
-                                        }
-                                    }
-                                    finally
+                                    using (var remoteCts = new CancellationTokenSource())
                                     {
-                                        RemoteDeviceShutdown -= remoteCtsCancel;
+                                        void remoteCtsCancel(object sender, EventArgs e) { remoteCts.Cancel(); }
+                                        try
+                                        {
+                                            RemoteDeviceShutdown += remoteCtsCancel;
+                                            await CreateRemoteDeviceAsync(remoteCts.Token);
+
+                                            if (remoteCts.IsCancellationRequested)
+                                            {
+                                                _log.WriteLine($"({SerialNo}) Remote vault creation cancelled");
+                                                return;
+                                            }
+
+                                            _log.WriteLine($"({_remoteDevice.SerialNo}) Remote vault created");
+                                            await _remoteDevice.RefreshDeviceInfo();
+                                        }
+                                        finally
+                                        {
+                                            RemoteDeviceShutdown -= remoteCtsCancel;
+                                        }
                                     }
                                 }
 
                                 if (_remoteDevice != null)
                                 {
-                                    _log.WriteLine($"({_remoteDevice.SerialNo}) Remote vault created");
-                                    await _remoteDevice.RefreshDeviceInfo();
                                     if (_remoteDevice.AccessLevel != null)
                                     {
                                         _log.WriteLine($"({_remoteDevice.SerialNo}) access profile (allOk:{_remoteDevice.AccessLevel.IsAllOk}; " +
@@ -672,20 +676,16 @@ namespace HideezClient.Models
                                 if (_remoteDevice?.AccessLevel != null && _remoteDevice.AccessLevel.IsLocked)
                                     throw new HideezException(HideezErrorCode.DeviceIsLocked);
 
-                                // Authorize vaults that do not require any additional user actions
-                                if (!IsAuthorized && _remoteDevice?.AccessLevel != null && _remoteDevice.AccessLevel.IsAllOk)
-                                    performAuthorization = true;
-
                                 // If authorization is not skipped, pefrorm normal authorization for vaults that require user actions
-                                if (!skipNormalAuth && !IsAuthorized && _remoteDevice?.AccessLevel != null && !_remoteDevice.AccessLevel.IsAllOk)
+                                if (!skipNormalAuth && !IsAuthorized)
                                     performAuthorization = true;
                                 
+                                // Exception for fresh standaloine vaults
                                 // Always authorize fresh vaults (indicated by missing user link and MasterPassword)
                                 if (_applicationMode == ApplicationMode.Standalone 
                                     && !IsAuthorized 
                                     && _remoteDevice?.AccessLevel != null 
-                                    && _remoteDevice.AccessLevel.IsLinkRequired
-                                    && _remoteDevice.AccessLevel.IsMasterKeyRequired)
+                                    && _remoteDevice.AccessLevel.IsLinkRequired)
                                     performAuthorization = true;
 
                                 if (performAuthorization)
@@ -946,8 +946,14 @@ namespace HideezClient.Models
 
         async Task LoadStorage()
         {
-            if (_remoteDevice == null || !IsAuthorized || IsLoadingStorage || PasswordManager == null)
+            if (_remoteDevice == null || IsLoadingStorage || PasswordManager == null)
                 return;
+
+            if (!IsAuthorized)
+            {
+                ShowInfo(TranslationSource.Instance["Vault.Notification.Auth.UserActionRequired"]);
+                return;
+            }
 
             try
             {

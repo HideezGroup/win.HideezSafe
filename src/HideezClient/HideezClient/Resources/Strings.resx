@@ -634,7 +634,7 @@ to access stored credentials</value>
     <value>Authorize vault access</value>
   </data>
   <data name="Menu.Authorize.Tooltip" xml:space="preserve">
-    <value>Launch authorization to access vault storage</value>
+    <value>Launch authorization to access saved credentials</value>
   </data>
   <data name="Menu.DisconnectDevice.Tooltip" xml:space="preserve">
     <value>Disconnect vault</value>
@@ -935,7 +935,10 @@ Only 1 attempt left.</value>
     <value>Please create new PIN code for your Hardware Vault</value>
   </data>
   <data name="Vault.Notification.PreparingForAuth" xml:space="preserve">
-    <value>Preparing for vault {0} authorization</value>
+    <value>Starting vault {0} authorization</value>
+  </data>
+  <data name="Vault.Notification.Auth.UserActionRequired" xml:space="preserve">
+    <value>Vault initialized. Authorize to access saved credentials.</value>
   </data>
   <data name="Vault.Notification.PressButton" xml:space="preserve">
     <value>Please press the Button on your Hardware Vault</value>
