@@ -1508,6 +1508,11 @@ namespace HideezClient.Models
 
                             return true;
                         }
+                        catch (HideezException ex) when (ex.ErrorCode == HideezErrorCode.ERR_KEY_WRONG)
+                        {
+                            _log.WriteLine(ex);
+                            ShowError(TranslationSource.Instance["Vault.Error.MasterPass.InvalidMasterPass"]);
+                        }
                         catch (HideezException ex)
                         {
                             _log.WriteLine(ex);
