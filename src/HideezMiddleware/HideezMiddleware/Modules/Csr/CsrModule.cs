@@ -124,7 +124,9 @@ namespace HideezMiddleware.Modules.Csr
 
             await Task.Delay(1000);
             WriteLine("Restarting connection manager");
+            await _csrBleConnectionManager.Stop();
             await _csrBleConnectionManager.Restart();
+            await _csrBleConnectionManager.Start();
 
             _connectionManagerRestarter.Start();
 
