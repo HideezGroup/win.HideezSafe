@@ -257,6 +257,8 @@
 
     <!-- Shutdown Hideez Client -->
     <util:CloseApplication Id="CloseHideezClientApplication" CloseMessage="yes" RebootPrompt="no" Target="HideezClient.exe" />
+    <util:CloseApplication Id="CloseHideezMaintenanceApplication" CloseMessage="yes" RebootPrompt="no" Target="Hideez Device Maintenance Application.exe" />
+    <util:CloseApplication Id="CloseHideezTemplateFactoryeApplication" CloseMessage="yes" RebootPrompt="no" Target="TemplateFactory.exe" />
   </Product>
 
   <!-- Hideez Service -->
