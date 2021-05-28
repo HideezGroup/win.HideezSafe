@@ -110,9 +110,13 @@ namespace HideezClient.PageViewModels
 
             // Tap and CPManual modes are mutually exclusive, but actually serve the same purpose
             if (connectionModeProvider.IsCsrMode)
+            {
                 UnlockModeOptionsList.Add(new UnlockModeOption { Title = TranslationSource.Instance["ProximitySettings.UnlockMode.Tap"] });
+            }
             else if (connectionModeProvider.IsWinBleMode)
+            {
                 UnlockModeOptionsList.Add(new UnlockModeOption { Title = TranslationSource.Instance["ProximitySettings.UnlockMode.CPManual"] });
+            }
             UnlockModeOptionsList.Add(new UnlockModeOption 
             { 
                 Title = TranslationSource.Instance["ProximitySettings.UnlockMode.WaitForInput"],
@@ -121,6 +125,7 @@ namespace HideezClient.PageViewModels
             UnlockModeOptionsList.Add(new UnlockModeOption 
             { 
                 Title = TranslationSource.Instance["ProximitySettings.UnlockMode.Automatic"], 
+                EnabledUnlockByActivation = true,
                 EnabledUnlockByProximity = true 
             });
 

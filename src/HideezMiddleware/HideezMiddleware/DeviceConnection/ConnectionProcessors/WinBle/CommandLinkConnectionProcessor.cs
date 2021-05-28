@@ -16,9 +16,9 @@ using HideezMiddleware.Tasks;
 using Meta.Lib.Modules.PubSub;
 using Microsoft.Win32;
 
-namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
+namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
 {
-    public sealed class ActivityConnectionProcessor : BaseConnectionProcessor
+    public sealed class CommandLinkConnectionProcessor : BaseConnectionProcessor
     {
         readonly IBleConnectionManager _bleConnectionManager;
         readonly IDeviceProximitySettingsProvider _proximitySettingsProvider;
@@ -26,13 +26,13 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
         readonly DeviceManager _deviceManager;
         readonly CredentialProviderProxy _credentialProviderProxy;
         readonly IClientUiManager _ui;
-        
+
         readonly object _lock = new object();
         int _commandLinkInterlock = 0;
         int _isConnecting = 0;
         bool isRunning = false;
 
-        public ActivityConnectionProcessor(
+        public CommandLinkConnectionProcessor(
             ConnectionFlowProcessorBase connectionFlowProcessor,
             IBleConnectionManager bleConnectionManager,
             IDeviceProximitySettingsProvider proximitySettingsProvider,
@@ -42,7 +42,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
             IClientUiManager ui,
             IMetaPubSub messenger,
             ILog log)
-            : base(connectionFlowProcessor, SessionSwitchSubject.Proximity, nameof(ActivityConnectionProcessor), messenger, log)
+            : base(connectionFlowProcessor, SessionSwitchSubject.Proximity, nameof(CommandLinkConnectionProcessor), messenger, log)
         {
             _bleConnectionManager = bleConnectionManager ?? throw new ArgumentNullException(nameof(bleConnectionManager));
             _proximitySettingsProvider = proximitySettingsProvider ?? throw new ArgumentNullException(nameof(_proximitySettingsProvider));
@@ -58,7 +58,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
             {
                 if (!isRunning)
                 {
-                    _credentialProviderProxy.ProviderActivated += CredentialProviderProxy_ProviderActivated;
+                    _credentialProviderProxy.CommandLinkPressed += CredentialProviderProxy_CommandLinkPressed;
                     isRunning = true;
                     WriteLine("Started");
                 }
@@ -70,14 +70,14 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
             lock (_lock)
             {
                 isRunning = false;
-                _credentialProviderProxy.ProviderActivated -= CredentialProviderProxy_ProviderActivated;
+                _credentialProviderProxy.CommandLinkPressed -= CredentialProviderProxy_CommandLinkPressed;
                 WriteLine("Stopped");
             }
         }
 
-        private async void CredentialProviderProxy_ProviderActivated(object sender, EventArgs e)
+        private async void CredentialProviderProxy_CommandLinkPressed(object sender, EventArgs e)
         {
-            WriteLine("Activity detected");
+            WriteLine("Command link pressed");
             _advIgnoreListMonitor.Clear();
             await WaitAdvertisementAndConnectByActivity();
         }
@@ -87,7 +87,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
             // Interlock prevents start of multiple or subsequent procedures if impatient user clicks commandLink multiple times
             if (Interlocked.CompareExchange(ref _commandLinkInterlock, 1, 0) == 0)
             {
-                var notifId = nameof(ActivityConnectionProcessor);
+                var notifId = nameof(CommandLinkConnectionProcessor);
                 try
                 {
                     await _ui.SendError("", notifId);
@@ -131,7 +131,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
                 return;
 
             var connectionId = new ConnectionId(adv.Id, _bleConnectionManager.Id);
-            if (!_proximitySettingsProvider.IsEnabledUnlockByActivity(connectionId))
+            if (!_proximitySettingsProvider.IsEnabledUnlock(connectionId))
                 return;
 
             var proximity = BleUtils.RssiToProximity(adv.Rssi);

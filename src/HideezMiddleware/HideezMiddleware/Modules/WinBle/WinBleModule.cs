@@ -20,6 +20,7 @@ namespace HideezMiddleware.Modules.WinBle
     {
         readonly AdvertisementIgnoreList _advertisementIgnoreList;
         readonly WinBleConnectionManagerWrapper _winBleConnectionManagerWrapper;
+        readonly CommandLinkConnectionProcessor _commandLinkConnectionProcessor;
         readonly ActivityConnectionProcessor _activityConnectionProcessor;
         readonly AutomaticConnectionProcessor _winBleAutomaticConnectionProcessor;
         readonly CommandLinkVisibilityController _commandLinkVisibilityController;
@@ -29,6 +30,7 @@ namespace HideezMiddleware.Modules.WinBle
             ConnectionManagerRestarter connectionManagerRestarter,
             AdvertisementIgnoreList advertisementIgnoreList,
             WinBleConnectionManagerWrapper winBleConnectionManagerWrapper,
+            CommandLinkConnectionProcessor commandLinkConnectionProcessor,
             ActivityConnectionProcessor activityConnectionProcessor,
             AutomaticConnectionProcessor winBleAutomaticConnectionProcessor,
             CommandLinkVisibilityController commandLinkVisibilityController,
@@ -38,6 +40,7 @@ namespace HideezMiddleware.Modules.WinBle
         {
             _advertisementIgnoreList = advertisementIgnoreList;
             _winBleConnectionManagerWrapper = winBleConnectionManagerWrapper;
+            _commandLinkConnectionProcessor = commandLinkConnectionProcessor;
             _activityConnectionProcessor = activityConnectionProcessor;
             _winBleAutomaticConnectionProcessor = winBleAutomaticConnectionProcessor;
             _commandLinkVisibilityController = commandLinkVisibilityController;
@@ -49,10 +52,11 @@ namespace HideezMiddleware.Modules.WinBle
 
             _connectionManagerRestarter.AddManager(_winBleConnectionManagerWrapper);
             connectionManagersCoordinator.AddConnectionManager(_winBleConnectionManagerWrapper);
-
+            
             _messenger.Subscribe(GetSafeHandler<PowerEventMonitor_SystemSuspendingMessage>(OnSystemSuspending));
             _messenger.Subscribe(GetSafeHandler<PowerEventMonitor_SystemLeftSuspendedModeMessage>(OnSystemLeftSuspendedMode));
 
+            _commandLinkConnectionProcessor.Start();
             _activityConnectionProcessor.Start();
             _winBleAutomaticConnectionProcessor.Start();
         }
@@ -109,6 +113,7 @@ namespace HideezMiddleware.Modules.WinBle
 
         private Task OnSystemSuspending(PowerEventMonitor_SystemSuspendingMessage arg)
         {
+            _commandLinkConnectionProcessor.Stop();
             _activityConnectionProcessor.Stop();
             _winBleAutomaticConnectionProcessor.Stop();
             return Task.CompletedTask;
@@ -119,9 +124,11 @@ namespace HideezMiddleware.Modules.WinBle
             WriteLine("Starting restore from suspended mode");
 
             await _winBleConnectionManagerWrapper.Stop();
+            _commandLinkConnectionProcessor.Stop();
             _activityConnectionProcessor.Stop();
             _winBleAutomaticConnectionProcessor.Stop();
 
+            _commandLinkConnectionProcessor.Start();
             _activityConnectionProcessor.Start();
             _winBleAutomaticConnectionProcessor.Start();
             await _winBleConnectionManagerWrapper.Start();

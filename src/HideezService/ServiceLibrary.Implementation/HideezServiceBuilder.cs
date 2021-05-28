@@ -407,6 +407,7 @@ namespace ServiceLibrary.Implementation
             var advIgnoreCsrList = new AdvertisementIgnoreList(csrBleConnectionManager, proximitySettingsProvider, SdkConfig.DefaultLockTimeout, log);
             var deviceManager = _container.Resolve<DeviceManager>();
             var credentialProviderProxy = _container.Resolve<CredentialProviderProxy>();
+            var uiManager = _container.Resolve<IClientUiManager>();
 
             var tapConnectionProcessor = new TapConnectionProcessor(connectionFlow, csrBleConnectionManager, messenger, log);
             var activityConnectionProcessor = new ActivityConnectionProcessor(
@@ -416,6 +417,7 @@ namespace ServiceLibrary.Implementation
                 advIgnoreCsrList,
                 deviceManager,
                 credentialProviderProxy,
+                uiManager,
                 messenger,
                 log);
             var proximityConnectionProcessor = new ProximityConnectionProcessor(
@@ -452,7 +454,6 @@ namespace ServiceLibrary.Implementation
             var winBleConnectionManager = _container.Resolve<WinBleConnectionManager>();
             var winBleConnectionManagerWrapper = new WinBleConnectionManagerWrapper(winBleConnectionManager, log);
             winBleConnectionManager.UnpairProvider = new UnpairProvider(messenger, log);
-            var workstationSettingsManager = _container.Resolve<ISettingsManager<WorkstationSettings>>();
             var proximitySettingsProvider = _container.Resolve<IDeviceProximitySettingsProvider>();
             // WinBle rssi messages arrive much less frequently than when using csr. Empirically calculated 20s rssi clear delay to be acceptable.
             var advIgnoreWinBleList = new AdvertisementIgnoreList(winBleConnectionManagerWrapper, proximitySettingsProvider, 20, log);
@@ -461,6 +462,16 @@ namespace ServiceLibrary.Implementation
             var uiManager = _container.Resolve<IClientUiManager>();
             var workstationHelper = _container.Resolve<IWorkstationHelper>();
 
+            var commandLinkConnectionProcessor = new CommandLinkConnectionProcessor(
+                connectionFlow,
+                winBleConnectionManagerWrapper,
+                proximitySettingsProvider,
+                advIgnoreWinBleList,
+                deviceManager,
+                credentialProviderProxy,
+                uiManager,
+                messenger,
+                log);
             var activityConnectionProcessor = new ActivityConnectionProcessor(
                 connectionFlow,
                 winBleConnectionManagerWrapper,
@@ -468,6 +479,7 @@ namespace ServiceLibrary.Implementation
                 advIgnoreWinBleList,
                 deviceManager,
                 credentialProviderProxy,
+                uiManager,
                 messenger,
                 log);
             var automaticConnectionProcessor = new AutomaticConnectionProcessor(
@@ -497,6 +509,7 @@ namespace ServiceLibrary.Implementation
                 connectionManagersRestarter,
                 advIgnoreWinBleList,
                 winBleConnectionManagerWrapper,
+                commandLinkConnectionProcessor,
                 activityConnectionProcessor,
                 automaticConnectionProcessor,
                 commandLinkVisibilityController,

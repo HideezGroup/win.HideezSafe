@@ -71,8 +71,6 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
                 if (!isRunning)
                 {
                     _winBleConnectionManagerWrapper.AdvertismentReceived += BleConnectionManager_AdvertismentReceived;
-                    _credentialProviderProxy.ProviderActivated += CredentialProviderProxy_ProviderActivated;
-                    _credentialProviderProxy.CommandLinkPressed += CredentialProviderProxy_CommandLinkPressed;
                     _messenger.Subscribe<ConnectPairedVaultsMessage>(OnConnectPairedVaults);
                     isRunning = true;
                     WriteLine("Started");
@@ -86,30 +84,8 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
             {
                 isRunning = false;
                 _winBleConnectionManagerWrapper.AdvertismentReceived -= BleConnectionManager_AdvertismentReceived;
-                _credentialProviderProxy.ProviderActivated -= CredentialProviderProxy_ProviderActivated;
-                _credentialProviderProxy.CommandLinkPressed -= CredentialProviderProxy_CommandLinkPressed;
                 _messenger.Unsubscribe<ConnectPairedVaultsMessage>(OnConnectPairedVaults);
                 WriteLine("Stopped");
-            }
-        }
-
-        async void CredentialProviderProxy_ProviderActivated(object sender, EventArgs e)
-        {
-            if (_winBleConnectionManager.ConnectionControllers.Count != 0 && _winBleConnectionManager.State == BluetoothAdapterState.PoweredOn)
-            {
-                WriteLine("Provider activated");
-                _advIgnoreListMonitor.Clear();
-                await WaitAdvertisementAndConnectByProximity();
-            }
-        }
-
-        async void CredentialProviderProxy_CommandLinkPressed(object sender, EventArgs e)
-        {
-            if (_winBleConnectionManager.ConnectionControllers.Count != 0 && _winBleConnectionManager.State == BluetoothAdapterState.PoweredOn)
-            {
-                WriteLine("Command link request");
-                _advIgnoreListMonitor.Clear();
-                await WaitAdvertisementAndConnectByProximity();
             }
         }
 
@@ -138,7 +114,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
                     var adv = await new WaitAdvertisementProc(_winBleConnectionManagerWrapper).Run(10_000);
                     if (adv != null)
                     {
-                        await ConnectByProximity(adv, true);
+                        await ConnectByProximity(adv);
                     }
                     else
                     {
@@ -157,7 +133,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
             }
         }
 
-        async Task ConnectByProximity(AdvertismentReceivedEventArgs adv, bool isCommandLinkPressed = false)
+        async Task ConnectByProximity(AdvertismentReceivedEventArgs adv)
         {
             // Standard checks
             if (!isRunning)
@@ -173,33 +149,12 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
             if (_advIgnoreListMonitor.IsIgnored(adv.Id))
                 return;
 
-            var proximity = BleUtils.RssiToProximity(adv.Rssi);
-
             var connectionId = new ConnectionId(adv.Id, (byte)DefaultConnectionIdProvider.WinBle);
+            if (_workstationHelper.IsActiveSessionLocked() && !_proximitySettingsProvider.IsEnabledUnlockByProximity(connectionId))
+                return;
 
-            if (_workstationHelper.IsActiveSessionLocked())
-            {
-                if (!_proximitySettingsProvider.IsEnabledUnlockByProximity(connectionId) && !isCommandLinkPressed)
-                    return;
-
-                if (proximity < _proximitySettingsProvider.GetUnlockProximity(connectionId))
-                {
-                    if (isCommandLinkPressed)
-                    {
-                        await _ui.SendNotification("");
-                        await _ui.SendError(TranslationSource.Instance["ConnectionProcessor.LowProximity"]);
-                    }
-
-                    return;
-                }
-            }
-
-            await Connect(connectionId);
-        }
-
-        async Task Connect(ConnectionId connectionId)
-        {
-            if (_advIgnoreListMonitor.IsIgnored(connectionId.Id))
+            var proximity = BleUtils.RssiToProximity(adv.Rssi);
+            if (proximity < _proximitySettingsProvider.GetUnlockProximity(connectionId))
                 return;
 
             if (Interlocked.CompareExchange(ref _isConnecting, 1, 0) == 0)
@@ -211,14 +166,14 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
                         // If device from advertisement already exists and is connected, ignore advertisement
                         var device = _deviceManager.Devices.FirstOrDefault(d =>
                         {
-                            return WinBleUtils.WinBleIdToMac(d.DeviceConnection.Connection.ConnectionId.Id) 
-                            == WinBleUtils.WinBleIdToMac(connectionId.Id)
-                            && !(d is IRemoteDeviceProxy);
+                            return WinBleUtils.WinBleIdToMac(d.DeviceConnection.Connection.ConnectionId.Id)
+                                == WinBleUtils.WinBleIdToMac(connectionId.Id)
+                                && !(d is IRemoteDeviceProxy);
                         });
 
-                        if (device != null 
-                            && device.IsConnected 
-                            && device.GetUserProperty<HwVaultConnectionState>(CustomProperties.HW_CONNECTION_STATE_PROP) 
+                        if (device != null
+                            && device.IsConnected
+                            && device.GetUserProperty<HwVaultConnectionState>(CustomProperties.HW_CONNECTION_STATE_PROP)
                             == HwVaultConnectionState.Online)
                             return;
 

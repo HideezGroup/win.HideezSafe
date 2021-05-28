@@ -139,6 +139,7 @@
     <Compile Include="DeviceConnection\ConnectionProcessors\Other\ActivityConnectionProcessor.cs" />
     <Compile Include="DeviceConnection\ConnectionProcessors\IConnectionProcessor.cs" />
     <Compile Include="DeviceConnection\ConnectionProcessors\WinBle\AutomaticConnectionProcessor.cs" />
+    <Compile Include="DeviceConnection\ConnectionProcessors\WinBle\CommandLinkConnectionProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\AccountsUpdateProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\ActivationProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\CacheVaultInfoProcessor.cs" />
