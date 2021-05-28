@@ -44,7 +44,10 @@ namespace HideezMiddleware.DeviceConnection
 
             _bleConnectionManager.AdvertismentReceived += BleConnectionManager_AdvertismentReceived;
             _bleConnectionManager.AdapterStateChanged += BleConnectionManager_AdapterStateChanged;
+            _bleConnectionManager.ControllerAdded += BleConnectionManager_ControllerAdded;
+            _bleConnectionManager.ControllerRemoved += BleConnectionManager_ControllerRemoved;
         }
+
 
         #region IDisposable
         public void Dispose()
@@ -63,6 +66,8 @@ namespace HideezMiddleware.DeviceConnection
             {
                 _bleConnectionManager.AdvertismentReceived -= BleConnectionManager_AdvertismentReceived;
                 _bleConnectionManager.AdapterStateChanged -= BleConnectionManager_AdapterStateChanged;
+                _bleConnectionManager.ControllerAdded -= BleConnectionManager_ControllerAdded;
+                _bleConnectionManager.ControllerRemoved -= BleConnectionManager_ControllerRemoved;
                 Clear();
             }
 
@@ -162,6 +167,25 @@ namespace HideezMiddleware.DeviceConnection
             // TODO: When "Resetting" state is implemented, instead clear list on all changes except "PoweredOn" and "Resetting"
             if (_bleConnectionManager.State == BluetoothAdapterState.PoweredOff || _bleConnectionManager.State == BluetoothAdapterState.Unknown)
                 Clear();
+        }
+
+        void BleConnectionManager_ControllerAdded(object sender, ControllerAddedEventArgs e)
+        {
+            e.Controller.ConnectionStateChanged += Controller_ConnectionStateChanged;
+        }
+        
+        void BleConnectionManager_ControllerRemoved(object sender, ControllerRemovedEventArgs e)
+        {
+            e.Controller.ConnectionStateChanged -= Controller_ConnectionStateChanged;
+        }
+
+        void Controller_ConnectionStateChanged(object sender, EventArgs e)
+        {
+            var controller = sender as IConnectionController;
+            if (controller?.State == Hideez.SDK.Communication.ConnectionState.NotConnected)
+            {
+                Ignore(controller.Id);
+            }
         }
 
         void RemoveTimedOutRecords()
