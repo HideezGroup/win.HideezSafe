@@ -134,7 +134,7 @@ namespace HideezClient.Controls
 
         private void Timer_Tick(object s, EventArgs e)
         {
-            Options.TaskCompletionSource?.TrySetException(new TimeoutException("Close notification by timeout."));
+            Options.TaskCompletionSource?.TrySetResult(false);
             timer.Tick -= Timer_Tick;
             timer.Stop();
             Close();
