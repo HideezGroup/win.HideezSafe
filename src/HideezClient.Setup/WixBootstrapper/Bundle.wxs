@@ -65,8 +65,8 @@
     <Variable Name="EnterpriseInstallRadio" Type="numeric" Value="0" bal:Overridable="no"/>
     
     <!-- Vault connection option -->
-    <!--<Variable Name="UseWin10Radio" Type="numeric" Value="1" bal:Overridable="no" />-->
-    <Variable Name="UseHDongleRadio" Type="numeric" Value="1" bal:Overridable="no" />
+    <Variable Name="UseWin10Radio" Type="numeric" Value="1" bal:Overridable="no" />
+    <Variable Name="UseHDongleRadio" Type="numeric" Value="0" bal:Overridable="no" />
     
     <Chain DisableSystemRestore="yes">
       <!-- Install .Net Framework 4.7.2 -->
