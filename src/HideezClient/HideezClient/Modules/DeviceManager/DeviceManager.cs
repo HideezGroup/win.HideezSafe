@@ -207,7 +207,7 @@ namespace HideezClient.Modules.DeviceManager
             {
                 removedDevice.PropertyChanged -= Device_PropertyChanged;
                 await removedDevice.ShutdownRemoteDeviceAsync(HideezErrorCode.DeviceRemoved);
-                await removedDevice.CloseAsync();
+                removedDevice.Dispose();
                 DevicesCollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, device));
             }
         }

@@ -38,7 +38,7 @@ using Hideez.SDK.Communication.BLE;
 namespace HideezClient.Models
 {
     // Todo: Implement thread-safety lock for password manager and remote device
-    public class DeviceModel : ObservableObject
+    public class DeviceModel : ObservableObject, IDisposable
     {
         const int INIT_TIMEOUT = 5_000;
         readonly int CREDENTIAL_TIMEOUT = SdkConfig.MainWorkflowTimeout;
@@ -1620,19 +1620,41 @@ namespace HideezClient.Models
         }
         #endregion
 
-        public async Task CloseAsync()
+        #region IDisposable Support
+        bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
         {
-            PropertyChanged -= Device_PropertyChanged;
-            StopDeviceMessengerAsync();
-            await _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.DeviceConnectionStateChangedMessage>(OnDeviceConnectionStateChanged);
-            await _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.DeviceInitializedMessage>(OnDeviceInitialized);
-            await _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.DeviceFinishedMainFlowMessage>(OnDeviceFinishedMainFlow);
-            await _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.DeviceProximityChangedMessage>(OnDeviceProximityChanged);
-            await _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.DeviceBatteryChangedMessage>(OnDeviceBatteryChanged);
-            await _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.DeviceProximityLockEnabledMessage>(OnDeviceProximityLockEnabled);
-            await _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.LockDeviceStorageMessage>(OnLockDeviceStorage);
-            await _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.LiftDeviceStorageLockMessage>(OnLiftDeviceStorageLock);
-            await _metaMessenger.Unsubscribe<SessionSwitchMessage>(OnSessionSwitch);
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    PropertyChanged -= Device_PropertyChanged;
+                    _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.DeviceConnectionStateChangedMessage>(OnDeviceConnectionStateChanged);
+                    _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.DeviceInitializedMessage>(OnDeviceInitialized);
+                    _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.DeviceFinishedMainFlowMessage>(OnDeviceFinishedMainFlow);
+                    _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.DeviceProximityChangedMessage>(OnDeviceProximityChanged);
+                    _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.DeviceBatteryChangedMessage>(OnDeviceBatteryChanged);
+                    _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.DeviceProximityLockEnabledMessage>(OnDeviceProximityLockEnabled);
+                    _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.LockDeviceStorageMessage>(OnLockDeviceStorage);
+                    _metaMessenger.Unsubscribe<HideezMiddleware.IPC.Messages.LiftDeviceStorageLockMessage>(OnLiftDeviceStorageLock);
+                    _metaMessenger.Unsubscribe<SessionSwitchMessage>(OnSessionSwitch);
+                    StopDeviceMessengerAsync();
+                }
+
+                disposed = true;
+            }
+        }
+
+        ~DeviceModel()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         async void StopDeviceMessengerAsync()
@@ -1652,5 +1674,6 @@ namespace HideezClient.Models
                 _log.WriteLine(ex);
             }
         }
+        #endregion
     }
 }
