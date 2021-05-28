@@ -464,12 +464,15 @@
                                 x:Name="FillRectangle"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
-                                Opacity="0.1" />
+                                Opacity="0.1"
+                                Fill="Transparent"
+                                Cursor="Hand" />
                             <ContentPresenter
                                 Margin="3"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Content="{TemplateBinding Content}" />
+                                Content="{TemplateBinding Content}"
+                                IsHitTestVisible="False" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
