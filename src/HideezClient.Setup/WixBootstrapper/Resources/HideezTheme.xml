@@ -25,7 +25,7 @@
     <Button Name="EnterpriseInstallRadio" X="180" Y="135" Width="-11" Height="17" TabStop="yes" FontId="3" HexStyle="00000009">#(loc.InstallEnterpriseButton)</Button>
 
     <Text X="180" Y="180" Width="-11" Height="17" FontId="3">#(loc.InstallSelectConnectionTypeText)</Text>
-    <Button Name="UseWin10Radio"  X="180" Y="210" Width="-11" Height="17" TabStop="yes" FontId="3" HexStyle="00000009">#(loc.UseWin10Radio)</Button>
+    <Button Name="UseWin10Radio"  X="180" Y="210" Width="-11" Height="17" TabStop="yes" FontId="3" HexStyle="00020009">#(loc.UseWin10Radio)</Button>
     <Button Name="UseHDongleRadio"  X="180" Y="235" Width="-11" Height="17" TabStop="yes" FontId="3" HexStyle="00000009">#(loc.UseHDongleRadio)</Button>
     
     <Hypertext Name="EulaHyperlink" X="17" Y="-64" Width="-11" Height="17" TabStop="yes" FontId="3" HideWhenDisabled="yes">#(loc.InstallLicenseLinkText)</Hypertext>
