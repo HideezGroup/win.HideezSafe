@@ -215,7 +215,8 @@
                                             Style="{DynamicResource LabelStyle}"
                                             Margin="0,0,0,18"
                                             Text="{l:Localization AccessSettings.StorageLockTimeout}" />
-                                        <ComboBox 
+                                        <!-- Disabled until firmware is fixed -->
+                                        <!--<ComboBox 
                                             HorizontalAlignment="Left"
                                             MinWidth="150"
                                             IsTabStop="True"
@@ -224,7 +225,7 @@
                                             DisplayMemberPath="Title"
                                             SelectedItem="{Binding SelectedTimeout}"
                                             Tag="{Binding SelectedTimeout.Title}" 
-                                            />
+                                            />-->
                                     </StackPanel>
                                     <StackPanel 
                                         Grid.Column="1" 

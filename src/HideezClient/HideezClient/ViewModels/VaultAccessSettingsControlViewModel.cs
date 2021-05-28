@@ -267,6 +267,9 @@ namespace HideezClient.ViewModels
             {
                 IsSaving = true;
 
+                // Temporary, until firmware is updated
+                SelectedTimeout = TimeoutOptionsList[5]; // 4h option
+
                 isSaved = await Device.ChangeAccessProfile(RequirePin, RequireButton, SelectedTimeout.TimeoutSeconds);
                 if (isSaved)
                 {
