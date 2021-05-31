@@ -9,13 +9,14 @@ using HideezMiddleware.IPC.DTO;
 using HideezMiddleware.IPC.Messages;
 using HideezMiddleware.Modules.DeviceManagement.Messages;
 using HideezMiddleware.Modules.Hes.Messages;
-using HideezMiddleware.Modules.ServiceEvents.Messages;
 using HideezMiddleware.ReconnectManager;
 using HideezMiddleware.Utils.WorkstationHelper;
 using Meta.Lib.Modules.PubSub;
 using Microsoft.Win32;
 using System;
 using System.Threading.Tasks;
+using WinBle;
+using Windows.Devices.Enumeration;
 
 namespace HideezMiddleware.Modules.ReconnectAndWorkstationLock
 {
@@ -24,6 +25,9 @@ namespace HideezMiddleware.Modules.ReconnectAndWorkstationLock
         readonly DeviceReconnectManager _deviceReconnectManager;
         readonly WorkstationLockProcessor _workstationLockProcessor;
         readonly UniversalWorkstationLocker _universalWorkstationLocker;
+        readonly WinBleDeviceWatcher _winBleDeviceWatcher;
+
+        int _winBleDevicesCount = 0;
 
         public WorkstationLockModule(DeviceReconnectManager deviceReconnectManager,
             IWorkstationHelper workstationHelper,
@@ -55,8 +59,26 @@ namespace HideezMiddleware.Modules.ReconnectAndWorkstationLock
             _messenger.Subscribe(GetSafeHandler<HesAppConnection_AlarmMessage>(HesAppConnection_Alarm));
 
             proximityMonitorManager.Start();
-            //_deviceReconnectManager.Start(); // Reconnect feature is disabled until further notice
             _workstationLockProcessor.Start();
+
+            // Dynamic reconnect switch based on existance of paired WinBleDevices
+            _winBleDeviceWatcher = new WinBleDeviceWatcher(log);
+            _winBleDeviceWatcher.Added += (e, a) =>
+            {
+                _winBleDevicesCount++;
+                if (_winBleDevicesCount > 0)
+                    _deviceReconnectManager.Start();
+            };
+            _winBleDeviceWatcher.Removed += (e, a) =>
+            {
+                _winBleDevicesCount--;
+                if (_winBleDevicesCount <= 0)
+                {
+                    _winBleDevicesCount = 0;
+                    _deviceReconnectManager.Stop();
+                }
+            };
+            _winBleDeviceWatcher.Start();
         }
 
         private async void WorkstationLockProcessor_DeviceProxLockEnabled(object sender, IDevice device)

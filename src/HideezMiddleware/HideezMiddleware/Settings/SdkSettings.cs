@@ -77,7 +77,7 @@ namespace HideezMiddleware.Settings
         [Setting]
         public int SystemStateEventWaitTimeout { get; set; } = 2_000;
         [Setting]
-        public int ReconnectDeviceTimeout { get; set; } = 4_000;
+        public int ReconnectDeviceTimeout { get; set; } = 8_000;
         
 
         [Setting]
