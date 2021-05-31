@@ -70,6 +70,7 @@ namespace HideezClient.Modules
                         FileName = updateFilepath,
                         Verb = "runas",
                         UseShellExecute = true,
+                        Arguments = "-passive",
                     };
                     Process.Start(processStartInfo);
                 }
