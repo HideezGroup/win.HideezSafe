@@ -30,6 +30,7 @@ namespace HideezMiddleware.CredentialProvider
             _connectionFlowProcessor = connectionFlowProcessor;
 
             _cpProxy.Connected += CredentialProviderProxy_Connected;
+            _cpProxy.ProviderActivated += CredentialProviderProxy_Activated;
 
             _winBleConnectionManager.ControllerAdded += ConnectionManager_BondedControllerAdded;
             _winBleConnectionManager.ControllerRemoved += ConnectionManager_BondedControllerRemoved;
@@ -39,6 +40,11 @@ namespace HideezMiddleware.CredentialProvider
         }
 
         async void CredentialProviderProxy_Connected(object sender, EventArgs e)
+        {
+            await UpdateControlLinkVisibility();
+        }
+
+        async void CredentialProviderProxy_Activated(object sender, EventArgs e)
         {
             await UpdateControlLinkVisibility();
         }
