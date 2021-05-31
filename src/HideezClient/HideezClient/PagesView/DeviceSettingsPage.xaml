@@ -209,13 +209,13 @@
                                             Content="{l:Localization AccessSettings.RequirePin}"
                                             Margin="0,0,0,18"
                                             IsChecked="{Binding RequirePin}" />
-                                        <TextBlock
+                                        <!-- Disabled until firmware is fixed -->
+                                        <!--<TextBlock
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Center"
                                             Style="{DynamicResource LabelStyle}"
                                             Margin="0,0,0,18"
-                                            Text="{l:Localization AccessSettings.StorageLockTimeout}" />
-                                        <!-- Disabled until firmware is fixed -->
+                                            Text="{l:Localization AccessSettings.StorageLockTimeout}" />-->
                                         <!--<ComboBox 
                                             HorizontalAlignment="Left"
                                             MinWidth="150"
