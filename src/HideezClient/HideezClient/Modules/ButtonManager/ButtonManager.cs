@@ -53,13 +53,13 @@ namespace HideezClient.Modules.ButtonManager
             UserAction action;
             switch (msg.Button)
             {
-                case ButtonPressCode.Single:
+                case ButtonPressCode.Double:
                     action = UserAction.InputLogin;
                     break;
-                case ButtonPressCode.Double:
+                case ButtonPressCode.Triple:
                     action = UserAction.InputPassword;
                     break;
-                case ButtonPressCode.Triple:
+                case ButtonPressCode.Quad:
                     action = UserAction.InputOtp;
                     break;
                 default:
