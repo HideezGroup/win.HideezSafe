@@ -185,6 +185,15 @@
                       Name="client_hes_address"
                       Type="raw" />
     </Property>
+    
+    <Property Id="SAVEDCUSTOMUPDATESERVER" Secure="yes" Value=" ">
+      <RegistrySearch Id="FindSavedCUSTOMUPDATESERVER"
+                      Root="HKLM"
+                      Key="SOFTWARE\Hideez\Client"
+                      Name="custom_update_srv_address"
+                      Type="raw" />
+    </Property>
+    
     <!-- Preserve saved values of connection modes on updates-->
     <Property Id="SAVEDUSEWIN10" Secure="yes">
       <RegistrySearch Id="FindSavedUSEWIN10"
@@ -309,7 +318,7 @@
 
       <Component Id="CustomUpdateServerAddress" Guid="{63B08D55-89FB-4C47-9A72-C014EF09C1EB}">
         <RegistryKey Root="HKLM" Key="SOFTWARE\Hideez\Client" >
-          <RegistryValue Type="string" Name="custom_update_srv_address" Value="" />
+          <RegistryValue Type="string" Name="custom_update_srv_address" Value="[SAVEDCUSTOMUPDATESERVER]" />
         </RegistryKey>
       </Component>
       
