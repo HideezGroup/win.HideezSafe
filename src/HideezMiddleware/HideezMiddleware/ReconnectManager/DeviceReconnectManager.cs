@@ -54,7 +54,9 @@ namespace HideezMiddleware.ReconnectManager
 
         private void ConnectionFlowProcessor_DeviceFinalizingMainFlow(object sender, IDevice e)
         {
-            EnableDeviceReconnect(e);
+            // Reconnect is intended to be used only by devices connected through dongle
+            if (e.DeviceConnection.Connection.ConnectionId.IdProvider == (byte)DefaultConnectionIdProvider.Csr)
+                EnableDeviceReconnect(e);
         }
 
         void DeviceManager_DeviceRemoved(object sender, DeviceRemovedEventArgs e)

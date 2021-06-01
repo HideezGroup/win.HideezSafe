@@ -186,6 +186,10 @@ namespace HideezMiddleware.DeviceConnection
             {
                 Ignore(controller.Id);
             }
+            else
+            {
+                Remove(controller.Id);
+            }
         }
 
         void RemoveTimedOutRecords()
