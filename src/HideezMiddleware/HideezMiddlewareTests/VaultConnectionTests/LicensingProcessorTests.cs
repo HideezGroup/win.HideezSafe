@@ -98,7 +98,7 @@ namespace HideezMiddleware.Tests.VaultConnectionTests
             vaultMock.SetupGet(d => d.AccessLevel).Returns(new AccessLevel(true, false, false, false, false, false));
             vaultMock.Setup(x => x.DeviceConnection).Returns(MockFactory.GetConnectionControllerMock().Object);
 
-            var list = new List<HwVaultLicenseDto>() { new HwVaultLicenseDto() { Data = null, Id = "LicenseId_1" } } as IList<HwVaultLicenseDto>;
+            var list = new List<HwVaultLicenseDto>() { new HwVaultLicenseDto() { Data = new byte[0], Id = "LicenseId_1" } } as IList<HwVaultLicenseDto>;
             Task<IList<HwVaultLicenseDto>> resultTask = Task.FromResult(list);
             var connectionMock = new Mock<IHesAppConnection>();
             connectionMock.SetupGet(x => x.State).Returns(HesConnectionState.Connected);

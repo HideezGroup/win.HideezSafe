@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Messaging;
-using HideezClient.Modules.ServiceProxy;
 using Moq;
 using NUnit.Framework;
 using HideezMiddleware.IPC.DTO;
 using Meta.Lib.Modules.PubSub;
 using HideezMiddleware.IPC.Messages;
+using HideezMiddleware.ApplicationModeProvider;
+using AutoFixture;
+using AutoFixture.AutoMoq;
 
 namespace HideezClient.Modules.DeviceManager.Tests
 {
@@ -19,7 +20,7 @@ namespace HideezClient.Modules.DeviceManager.Tests
         public async Task EnumerateDevices_FluctuatingServiceConnection_DevicesEnumerated()
         {
             var devices = new List<DeviceDTO>();
-            IMetaPubSub messenger = GetMessenger();
+            IMetaPubSub messenger = new MetaPubSub();
             IMetaPubSub hub = new MetaPubSub();
             hub.StartServer("Test1");
 
@@ -46,7 +47,7 @@ namespace HideezClient.Modules.DeviceManager.Tests
         public async Task DeviceCollectionChanged_AddDevices_DevicesEnumerated()
         {
             var devices = new List<DeviceDTO>();
-            IMetaPubSub messenger = GetMessenger();
+            IMetaPubSub messenger = new MetaPubSub();
             IDeviceManager deviceManager = GetDeviceManager(messenger);
 
             await Task.Run(() =>
@@ -81,7 +82,7 @@ namespace HideezClient.Modules.DeviceManager.Tests
         public async Task DeviceCollectionChanged_AddDevicesAsync_DevicesEnumerated()
         {
             var devices = new List<DeviceDTO>();
-            IMetaPubSub messenger = GetMessenger();
+            IMetaPubSub messenger = new MetaPubSub();
 
             devices.Add(GetRandomDeviceDTO());
 
@@ -120,7 +121,7 @@ namespace HideezClient.Modules.DeviceManager.Tests
         {
             // Arrange
             var devices = new List<DeviceDTO>();
-            IMetaPubSub messenger = GetMessenger();
+            IMetaPubSub messenger = new MetaPubSub();
             IMetaPubSub hub = new MetaPubSub();
             hub.StartServer("Test2");
             await messenger.TryConnectToServer("Test2");
@@ -144,7 +145,7 @@ namespace HideezClient.Modules.DeviceManager.Tests
         public async Task EnumerateDevices_QuickReconnect_DevicesCollectionEnumerated()
         {
             var devices = new List<DeviceDTO>();
-            IMetaPubSub messenger = GetMessenger();
+            IMetaPubSub messenger = new MetaPubSub();
             IDeviceManager deviceManager = GetDeviceManager(messenger);
             IMetaPubSub hub = new MetaPubSub();
             hub.StartServer("Test3");
@@ -168,30 +169,30 @@ namespace HideezClient.Modules.DeviceManager.Tests
 
         private IDeviceManager GetDeviceManager(IMetaPubSub messanger)
         {
-            return new DeviceManager(messanger, new Mock<IWindowsManager>().Object, new Mock<IRemoteDeviceFactory>().Object);
+            return new DeviceManager(messanger, 
+                new Mock<IWindowsManager>().Object, 
+                new Mock<IRemoteDeviceFactory>().Object, 
+                new Mock<IApplicationModeProvider>().Object);
         }
 
         private IDeviceManager GetDeviceManager(IMetaPubSub messanger, List<DeviceDTO> devices)
         {
-            return new DeviceManager(messanger, new Mock<IWindowsManager>().Object, new Mock<IRemoteDeviceFactory>().Object, devices);
-        }
-
-        private IMetaPubSub GetMessenger()
-        {
-            return new MetaPubSub();
+            return new DeviceManager(messanger,
+                new Mock<IWindowsManager>().Object,
+                new Mock<IRemoteDeviceFactory>().Object,
+                new Mock<IApplicationModeProvider>().Object,
+                devices);
         }
 
         private DeviceDTO GetRandomDeviceDTO()
         {
-            return new DeviceDTO
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = Guid.NewGuid().ToString(),
-                SerialNo = Guid.NewGuid().ToString(),
-                ChannelNo = 1,
-                IsConnected = true,
-            };
-        }
+            var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
 
+            return fixture.Build<DeviceDTO>()
+                .With(d => d.ChannelNo, 1)
+                .With(d => d.IsConnected, true)
+                .With(d => d.SnapshotTime, DateTime.Now)
+                .Create();
+        }
     }
 }

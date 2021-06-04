@@ -1,6 +1,8 @@
 ﻿using Hideez.SDK.Communication.BLE;
+using Hideez.SDK.Communication.Connection;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Log;
+using Hideez.SDK.Communication.Proximity.Interfaces;
 using HideezMiddleware.DeviceConnection;
 using HideezMiddleware.Settings;
 using Moq;
@@ -15,6 +17,7 @@ namespace HideezMiddleware.Tests
     {
         readonly int _rssiDelaySeconds = 4;
         readonly int _ignoreLifetime = 2;
+        readonly int _lockProximity = 30;
 
         [Test]
         public void IgnoredId_CheckIfIgnored_Ignored()
@@ -22,13 +25,12 @@ namespace HideezMiddleware.Tests
             // Arrange
             var connectionManagerMock = new Mock<IBleConnectionManager>();
 
-            var ws = new WorkstationSettings();
-            var settingsManagerMock = new Mock<ISettingsManager<WorkstationSettings>>();
-            settingsManagerMock.SetupGet(mock => mock.Settings).Returns(ws);
+            var proximitySettingsManager = new Mock<IDeviceProximitySettingsProvider>();
+            proximitySettingsManager.Setup(mock => mock.GetLockProximity(It.IsAny<ConnectionId>())).Returns(_lockProximity);
 
             var logMock = new Mock<ILog>();
 
-            var advIgnoreList = new AdvertisementIgnoreList(connectionManagerMock.Object, settingsManagerMock.Object, _rssiDelaySeconds, logMock.Object);
+            var advIgnoreList = new AdvertisementIgnoreList(connectionManagerMock.Object, proximitySettingsManager.Object, _rssiDelaySeconds, logMock.Object);
 
             var id = Guid.NewGuid().ToString();
 
@@ -45,13 +47,12 @@ namespace HideezMiddleware.Tests
             // Arrange
             var connectionManagerMock = new Mock<IBleConnectionManager>();
 
-            var ws = new WorkstationSettings();
-            var settingsManagerMock = new Mock<ISettingsManager<WorkstationSettings>>();
-            settingsManagerMock.SetupGet(mock => mock.Settings).Returns(ws);
+            var proximitySettingsManager = new Mock<IDeviceProximitySettingsProvider>();
+            proximitySettingsManager.Setup(mock => mock.GetLockProximity(It.IsAny<ConnectionId>())).Returns(_lockProximity);
 
             var logMock = new Mock<ILog>();
 
-            var advIgnoreList = new AdvertisementIgnoreList(connectionManagerMock.Object, settingsManagerMock.Object, _rssiDelaySeconds, logMock.Object);
+            var advIgnoreList = new AdvertisementIgnoreList(connectionManagerMock.Object, proximitySettingsManager.Object, _rssiDelaySeconds, logMock.Object);
 
             var id = Guid.NewGuid().ToString();
 
@@ -68,13 +69,12 @@ namespace HideezMiddleware.Tests
             // Arrange
             var connectionManagerMock = new Mock<IBleConnectionManager>();
 
-            var ws = new WorkstationSettings();
-            var settingsManagerMock = new Mock<ISettingsManager<WorkstationSettings>>();
-            settingsManagerMock.SetupGet(mock => mock.Settings).Returns(ws);
+            var proximitySettingsManager = new Mock<IDeviceProximitySettingsProvider>();
+            proximitySettingsManager.Setup(mock => mock.GetLockProximity(It.IsAny<ConnectionId>())).Returns(_lockProximity);
 
             var logMock = new Mock<ILog>();
 
-            var advIgnoreList = new AdvertisementIgnoreList(connectionManagerMock.Object, settingsManagerMock.Object, _rssiDelaySeconds, logMock.Object);
+            var advIgnoreList = new AdvertisementIgnoreList(connectionManagerMock.Object, proximitySettingsManager.Object, _rssiDelaySeconds, logMock.Object);
 
             var id = Guid.NewGuid().ToString();
 
@@ -91,13 +91,12 @@ namespace HideezMiddleware.Tests
             // Arrange
             var connectionManagerMock = new Mock<IBleConnectionManager>();
 
-            var ws = new WorkstationSettings();
-            var settingsManagerMock = new Mock<ISettingsManager<WorkstationSettings>>();
-            settingsManagerMock.SetupGet(mock => mock.Settings).Returns(ws);
+            var proximitySettingsManager = new Mock<IDeviceProximitySettingsProvider>();
+            proximitySettingsManager.Setup(mock => mock.GetLockProximity(It.IsAny<ConnectionId>())).Returns(_lockProximity);
 
             var logMock = new Mock<ILog>();
 
-            var advIgnoreList = new AdvertisementIgnoreList(connectionManagerMock.Object, settingsManagerMock.Object, _rssiDelaySeconds, logMock.Object);
+            var advIgnoreList = new AdvertisementIgnoreList(connectionManagerMock.Object, proximitySettingsManager.Object, _rssiDelaySeconds, logMock.Object);
 
             var id = Guid.NewGuid().ToString();
 
@@ -114,17 +113,16 @@ namespace HideezMiddleware.Tests
             // Arrange
             var connectionManagerMock = new Mock<IBleConnectionManager>();
 
-            var ws = new WorkstationSettings();
-            var settingsManagerMock = new Mock<ISettingsManager<WorkstationSettings>>();
-            settingsManagerMock.SetupGet(mock => mock.Settings).Returns(ws);
+            var proximitySettingsManager = new Mock<IDeviceProximitySettingsProvider>();
+            proximitySettingsManager.Setup(mock => mock.GetLockProximity(It.IsAny<ConnectionId>())).Returns(_lockProximity);
 
             var logMock = new Mock<ILog>();
 
-            var advIgnoreList = new AdvertisementIgnoreList(connectionManagerMock.Object, settingsManagerMock.Object, _rssiDelaySeconds, logMock.Object);
+            var advIgnoreList = new AdvertisementIgnoreList(connectionManagerMock.Object, proximitySettingsManager.Object, _rssiDelaySeconds, logMock.Object);
 
             var id = Guid.NewGuid().ToString();
 
-            var lockRssi = (sbyte)BleUtils.ProximityToRssi(ws.LockProximity + 2);
+            var lockRssi = (sbyte)BleUtils.ProximityToRssi(_lockProximity + 2);
 
             // Act
             advIgnoreList.Ignore(id);
@@ -144,18 +142,17 @@ namespace HideezMiddleware.Tests
         {
             // Arrange
             var connectionManagerMock = new Mock<IBleConnectionManager>();
-            
-            var ws = new WorkstationSettings();
-            var settingsManagerMock = new Mock<ISettingsManager<WorkstationSettings>>();
-            settingsManagerMock.SetupGet(mock => mock.Settings).Returns(ws);
+
+            var proximitySettingsManager = new Mock<IDeviceProximitySettingsProvider>();
+            proximitySettingsManager.Setup(mock => mock.GetLockProximity(It.IsAny<ConnectionId>())).Returns(_lockProximity);
 
             var logMock = new Mock<ILog>();
 
-            var advIgnoreList = new AdvertisementIgnoreList(connectionManagerMock.Object, settingsManagerMock.Object, _rssiDelaySeconds, logMock.Object);
+            var advIgnoreList = new AdvertisementIgnoreList(connectionManagerMock.Object, proximitySettingsManager.Object, _rssiDelaySeconds, logMock.Object);
 
             var id = Guid.NewGuid().ToString();
 
-            var lockRssi = (sbyte)BleUtils.ProximityToRssi(ws.LockProximity + 2);
+            var lockRssi = (sbyte)BleUtils.ProximityToRssi(_lockProximity + 2);
 
             // Act
             advIgnoreList.IgnoreForTime(id, _ignoreLifetime);

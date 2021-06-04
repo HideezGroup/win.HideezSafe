@@ -61,7 +61,7 @@ namespace HideezClient.Modules.DeviceManager
             _metaMessenger.Subscribe<DisconnectedFromServerEvent>(OnDisconnectedFromService, null);
         }
 
-        public DeviceManager(IMetaPubSub metaMessenger, IWindowsManager windowsManager, IRemoteDeviceFactory remoteDeviceFactory, IEnumerable<DeviceDTO> devices, IApplicationModeProvider applicationModeProvider)
+        public DeviceManager(IMetaPubSub metaMessenger, IWindowsManager windowsManager, IRemoteDeviceFactory remoteDeviceFactory, IApplicationModeProvider applicationModeProvider, IEnumerable<DeviceDTO> devices)
             :this(metaMessenger,windowsManager, remoteDeviceFactory, applicationModeProvider)
         {
             foreach (var device in devices)

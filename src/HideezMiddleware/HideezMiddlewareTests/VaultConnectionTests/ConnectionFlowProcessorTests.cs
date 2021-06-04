@@ -1,4 +1,6 @@
-﻿using Hideez.SDK.Communication;
+﻿using AutoFixture;
+using AutoFixture.AutoMoq;
+using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.Connection;
 using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.Client;
@@ -12,6 +14,7 @@ using HideezMiddleware.DeviceLogging;
 using HideezMiddleware.ScreenActivation;
 using HideezMiddleware.Settings;
 using HideezMiddleware.Utils.WorkstationHelper;
+using Meta.Lib.Modules.PubSub;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -50,6 +53,7 @@ namespace HideezMiddleware.Tests.VaultConnectionTests
             Mock<IClientUiManager> uiMock = new Mock<IClientUiManager>();
             Mock<IHesAccessManager> hesAccesManagerMock = new Mock<IHesAccessManager>();
             Mock<ISettingsManager<ServiceSettings>> settingsManagerMock = new Mock<ISettingsManager<ServiceSettings>>();
+            Mock<IMetaPubSub> messengerMock = new Mock<IMetaPubSub>();
             Mock<ILog> logMock = new Mock<ILog>();
 
             var controller = GetConnectionController(connectionId);
@@ -80,7 +84,7 @@ namespace HideezMiddleware.Tests.VaultConnectionTests
                 controller);
             EnterpriseConnectionFlowProcessor connectionFlowProcessor = new EnterpriseConnectionFlowProcessor(deviceManager, hesAppConnectionMock.Object,
                 workstationUnlockerMock.Object, screenActivatorMock.Object, uiMock.Object, hesAccesManagerMock.Object, settingsManagerMock.Object,
-                connectionFlowSubprocessors, workstationHelperMock.Object, deviceLogManager, logMock.Object);
+                connectionFlowSubprocessors, workstationHelperMock.Object, deviceLogManager, messengerMock.Object, logMock.Object);
 
             //Act
             await connectionFlowProcessor.Connect(connectionId);
@@ -167,10 +171,12 @@ namespace HideezMiddleware.Tests.VaultConnectionTests
 
         IConnectionController GetConnectionController(ConnectionId connectionId)
         {
-            var controllerMock = new Mock<IConnectionController>();
-            controllerMock.SetupGet(c => c.Connection.ConnectionId).Returns(connectionId);
-            controllerMock.SetupGet(c => c.State).Returns(ConnectionState.Connected);
-            return controllerMock.Object;
+            var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
+
+            return fixture.Build<IConnectionController>()
+                .With(c => c.Connection.ConnectionId, connectionId)
+                .With(c => c.State, ConnectionState.Connected)
+                .Create();
         }
     }
 }

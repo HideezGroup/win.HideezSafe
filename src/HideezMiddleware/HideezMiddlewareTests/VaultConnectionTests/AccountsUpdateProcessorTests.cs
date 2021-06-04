@@ -1,4 +1,6 @@
-﻿using Hideez.SDK.Communication.HES.Client;
+﻿using AutoFixture;
+using AutoFixture.AutoMoq;
+using Hideez.SDK.Communication.HES.Client;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Log;
@@ -15,8 +17,10 @@ namespace HideezMiddleware.Tests.VaultConnectionTests
         [Test]
         public async Task UpdateAccounts_DeviceNeedUpdateOSAccounts_UpdateHwVaultAccountsReceived()
         {
+            var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
+
             // Arrange
-            string serialNo = Guid.NewGuid().ToString();
+            string serialNo = fixture.Create<string>();
             var deviceMock = new Mock<IDevice>();
             deviceMock.SetupGet(d => d.SerialNo).Returns(serialNo);
 
@@ -36,8 +40,10 @@ namespace HideezMiddleware.Tests.VaultConnectionTests
         [Test]
         public async Task UpdateAccounts_DeviceNeedUpdateNonOSAccounts_UpdateHwVaultAccountsReceived()
         {
+            var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
+
             // Arrange
-            string serialNo = Guid.NewGuid().ToString();
+            string serialNo = fixture.Create<string>();
             var deviceMock = new Mock<IDevice>();
             deviceMock.SetupGet(d => d.SerialNo).Returns(serialNo);
 
@@ -57,8 +63,10 @@ namespace HideezMiddleware.Tests.VaultConnectionTests
         [Test]
         public async Task UpdateAccounts_ServerDiconnected_AccountsNotUpdated()
         {
+            var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
+
             // Arrange
-            string serialNo = Guid.NewGuid().ToString();
+            string serialNo = fixture.Create<string>();
             var deviceMock = new Mock<IDevice>();
             deviceMock.SetupGet(d => d.SerialNo).Returns(serialNo);
 
