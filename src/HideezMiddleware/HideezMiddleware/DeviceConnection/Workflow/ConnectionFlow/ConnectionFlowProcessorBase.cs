@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
 {
-    public abstract class ConnectionFlowProcessorBase : Logger
+    public abstract class ConnectionFlowProcessorBase : Logger, IConnectionFlowProcessor
     {
         protected IMetaPubSub _messenger;
 

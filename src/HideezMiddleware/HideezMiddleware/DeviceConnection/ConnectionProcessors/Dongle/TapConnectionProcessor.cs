@@ -19,7 +19,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle
         bool isRunning = false;
 
         public TapConnectionProcessor(
-            ConnectionFlowProcessorBase connectionFlowProcessor,
+            IConnectionFlowProcessor connectionFlowProcessor,
             IBleConnectionManager bleConnectionManager,
             IMetaPubSub messenger,
             ILog log) 

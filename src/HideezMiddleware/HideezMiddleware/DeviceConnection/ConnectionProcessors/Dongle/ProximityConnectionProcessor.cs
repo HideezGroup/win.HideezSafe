@@ -29,7 +29,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle
         bool isRunning = false;
 
         public ProximityConnectionProcessor(
-            ConnectionFlowProcessorBase connectionFlowProcessor,
+            IConnectionFlowProcessor connectionFlowProcessor,
             IBleConnectionManager bleConnectionManager,
             IDeviceProximitySettingsProvider proximitySettingsProvider,
             AdvertisementIgnoreList advIgnoreListMonitor,

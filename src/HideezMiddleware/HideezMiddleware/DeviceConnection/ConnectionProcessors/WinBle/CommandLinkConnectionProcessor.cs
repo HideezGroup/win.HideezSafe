@@ -14,7 +14,6 @@ using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
 using HideezMiddleware.Localize;
 using HideezMiddleware.Tasks;
 using Meta.Lib.Modules.PubSub;
-using Microsoft.Win32;
 
 namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
 {
@@ -24,7 +23,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
         readonly IDeviceProximitySettingsProvider _proximitySettingsProvider;
         readonly AdvertisementIgnoreList _advIgnoreListMonitor;
         readonly DeviceManager _deviceManager;
-        readonly CredentialProviderProxy _credentialProviderProxy;
+        readonly IWorkstationUnlocker _workstationUnlocker;
         readonly IClientUiManager _ui;
 
         readonly object _lock = new object();
@@ -33,12 +32,12 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
         bool isRunning = false;
 
         public CommandLinkConnectionProcessor(
-            ConnectionFlowProcessorBase connectionFlowProcessor,
+            IConnectionFlowProcessor connectionFlowProcessor,
             IBleConnectionManager bleConnectionManager,
             IDeviceProximitySettingsProvider proximitySettingsProvider,
             AdvertisementIgnoreList advIgnoreListMonitor,
             DeviceManager deviceManager,
-            CredentialProviderProxy credentialProviderProxy,
+            IWorkstationUnlocker workstationUnlocker,
             IClientUiManager ui,
             IMetaPubSub messenger,
             ILog log)
@@ -48,7 +47,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
             _proximitySettingsProvider = proximitySettingsProvider ?? throw new ArgumentNullException(nameof(_proximitySettingsProvider));
             _advIgnoreListMonitor = advIgnoreListMonitor ?? throw new ArgumentNullException(nameof(advIgnoreListMonitor));
             _deviceManager = deviceManager ?? throw new ArgumentNullException(nameof(deviceManager));
-            _credentialProviderProxy = credentialProviderProxy ?? throw new ArgumentNullException(nameof(credentialProviderProxy));
+            _workstationUnlocker = workstationUnlocker ?? throw new ArgumentNullException(nameof(workstationUnlocker));
             _ui = ui ?? throw new ArgumentNullException(nameof(ui));
         }
 
@@ -58,7 +57,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
             {
                 if (!isRunning)
                 {
-                    _credentialProviderProxy.CommandLinkPressed += CredentialProviderProxy_CommandLinkPressed;
+                    _workstationUnlocker.CommandLinkPressed += CredentialProviderProxy_CommandLinkPressed;
                     isRunning = true;
                     WriteLine("Started");
                 }
@@ -70,7 +69,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
             lock (_lock)
             {
                 isRunning = false;
-                _credentialProviderProxy.CommandLinkPressed -= CredentialProviderProxy_CommandLinkPressed;
+                _workstationUnlocker.CommandLinkPressed -= CredentialProviderProxy_CommandLinkPressed;
                 WriteLine("Stopped");
             }
         }
@@ -149,17 +148,17 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
                     var device = _deviceManager.Devices.FirstOrDefault(d => d.Id == adv.Id && !(d is IRemoteDeviceProxy) && !d.IsBoot);
 
                     // Unlocked Workstation, Device not found OR Device not connected - dont add to ignore
-                    if (!_credentialProviderProxy.IsConnected && (device == null || (device != null && !device.IsConnected)))
+                    if (!_workstationUnlocker.IsConnected && (device == null || (device != null && !device.IsConnected)))
                         return;
 
                     try
                     {
                         // Unlocked Workstation, Device connected - add to ignore
-                        if (!_credentialProviderProxy.IsConnected && device != null && device.IsConnected)
+                        if (!_workstationUnlocker.IsConnected && device != null && device.IsConnected)
                             return;
 
                         // Locked Workstation, Device not found OR not connected - connect add to ignore
-                        if (_credentialProviderProxy.IsConnected && (device == null || (device != null && !device.IsConnected)))
+                        if (_workstationUnlocker.IsConnected && (device == null || (device != null && !device.IsConnected)))
                         {
                             await ConnectAndUnlockByConnectionId(connectionId);
                         }

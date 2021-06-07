@@ -19,10 +19,13 @@ namespace HideezClient.Modules.DeviceManager.Tests
         [Test]
         public async Task EnumerateDevices_FluctuatingServiceConnection_DevicesEnumerated()
         {
+            var fixture = new Fixture();
+            var pipeName = fixture.Create<string>();
+
             var devices = new List<DeviceDTO>();
             IMetaPubSub messenger = new MetaPubSub();
             IMetaPubSub hub = new MetaPubSub();
-            hub.StartServer("Test1");
+            hub.StartServer(pipeName);
 
             int devicesCount = 100;
 
@@ -32,7 +35,7 @@ namespace HideezClient.Modules.DeviceManager.Tests
             int serviceReconnectsCount = 10;
             for (int i = 0; i < serviceReconnectsCount; i++)
             {
-                await messenger.TryConnectToServer("Test1");
+                await messenger.TryConnectToServer(pipeName);
                 IDeviceManager deviceManager = GetDeviceManager(messenger, devices);
                 await Task.Delay(200);
                 Assert.AreEqual(devicesCount, deviceManager.Devices.Count());
@@ -120,11 +123,14 @@ namespace HideezClient.Modules.DeviceManager.Tests
         public async Task EnumerateDevices_ClearDevices_DevicesCollectionCleared()
         {
             // Arrange
+            var fixture = new Fixture();
+            var pipeName = fixture.Create<string>();
+
             var devices = new List<DeviceDTO>();
             IMetaPubSub messenger = new MetaPubSub();
             IMetaPubSub hub = new MetaPubSub();
-            hub.StartServer("Test2");
-            await messenger.TryConnectToServer("Test2");
+            hub.StartServer(pipeName);
+            await messenger.TryConnectToServer(pipeName);
             IDeviceManager deviceManager = GetDeviceManager(messenger);
 
             int devicesCount = 1000;
@@ -144,11 +150,14 @@ namespace HideezClient.Modules.DeviceManager.Tests
         [Test]
         public async Task EnumerateDevices_QuickReconnect_DevicesCollectionEnumerated()
         {
+            var fixture = new Fixture();
+            var pipeName = fixture.Create<string>();
+
             var devices = new List<DeviceDTO>();
             IMetaPubSub messenger = new MetaPubSub();
             IDeviceManager deviceManager = GetDeviceManager(messenger);
             IMetaPubSub hub = new MetaPubSub();
-            hub.StartServer("Test3");
+            hub.StartServer(pipeName);
 
             int devicesCount = 1000;
             for (int i = 0; i < devicesCount; i++)
@@ -156,11 +165,11 @@ namespace HideezClient.Modules.DeviceManager.Tests
 
             var connectionTask = Task.Factory.StartNew(()=>
             {
-                messenger.TryConnectToServer("Test3");
+                messenger.TryConnectToServer(pipeName);
                  deviceManager = GetDeviceManager(messenger, devices);
             });
             var disconnectionTask = Task.Factory.StartNew(messenger.DisconnectFromServer);
-            var reconnectionTask = Task.Factory.StartNew(() => messenger.TryConnectToServer("Test3"));
+            var reconnectionTask = Task.Factory.StartNew(() => messenger.TryConnectToServer(pipeName));
 
             await Task.WhenAll(connectionTask, disconnectionTask, reconnectionTask);
             await Task.Delay(2000);

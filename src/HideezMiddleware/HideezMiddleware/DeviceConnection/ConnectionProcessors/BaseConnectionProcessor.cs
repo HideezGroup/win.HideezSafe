@@ -11,11 +11,11 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors
 {
     public abstract class BaseConnectionProcessor : Logger, IConnectionProcessor
     {
-        readonly ConnectionFlowProcessorBase _connectionFlowProcessor;
+        readonly IConnectionFlowProcessor _connectionFlowProcessor;
         readonly SessionSwitchSubject _unlockMethod;
         readonly IMetaPubSub _messenger;
 
-        public BaseConnectionProcessor(ConnectionFlowProcessorBase connectionFlowProcessor,
+        public BaseConnectionProcessor(IConnectionFlowProcessor connectionFlowProcessor,
             SessionSwitchSubject unlockMethod,
             string logSource, 
             IMetaPubSub messenger,

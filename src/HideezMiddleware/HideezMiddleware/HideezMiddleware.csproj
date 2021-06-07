@@ -147,6 +147,7 @@
     <Compile Include="DeviceConnection\Workflow\ConnectionFlow\EnterpriseConnectionFlowProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\ConnectionFlow\ConnectionFlowProcessorBase.cs" />
     <Compile Include="DeviceConnection\Workflow\ConnectionFlow\EnterpriseConnectionFlowProcessorFactory.cs" />
+    <Compile Include="DeviceConnection\Workflow\ConnectionFlow\IConnectionFlowProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\ConnectionFlow\StandaloneConnectionFlowProcessorFactory.cs" />
     <Compile Include="DeviceConnection\Workflow\Interfaces\IAccountsUpdateProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\Interfaces\IActivationProcessor.cs" />
