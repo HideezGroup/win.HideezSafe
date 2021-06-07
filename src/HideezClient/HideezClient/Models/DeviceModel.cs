@@ -368,7 +368,10 @@ namespace HideezClient.Models
                         var updateCounter = _remoteDevice.StorageUpdateCounter;
                         var loadedUpdateCounter = PasswordManager.LoadedStorageUpdateCounter;
                         var delta = loadedUpdateCounter - updateCounter;
-                        if (updateCounter > loadedUpdateCounter || delta > 0)
+                        // If unintended storage reloads keeps happening, look into why updateCounter can get higher than
+                        // loadedUpdateCounter if the latter is incremented first before every write.
+                        // Note: Update counter can be in range of 0-63
+                        if (updateCounter > loadedUpdateCounter || (delta > 10 && delta < 60))
                         {
                             try
                             {
