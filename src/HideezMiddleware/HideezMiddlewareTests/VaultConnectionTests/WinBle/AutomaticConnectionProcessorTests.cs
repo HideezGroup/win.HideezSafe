@@ -13,41 +13,36 @@ using System;
 
 namespace HideezMiddleware.Tests.VaultConnectionTests.WinBle
 {
-    class CommandLinkConnectionProcessorTests
+    class AutomaticConnectionProcessorTests
     {
         [Test]
-        public void Unlock_ProcessorDisabled_LinkIgnored()
+        public void Unlock_ProcessorDisabled_AdvertisementIgnored()
         {
             // Arrange
             var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
-            
+
             var advEventArgs = new AdvertismentReceivedEventArgs(fixture.Create<string>(),
                 fixture.Create<string>(),
-                (sbyte)(SdkConfig.TapProximityUnlockThreshold + 1));
+                (sbyte)SdkConfig.TapProximityUnlockThreshold);
 
             var bleConnectionManagerMock = new Mock<IBleConnectionManager>();
             fixture.Inject(bleConnectionManagerMock.Object);
-
-            var workstationUnlockerProxy = new Mock<IWorkstationUnlocker>();
-            workstationUnlockerProxy.SetupGet(mock => mock.IsConnected).Returns(true);
-            fixture.Inject(workstationUnlockerProxy.Object);
 
             var connectionFlowProcessorMock = new Mock<IConnectionFlowProcessor>();
             fixture.Inject(connectionFlowProcessorMock.Object);
 
             var proximitySettingsProviderMock = new Mock<IDeviceProximitySettingsProvider>();
-            proximitySettingsProviderMock.Setup(mock => mock.IsEnabledUnlock(It.IsAny<ConnectionId>())).Returns(true);
             proximitySettingsProviderMock.Setup(mock => mock.GetUnlockProximity(It.IsAny<ConnectionId>())).Returns(SdkConfig.DefaultUnlockProximity);
+            proximitySettingsProviderMock.Setup(mock => mock.IsEnabledUnlockByProximity(It.IsAny<ConnectionId>())).Returns(true);
             fixture.Inject(proximitySettingsProviderMock.Object);
 
             var workstationUnlockMock = new Mock<IWorkstationUnlocker>();
             workstationUnlockMock.Setup(mock => mock.IsConnected).Returns(true);
             fixture.Inject(workstationUnlockMock.Object);
 
-            var commandLinkConnectionProcessor = fixture.Create<CommandLinkConnectionProcessor>();
+            var automaticConnectionProcessor = fixture.Create<AutomaticConnectionProcessor>();
 
             // Act
-            workstationUnlockerProxy.Raise(mock => mock.CommandLinkPressed += null, EventArgs.Empty);
             bleConnectionManagerMock.Raise(mock => mock.AdvertismentReceived += null, advEventArgs);
 
             // Assert
@@ -58,7 +53,7 @@ namespace HideezMiddleware.Tests.VaultConnectionTests.WinBle
         }
 
         [Test]
-        public void Unlock_AdvProxAboveThreshold_UnlockInitiated()
+        public void Unlock_AdvertisementProximiryAboveThreshold_UnlockInitiated()
         {
             // Arrange
             var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
@@ -74,20 +69,19 @@ namespace HideezMiddleware.Tests.VaultConnectionTests.WinBle
             fixture.Inject(connectionFlowProcessorMock.Object);
 
             var proximitySettingsProviderMock = new Mock<IDeviceProximitySettingsProvider>();
-            proximitySettingsProviderMock.Setup(mock => mock.IsEnabledUnlock(It.IsAny<ConnectionId>())).Returns(true);
             proximitySettingsProviderMock.Setup(mock => mock.GetUnlockProximity(It.IsAny<ConnectionId>())).Returns(SdkConfig.DefaultUnlockProximity);
+            proximitySettingsProviderMock.Setup(mock => mock.IsEnabledUnlockByProximity(It.IsAny<ConnectionId>())).Returns(true);
             fixture.Inject(proximitySettingsProviderMock.Object);
 
             var workstationUnlockMock = new Mock<IWorkstationUnlocker>();
             workstationUnlockMock.Setup(mock => mock.IsConnected).Returns(true);
             fixture.Inject(workstationUnlockMock.Object);
 
-            var commandLinkConnectionProcessor = fixture.Create<CommandLinkConnectionProcessor>();
+            var automaticConnectionProcessor = fixture.Create<AutomaticConnectionProcessor>();
 
-            commandLinkConnectionProcessor.Start();
+            automaticConnectionProcessor.Start();
 
             // Act
-            workstationUnlockMock.Raise(mock => mock.CommandLinkPressed += null, EventArgs.Empty);
             bleConnectionManagerMock.Raise(mock => mock.AdvertismentReceived += null, advEventArgs);
 
             // Assert
@@ -98,7 +92,7 @@ namespace HideezMiddleware.Tests.VaultConnectionTests.WinBle
         }
 
         [Test]
-        public void Unlock_AdvertisementProximiryAboveThreshold_UnlockSkipped()
+        public void Unlock_AdvertisementProximiryBelowThreshold_UnlockSkipped()
         {
             // Arrange
             var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
@@ -114,20 +108,19 @@ namespace HideezMiddleware.Tests.VaultConnectionTests.WinBle
             fixture.Inject(connectionFlowProcessorMock.Object);
 
             var proximitySettingsProviderMock = new Mock<IDeviceProximitySettingsProvider>();
-            proximitySettingsProviderMock.Setup(mock => mock.IsEnabledUnlock(It.IsAny<ConnectionId>())).Returns(true);
             proximitySettingsProviderMock.Setup(mock => mock.GetUnlockProximity(It.IsAny<ConnectionId>())).Returns(SdkConfig.DefaultUnlockProximity);
+            proximitySettingsProviderMock.Setup(mock => mock.IsEnabledUnlockByProximity(It.IsAny<ConnectionId>())).Returns(true);
             fixture.Inject(proximitySettingsProviderMock.Object);
 
             var workstationUnlockMock = new Mock<IWorkstationUnlocker>();
             workstationUnlockMock.Setup(mock => mock.IsConnected).Returns(true);
             fixture.Inject(workstationUnlockMock.Object);
 
-            var commandLinkConnectionProcessor = fixture.Create<CommandLinkConnectionProcessor>();
+            var automaticConnectionProcessor = fixture.Create<AutomaticConnectionProcessor>();
 
-            commandLinkConnectionProcessor.Start();
+            automaticConnectionProcessor.Start();
 
             // Act
-            workstationUnlockMock.Raise(mock => mock.CommandLinkPressed += null, EventArgs.Empty);
             bleConnectionManagerMock.Raise(mock => mock.AdvertismentReceived += null, advEventArgs);
 
             // Assert

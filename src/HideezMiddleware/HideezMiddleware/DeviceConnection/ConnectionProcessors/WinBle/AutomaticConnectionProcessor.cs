@@ -24,12 +24,11 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
 {
     public sealed class AutomaticConnectionProcessor : BaseConnectionProcessor
     {
-        readonly WinBleConnectionManager _winBleConnectionManager;
-        readonly WinBleConnectionManagerWrapper _winBleConnectionManagerWrapper;
+        readonly IBleConnectionManager _bleConnectionManager;
         readonly AdvertisementIgnoreList _advIgnoreListMonitor;
         readonly IDeviceProximitySettingsProvider _proximitySettingsProvider;
         readonly DeviceManager _deviceManager;
-        readonly CredentialProviderProxy _credentialProviderProxy;
+        readonly IWorkstationUnlocker _workstationUnlocker;
         readonly IClientUiManager _ui;
         readonly IWorkstationHelper _workstationHelper;
         readonly IMetaPubSub _messenger;
@@ -40,25 +39,23 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
         bool isRunning = false;
 
         public AutomaticConnectionProcessor(
-            ConnectionFlowProcessorBase connectionFlowProcessor,
-            WinBleConnectionManager winBleConnectionManager,
-            WinBleConnectionManagerWrapper winBleConnectionManagerWrapper,
+            IConnectionFlowProcessor connectionFlowProcessor,
+            IBleConnectionManager bleConnectionManager,
             AdvertisementIgnoreList advIgnoreListMonitor,
             IDeviceProximitySettingsProvider proximitySettingsProvider,
             DeviceManager deviceManager,
-            CredentialProviderProxy credentialProviderProxy,
+            IWorkstationUnlocker workstationUnlocker,
             IClientUiManager ui,
             IWorkstationHelper workstationHelper,
             IMetaPubSub messenger,
             ILog log)
             : base(connectionFlowProcessor, SessionSwitchSubject.WinBle, nameof(ProximityConnectionProcessor), messenger, log)
         {
-            _winBleConnectionManager = winBleConnectionManager ?? throw new ArgumentNullException(nameof(winBleConnectionManager));
-            _winBleConnectionManagerWrapper = winBleConnectionManagerWrapper ?? throw new ArgumentNullException(nameof(winBleConnectionManagerWrapper));
+            _bleConnectionManager = bleConnectionManager ?? throw new ArgumentNullException(nameof(bleConnectionManager));
             _advIgnoreListMonitor = advIgnoreListMonitor ?? throw new ArgumentNullException(nameof(advIgnoreListMonitor));
             _proximitySettingsProvider = proximitySettingsProvider ?? throw new ArgumentNullException(nameof(proximitySettingsProvider));
             _deviceManager = deviceManager ?? throw new ArgumentNullException(nameof(deviceManager));
-            _credentialProviderProxy = credentialProviderProxy ?? throw new ArgumentNullException(nameof(credentialProviderProxy));
+            _workstationUnlocker = workstationUnlocker ?? throw new ArgumentNullException(nameof(workstationUnlocker));
             _ui = ui ?? throw new ArgumentNullException(nameof(ui));
             _workstationHelper = workstationHelper ?? throw new ArgumentNullException(nameof(workstationHelper));
             _messenger = messenger ?? throw new ArgumentNullException(nameof(_messenger));
@@ -70,7 +67,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
             {
                 if (!isRunning)
                 {
-                    _winBleConnectionManagerWrapper.AdvertismentReceived += BleConnectionManager_AdvertismentReceived;
+                    _bleConnectionManager.AdvertismentReceived += BleConnectionManager_AdvertismentReceived;
                     _messenger.Subscribe<ConnectPairedVaultsMessage>(OnConnectPairedVaults);
                     isRunning = true;
                     WriteLine("Started");
@@ -83,7 +80,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
             lock (_lock)
             {
                 isRunning = false;
-                _winBleConnectionManagerWrapper.AdvertismentReceived -= BleConnectionManager_AdvertismentReceived;
+                _bleConnectionManager.AdvertismentReceived -= BleConnectionManager_AdvertismentReceived;
                 _messenger.Unsubscribe<ConnectPairedVaultsMessage>(OnConnectPairedVaults);
                 WriteLine("Stopped");
             }
@@ -111,7 +108,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
                 {
                     await _ui.SendError("", notifId);
                     await _ui.SendNotification(TranslationSource.Instance["ConnectionProcessor.SearchingForVault"], notifId);
-                    var adv = await new WaitAdvertisementProc(_winBleConnectionManagerWrapper).Run(10_000);
+                    var adv = await new WaitAdvertisementProc(_bleConnectionManager).Run(10_000);
                     if (adv != null)
                     {
                         await ConnectByProximity(adv);

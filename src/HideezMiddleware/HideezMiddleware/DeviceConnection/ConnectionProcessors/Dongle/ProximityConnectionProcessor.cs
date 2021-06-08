@@ -9,7 +9,6 @@ using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Log;
 using Hideez.SDK.Communication.Proximity.Interfaces;
-using HideezMiddleware.CredentialProvider;
 using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
 using Meta.Lib.Modules.PubSub;
 
@@ -22,7 +21,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle
         readonly IDeviceProximitySettingsProvider _proximitySettingsProvider;
         readonly AdvertisementIgnoreList _advIgnoreListMonitor;
         readonly DeviceManager _deviceManager;
-        readonly CredentialProviderProxy _credentialProviderProxy;
+        readonly IWorkstationUnlocker _workstationUnlocker;
         readonly object _lock = new object();
 
         int _isConnecting = 0;
@@ -34,7 +33,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle
             IDeviceProximitySettingsProvider proximitySettingsProvider,
             AdvertisementIgnoreList advIgnoreListMonitor,
             DeviceManager deviceManager,
-            CredentialProviderProxy credentialProviderProxy,
+            IWorkstationUnlocker workstationUnlocker,
             IMetaPubSub messenger,
             ILog log) 
             : base(connectionFlowProcessor, SessionSwitchSubject.Proximity, nameof(ProximityConnectionProcessor), messenger, log)
@@ -43,7 +42,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle
             _proximitySettingsProvider = proximitySettingsProvider ?? throw new ArgumentNullException(nameof(_proximitySettingsProvider));
             _advIgnoreListMonitor = advIgnoreListMonitor ?? throw new ArgumentNullException(nameof(advIgnoreListMonitor));
             _deviceManager = deviceManager ?? throw new ArgumentNullException(nameof(deviceManager));
-            _credentialProviderProxy = credentialProviderProxy ?? throw new ArgumentNullException(nameof(credentialProviderProxy));
+            _workstationUnlocker = workstationUnlocker ?? throw new ArgumentNullException(nameof(workstationUnlocker));
         }
 
         public override void Start()
@@ -105,17 +104,17 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle
                     var device = _deviceManager.Devices.FirstOrDefault(d => d.Id == adv.Id && !(d is IRemoteDeviceProxy) && !d.IsBoot);
 
                     // Unlocked Workstation, Device not found OR Device not connected - dont add to ignore
-                    if (!_credentialProviderProxy.IsConnected && (device == null || (device != null && !device.IsConnected)))
+                    if (!_workstationUnlocker.IsConnected && (device == null || (device != null && !device.IsConnected)))
                         return;
 
                     try
                     {
                         // Unlocked Workstation, Device connected - add to ignore
-                        if (!_credentialProviderProxy.IsConnected && device != null && device.IsConnected)
+                        if (!_workstationUnlocker.IsConnected && device != null && device.IsConnected)
                             return;
 
                         // Locked Workstation, Device not found OR not connected - connect add to ignore
-                        if (_credentialProviderProxy.IsConnected && (device == null || (device != null && !device.IsConnected)))
+                        if (_workstationUnlocker.IsConnected && (device == null || (device != null && !device.IsConnected)))
                         {
                             await ConnectAndUnlockByConnectionId(connectionId);
                         }
