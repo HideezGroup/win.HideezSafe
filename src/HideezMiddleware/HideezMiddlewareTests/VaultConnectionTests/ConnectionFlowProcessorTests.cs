@@ -172,11 +172,10 @@ namespace HideezMiddleware.Tests.VaultConnectionTests
         IConnectionController GetConnectionController(ConnectionId connectionId)
         {
             var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
+            fixture.Inject(connectionId);
+            fixture.Inject(ConnectionState.Connected);
 
-            return fixture.Build<IConnectionController>()
-                .With(c => c.Connection.ConnectionId, connectionId)
-                .With(c => c.State, ConnectionState.Connected)
-                .Create();
+            return fixture.Create<IConnectionController>();
         }
     }
 }
