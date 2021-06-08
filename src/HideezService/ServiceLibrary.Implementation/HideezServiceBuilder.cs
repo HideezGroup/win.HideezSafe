@@ -484,7 +484,6 @@ namespace ServiceLibrary.Implementation
                 log);
             var automaticConnectionProcessor = new AutomaticConnectionProcessor(
                 connectionFlow, 
-                winBleConnectionManager, 
                 winBleConnectionManagerWrapper,
                 advIgnoreWinBleList,
                 proximitySettingsProvider, 
