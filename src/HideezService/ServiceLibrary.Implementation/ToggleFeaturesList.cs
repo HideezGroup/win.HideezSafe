@@ -20,5 +20,10 @@
         /// Enable Hideez Dongle Support.
         /// </summary>
         public bool EnableDongleSupport { get; set; } = false;
+
+        /// <summary>
+        /// Start connection managers and start watching for connections after service is built
+        /// </summary>
+        public bool StartConnectionManagers { get; set; } = true;
     }
 }

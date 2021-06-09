@@ -8,13 +8,14 @@ namespace ServiceLibrary.Implementation.Tests
         [SetUp]
         public void Init()
         {
-            Thread.Sleep(50);
         }
 
         [TearDown]
         public void Cleanup()
         {
-            Thread.Sleep(50);
+            // Wait a bit to make sure that previous instance 
+            // of service was fully shut down and cleaned 
+            Thread.Sleep(1000);
         }
 
         [Test]
@@ -24,6 +25,7 @@ namespace ServiceLibrary.Implementation.Tests
             {
                 EnableDongleSupport = useDongle,
                 EnableWinBleSupport = useWinBle,
+                StartConnectionManagers = false,
             };
 
             var director = new HideezServiceBuildDirector();
@@ -43,6 +45,7 @@ namespace ServiceLibrary.Implementation.Tests
             {
                 EnableDongleSupport = useDongle,
                 EnableWinBleSupport = useWinBle,
+                StartConnectionManagers = false,
             };
 
             var director = new HideezServiceBuildDirector();

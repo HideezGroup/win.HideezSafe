@@ -19,7 +19,6 @@ using HideezMiddleware.DeviceConnection.ConnectionProcessors.Other;
 using HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle;
 using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
 using HideezMiddleware.DeviceLogging;
-using HideezMiddleware.IPC.DTO;
 using HideezMiddleware.Local;
 using HideezMiddleware.Localize;
 using HideezMiddleware.Modules;
@@ -50,10 +49,7 @@ using ServiceLibrary.Implementation.ScreenActivation;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Pipes;
 using System.Linq;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using Unity;
 using Unity.Injection;
@@ -547,13 +543,16 @@ namespace ServiceLibrary.Implementation
             AddModule(hsServiceCheckModule);
         }
 
-        public void End()
+        public void End(bool startConnectionManagers)
         {
-            var connectionManagersCoordinator = _container.Resolve<ConnectionManagersCoordinator>();
-            connectionManagersCoordinator.Start();
+            if (startConnectionManagers)
+            {
+                var connectionManagersCoordinator = _container.Resolve<ConnectionManagersCoordinator>();
+                connectionManagersCoordinator.Start();
 
-            var connectionManagersRestarter = _container.Resolve<ConnectionManagerRestarter>();
-            connectionManagersRestarter.Start();
+                var connectionManagersRestarter = _container.Resolve<ConnectionManagerRestarter>();
+                connectionManagersRestarter.Start();
+            }
         }
 
         /// <summary>

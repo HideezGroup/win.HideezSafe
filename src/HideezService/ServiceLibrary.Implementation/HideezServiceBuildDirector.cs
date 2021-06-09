@@ -23,7 +23,7 @@ namespace ServiceLibrary.Implementation
             builder.AddWorkstationLock();
             builder.AddClientPipe();
             builder.AddAudit();
-            builder.End();
+            builder.End(featuresList.StartConnectionManagers);
 
             return builder.GetService();
         }
@@ -45,7 +45,7 @@ namespace ServiceLibrary.Implementation
             builder.AddWorkstationLock();
             builder.AddClientPipe();
             builder.AddUpdateCheck();
-            builder.End();
+            builder.End(featuresList.StartConnectionManagers);
 
             return builder.GetService();
         }
