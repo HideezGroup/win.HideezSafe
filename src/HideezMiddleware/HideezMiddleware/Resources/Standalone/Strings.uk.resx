@@ -117,4 +117,13 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="ConnectionFlow.Error.VaultInBootloaderMode" xml:space="preserve">
+    <value>Ваш пристрій перебуває в режимі завантажувача. Будь ласка, оновіть прошивку.</value>
+  </data>
+	<data name="ConnectionFlow.Pin.Error.LockedByInvalidAttempts" xml:space="preserve">
+    <value>Ключ заблоковано через занадто багато неправильних спроб введення PIN.</value>
+  </data>
+	<data name="ConnectionFlow.UserAuthorization.Error.AuthFailed" xml:space="preserve">
+    <value>Авторизація користувача несподівано не вдалася. Будь ласка, спробуйте підключити свій ключ ще раз.</value>
+  </data>
 </root>

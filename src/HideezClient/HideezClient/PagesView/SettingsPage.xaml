@@ -98,6 +98,43 @@
                         IsChecked="{Binding Path=SecureFieldEntry.IsChecked}" />
                 </Border>
 
+                <!-- General Settings -->
+                <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        FontSize="24"
+                        Foreground="{StaticResource DarkForeground}"
+                        Margin="31,2,0,2"
+                        Text="{l:Localization LanguageSettings.Title}" />
+
+                <Border 
+                    Style="{StaticResource SettingsBorderStyle}">
+                    <StackPanel>
+                        <TextBlock 
+                            Text="{l:Localization LanguageSettings.Description}"
+                            Margin="0,0,0,10"
+                            TextWrapping="Wrap"/>
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox 
+                                Width="250"
+                                Style="{DynamicResource ComboBoxStyle}"
+                                IsTabStop="True"
+                                Margin="0,0,10,0"
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding Language.Languages}"
+                                DisplayMemberPath="Title"
+                                SelectedItem="{Binding Language.SelectedLanguage}"/>
+                            <Button
+                                Style="{DynamicResource ConfirmButtonStyle}"
+                                Grid.Column="2"
+                                VerticalContentAlignment="Top"
+                                Content="{l:Localization LanguageSettings.Button.RestartApp}"
+                                Command="{Binding Language.RestartCommand}"
+                                Visibility="{Binding Language.HasChanges, Converter={StaticResource BooleanToVisibilityHiddenConverter}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
                 <!-- Hotkey Settings -->
                 <StackPanel
                     Focusable="True">

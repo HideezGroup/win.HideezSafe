@@ -17,5 +17,8 @@ namespace HideezClient.PageViewModels
 
         [Dependency]
         public SecureFieldEntrySettingViewModel SecureFieldEntry { get; set; }
+
+        [Dependency]
+        public LanguageSettingViewModel Language { get; set; }
     }
 }

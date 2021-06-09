@@ -265,7 +265,7 @@ namespace HideezClient
             // Handle first launch
             if (settings.IsFirstLaunch)
             {
-                OnFirstLaunch();
+                OnFirstLaunch(settings);
 
                 settings.IsFirstLaunch = false;
                 appSettingsManager.SaveSettings(settings);
@@ -315,9 +315,21 @@ namespace HideezClient
             return true;
         }
 
-        private void OnFirstLaunch()
+        private void OnFirstLaunch(ApplicationSettings settings)
         {
             _log.WriteLine("First Hideez Client launch");
+            var currentCulture = CultureInfo.InstalledUICulture;
+            var uaCulture = new CultureInfo("uk-UA");
+
+            if (currentCulture.Equals(new CultureInfo("ru-RU")) || currentCulture.Equals(uaCulture))
+            {
+                TranslationSource.Instance.CurrentCulture = uaCulture;
+                Thread.CurrentThread.CurrentCulture = uaCulture;
+                Thread.CurrentThread.CurrentUICulture = uaCulture;
+
+                settings.SelectedUiLanguage = uaCulture.Name;
+            }
+
             Container.Resolve<ShowMinimizedWindowNotificationSubroutine>();
         }
 
@@ -338,7 +350,7 @@ namespace HideezClient
             Container.RegisterType<PinViewModel>();
             Container.RegisterType<MasterPasswordViewModel>();
             Container.RegisterType<HelpPageViewModel>();
-            Container.RegisterType<SettingsPageViewModel>();
+            Container.RegisterType<SettingsPageViewModel>(new ContainerControlledLifetimeManager());
             Container.RegisterType<PasswordManagerViewModel>(new ContainerControlledLifetimeManager());
             Container.RegisterType<DeviceSettingsPageViewModel>(new ContainerControlledLifetimeManager());
             Container.RegisterType<ServerAddressEditControlViewModel>(new ContainerControlledLifetimeManager());
@@ -462,7 +474,7 @@ namespace HideezClient
         /// <returns></returns>
         async Task OnConnectedToServer(ConnectedToServerEvent arg)
         {
-            await _metaMessenger.PublishOnServer(new LoginClientRequestMessage());
+            await _metaMessenger.PublishOnServer(new LoginClientRequestMessage(TranslationSource.Instance.CurrentCulture));
         }
     }
 }

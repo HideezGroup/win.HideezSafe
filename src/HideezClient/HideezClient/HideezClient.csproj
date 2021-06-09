@@ -590,6 +590,7 @@
     <Compile Include="ViewModels\Dialog\WipeViewModel.cs" />
     <Compile Include="ViewModels\HotkeySettingsViewModel.cs" />
     <Compile Include="ViewModels\HotkeyViewModel.cs" />
+    <Compile Include="ViewModels\LanguageSettingViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\NotificationsContainerViewModel.cs" />
     <Compile Include="PageViewModels\PasswordManagerViewModel.cs" />
@@ -900,6 +901,7 @@
     <EmbeddedResource Include="Resources\StandaloneStrings\Strings.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\StandaloneStrings\Strings.uk.resx" />
     <EmbeddedResource Include="Resources\Strings.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

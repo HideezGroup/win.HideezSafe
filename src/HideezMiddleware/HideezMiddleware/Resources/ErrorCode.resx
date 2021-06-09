@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
+	<!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,452 +59,452 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="FwUnknownError" xml:space="preserve">
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="FwUnknownError" xml:space="preserve">
     <value>Firmware returned unknown error code: {0}</value>
   </data>
-  <data name="BleCharacteristicWriteError" xml:space="preserve">
+	<data name="BleCharacteristicWriteError" xml:space="preserve">
     <value>BLE Characteristic write error</value>
   </data>
-  <data name="BleConnectionNotConnected" xml:space="preserve">
+	<data name="BleConnectionNotConnected" xml:space="preserve">
     <value>BLE Vault is not connected</value>
   </data>
-  <data name="BleInvalidPacketNumber" xml:space="preserve">
+	<data name="BleInvalidPacketNumber" xml:space="preserve">
     <value>Invalid bluetooth packet number</value>
   </data>
-  <data name="BlePacketParseError" xml:space="preserve">
+	<data name="BlePacketParseError" xml:space="preserve">
     <value>Error occured while parsing bluetooth packet</value>
   </data>
-  <data name="BleResponseTimeout" xml:space="preserve">
+	<data name="BleResponseTimeout" xml:space="preserve">
     <value>Bluetooth response timeout</value>
   </data>
-  <data name="BleSendError" xml:space="preserve">
+	<data name="BleSendError" xml:space="preserve">
     <value>Bluetooth sending error</value>
   </data>
-  <data name="ChannelNotFound" xml:space="preserve">
+	<data name="ChannelNotFound" xml:space="preserve">
     <value>Channel {0} not found</value>
   </data>
-  <data name="DeviceNotConnectedToAnyHost" xml:space="preserve">
+	<data name="DeviceNotConnectedToAnyHost" xml:space="preserve">
     <value>Remote vault is not connected to any host</value>
   </data>
-  <data name="ERR_ALREADY_INITIALIZED" xml:space="preserve">
+	<data name="ERR_ALREADY_INITIALIZED" xml:space="preserve">
     <value>FW Error: Vault already initialized</value>
   </data>
-  <data name="ERR_CHANNEL_BUSY" xml:space="preserve">
+	<data name="ERR_CHANNEL_BUSY" xml:space="preserve">
     <value>FW Error: Channel is busy</value>
   </data>
-  <data name="ERR_DEVICE_BUSY" xml:space="preserve">
+	<data name="ERR_DEVICE_BUSY" xml:space="preserve">
     <value>FW Error: Vault is busy</value>
   </data>
-  <data name="ERR_DEVICE_LOCKED" xml:space="preserve">
+	<data name="ERR_DEVICE_LOCKED" xml:space="preserve">
     <value>FW Error: Vaukt is locked</value>
   </data>
-  <data name="ERR_ENCRYPTION_REQ" xml:space="preserve">
+	<data name="ERR_ENCRYPTION_REQ" xml:space="preserve">
     <value>FW Error: Encryption required</value>
   </data>
-  <data name="ERR_HARDWARE_FAULT" xml:space="preserve">
+	<data name="ERR_HARDWARE_FAULT" xml:space="preserve">
     <value>FW Error: Hardware fault</value>
   </data>
-  <data name="ERR_INVALID_PARAMETER" xml:space="preserve">
+	<data name="ERR_INVALID_PARAMETER" xml:space="preserve">
     <value>FW Error: Invalid parameter</value>
   </data>
-  <data name="ERR_KEY_WRONG" xml:space="preserve">
+	<data name="ERR_KEY_WRONG" xml:space="preserve">
     <value>FW Error: Invalid key</value>
   </data>
-  <data name="ERR_MESSAGE_TOO_LONG" xml:space="preserve">
+	<data name="ERR_MESSAGE_TOO_LONG" xml:space="preserve">
     <value>FW Error: Sent or received message is to long</value>
   </data>
-  <data name="ERR_NOT_INITIALIZED" xml:space="preserve">
+	<data name="ERR_NOT_INITIALIZED" xml:space="preserve">
     <value>FW Error: Vault is not initialized</value>
   </data>
-  <data name="ERR_NO_ENCRYPTION" xml:space="preserve">
+	<data name="ERR_NO_ENCRYPTION" xml:space="preserve">
     <value>FW Error: No encryption</value>
   </data>
-  <data name="ERR_OPERATION_CANCELED" xml:space="preserve">
+	<data name="ERR_OPERATION_CANCELED" xml:space="preserve">
     <value>FW Error: Operation cancelled</value>
   </data>
-  <data name="ERR_UNAUTHORIZED" xml:space="preserve">
+	<data name="ERR_UNAUTHORIZED" xml:space="preserve">
     <value>FW Error: Unauthorized access</value>
   </data>
-  <data name="ERR_UNSUPPORTED" xml:space="preserve">
+	<data name="ERR_UNSUPPORTED" xml:space="preserve">
     <value>FW Error: Operation is not supported</value>
   </data>
-  <data name="FailedToEstablishRemoteConnection" xml:space="preserve">
+	<data name="FailedToEstablishRemoteConnection" xml:space="preserve">
     <value>Failed to establish remote connection</value>
   </data>
-  <data name="HesNotConnected" xml:space="preserve">
+	<data name="HesNotConnected" xml:space="preserve">
     <value>Not connected to HES</value>
   </data>
-  <data name="InvalidChannelNo" xml:space="preserve">
+	<data name="InvalidChannelNo" xml:space="preserve">
     <value>Invalid channel number:  {0} </value>
   </data>
-  <data name="InvalidMessageSignuture" xml:space="preserve">
+	<data name="InvalidMessageSignuture" xml:space="preserve">
     <value>Invalid message signature</value>
   </data>
-  <data name="PmLoginCannotBeEmpty" xml:space="preserve">
+	<data name="PmLoginCannotBeEmpty" xml:space="preserve">
     <value>Account login cannot be empty</value>
   </data>
-  <data name="PmOtpSecretHasInvalidFormat" xml:space="preserve">
+	<data name="PmOtpSecretHasInvalidFormat" xml:space="preserve">
     <value>OTP secret has an invalid format</value>
   </data>
-  <data name="PmPasswordCannotBeEmpty" xml:space="preserve">
+	<data name="PmPasswordCannotBeEmpty" xml:space="preserve">
     <value>Account password cannot be empty</value>
   </data>
-  <data name="PmPasswordNameAlreadyExists" xml:space="preserve">
+	<data name="PmPasswordNameAlreadyExists" xml:space="preserve">
     <value>Account name already used by another account</value>
   </data>
-  <data name="PmPasswordNameCannotBeEmpty" xml:space="preserve">
+	<data name="PmPasswordNameCannotBeEmpty" xml:space="preserve">
     <value>Account name cannot be empty</value>
   </data>
-  <data name="PmPasswordNotFound" xml:space="preserve">
+	<data name="PmPasswordNotFound" xml:space="preserve">
     <value>Account password not found</value>
   </data>
-  <data name="RemoteConnectionTimedOut" xml:space="preserve">
+	<data name="RemoteConnectionTimedOut" xml:space="preserve">
     <value>Remote connection timeout</value>
   </data>
-  <data name="RemoteSendError" xml:space="preserve">
+	<data name="RemoteSendError" xml:space="preserve">
     <value>Remote send error</value>
   </data>
-  <data name="WrongPayloadLength" xml:space="preserve">
+	<data name="WrongPayloadLength" xml:space="preserve">
     <value>Wrong payload length</value>
   </data>
-  <data name="WrongReplyData" xml:space="preserve">
+	<data name="WrongReplyData" xml:space="preserve">
     <value>Wrong reply data</value>
   </data>
-  <data name="BootUnknownError" xml:space="preserve">
+	<data name="BootUnknownError" xml:space="preserve">
     <value>Botloader returned unknown error code: {0}</value>
   </data>
-  <data name="BOOT_STATUS_ALREADY_SET" xml:space="preserve">
+	<data name="BOOT_STATUS_ALREADY_SET" xml:space="preserve">
     <value>Bootloader error: Already set</value>
   </data>
-  <data name="BOOT_STATUS_BAD_SIGNATURE" xml:space="preserve">
+	<data name="BOOT_STATUS_BAD_SIGNATURE" xml:space="preserve">
     <value>Bootloader error: Bad signature</value>
   </data>
-  <data name="BOOT_STATUS_CRC_ERROR" xml:space="preserve">
+	<data name="BOOT_STATUS_CRC_ERROR" xml:space="preserve">
     <value>Bootloader error: Wrong CRC</value>
   </data>
-  <data name="BOOT_STATUS_ERASE_REQ" xml:space="preserve">
+	<data name="BOOT_STATUS_ERASE_REQ" xml:space="preserve">
     <value>Bootloader error: Erase required</value>
   </data>
-  <data name="BOOT_STATUS_HARDWARE" xml:space="preserve">
+	<data name="BOOT_STATUS_HARDWARE" xml:space="preserve">
     <value>Bootloader error: Hardware fault</value>
   </data>
-  <data name="BOOT_STATUS_INVALID_ADDR" xml:space="preserve">
+	<data name="BOOT_STATUS_INVALID_ADDR" xml:space="preserve">
     <value>Bootloader error: Invalid address</value>
   </data>
-  <data name="BOOT_STATUS_LOW_BATTERY" xml:space="preserve">
+	<data name="BOOT_STATUS_LOW_BATTERY" xml:space="preserve">
     <value>Bootloader error: Low battery</value>
   </data>
-  <data name="BOOT_STATUS_PARTIAL" xml:space="preserve">
+	<data name="BOOT_STATUS_PARTIAL" xml:space="preserve">
     <value>Bootloader error: Partial data</value>
   </data>
-  <data name="BOOT_STATUS_WRITE_ERROR" xml:space="preserve">
+	<data name="BOOT_STATUS_WRITE_ERROR" xml:space="preserve">
     <value>Bootloader error: Write error</value>
   </data>
-  <data name="BOOT_STATUS_WRONG_PARAMETER" xml:space="preserve">
+	<data name="BOOT_STATUS_WRONG_PARAMETER" xml:space="preserve">
     <value>Bootloader error: Wrong parameter</value>
   </data>
-  <data name="ERR_BUTTON_REQ" xml:space="preserve">
+	<data name="ERR_BUTTON_REQ" xml:space="preserve">
     <value>FW Error: Button confirmation required</value>
   </data>
-  <data name="ERR_NO_DATA" xml:space="preserve">
+	<data name="ERR_NO_DATA" xml:space="preserve">
     <value>FW Error: No data</value>
   </data>
-  <data name="ERR_PIN_NOT_SET" xml:space="preserve">
+	<data name="ERR_PIN_NOT_SET" xml:space="preserve">
     <value>FW Error: PIN code is not set</value>
   </data>
-  <data name="ERR_PIN_REQ" xml:space="preserve">
+	<data name="ERR_PIN_REQ" xml:space="preserve">
     <value>FW Error: PIN code required</value>
   </data>
-  <data name="ERR_PIN_TOO_SHORT" xml:space="preserve">
+	<data name="ERR_PIN_TOO_SHORT" xml:space="preserve">
     <value>FW Error: PIN code is too short</value>
   </data>
-  <data name="ERR_PIN_WRONG" xml:space="preserve">
+	<data name="ERR_PIN_WRONG" xml:space="preserve">
     <value>Wrong PIN code</value>
   </data>
-  <data name="ERR_SC_INVALID_BUFSIZE" xml:space="preserve">
+	<data name="ERR_SC_INVALID_BUFSIZE" xml:space="preserve">
     <value>Cryptolib error: invalid buffer size</value>
   </data>
-  <data name="ERR_SC_INVALID_LENGTH" xml:space="preserve">
+	<data name="ERR_SC_INVALID_LENGTH" xml:space="preserve">
     <value>Cryptolib error: invalid length</value>
   </data>
-  <data name="ERR_SC_INVALID_PARAMS" xml:space="preserve">
+	<data name="ERR_SC_INVALID_PARAMS" xml:space="preserve">
     <value>Cryptolib error: invalid parameter</value>
   </data>
-  <data name="ERR_SC_INVALID_PRIVKEY" xml:space="preserve">
+	<data name="ERR_SC_INVALID_PRIVKEY" xml:space="preserve">
     <value>Cryptolib error: invalid private key</value>
   </data>
-  <data name="ERR_SC_INVALID_PUBKEY" xml:space="preserve">
+	<data name="ERR_SC_INVALID_PUBKEY" xml:space="preserve">
     <value>Cryptolib error: invalid public key</value>
   </data>
-  <data name="ERR_SC_INVALID_SIGNATURE" xml:space="preserve">
+	<data name="ERR_SC_INVALID_SIGNATURE" xml:space="preserve">
     <value>Cryptolib error: invalid signature</value>
   </data>
-  <data name="ERR_SC_INVALID_SO" xml:space="preserve">
+	<data name="ERR_SC_INVALID_SO" xml:space="preserve">
     <value>Cryptolib error: invalid SO</value>
   </data>
-  <data name="ERR_SC_INVALID_STATE" xml:space="preserve">
+	<data name="ERR_SC_INVALID_STATE" xml:space="preserve">
     <value>Cryptolib error: invalid state</value>
   </data>
-  <data name="ERR_SC_NO_RNG_FUNCTION" xml:space="preserve">
+	<data name="ERR_SC_NO_RNG_FUNCTION" xml:space="preserve">
     <value>Cryptolib error: no RNG function</value>
   </data>
-  <data name="CryptolibUnknownError" xml:space="preserve">
+	<data name="CryptolibUnknownError" xml:space="preserve">
     <value>Cryptolib returned unknown error code: {0}</value>
   </data>
-  <data name="ERR_SC_WRONG_SECRET" xml:space="preserve">
+	<data name="ERR_SC_WRONG_SECRET" xml:space="preserve">
     <value>Cryptolib error: wrong secret</value>
   </data>
-  <data name="ERR_TIMEOUT" xml:space="preserve">
+	<data name="ERR_TIMEOUT" xml:space="preserve">
     <value>FW Error: Timeout</value>
   </data>
-  <data name="ERR_UNKNOWN_MESSAGE" xml:space="preserve">
+	<data name="ERR_UNKNOWN_MESSAGE" xml:space="preserve">
     <value>FW Error: Unknown message</value>
   </data>
-  <data name="AlreadyStarted" xml:space="preserve">
+	<data name="AlreadyStarted" xml:space="preserve">
     <value>Operation already started</value>
   </data>
-  <data name="ButtonConfirmationTimeout" xml:space="preserve">
+	<data name="ButtonConfirmationTimeout" xml:space="preserve">
     <value>Button confirmation timed out</value>
   </data>
-  <data name="ChannelAlreadyExists" xml:space="preserve">
+	<data name="ChannelAlreadyExists" xml:space="preserve">
     <value>Channel {0} already exists</value>
   </data>
-  <data name="ChannelAlreadyVerified" xml:space="preserve">
+	<data name="ChannelAlreadyVerified" xml:space="preserve">
     <value>Channel {0} already verified</value>
   </data>
-  <data name="ChannelInitializationFailed" xml:space="preserve">
+	<data name="ChannelInitializationFailed" xml:space="preserve">
     <value>Channel {0} initialization failed</value>
   </data>
-  <data name="ChannelNotAuthorized" xml:space="preserve">
+	<data name="ChannelNotAuthorized" xml:space="preserve">
     <value>Channel {0} not authorized</value>
   </data>
-  <data name="ChannelNotInitialized" xml:space="preserve">
+	<data name="ChannelNotInitialized" xml:space="preserve">
     <value>Channel {0} is not initialized</value>
   </data>
-  <data name="ChannelNotVerified" xml:space="preserve">
+	<data name="ChannelNotVerified" xml:space="preserve">
     <value>Channel {0} is not verified</value>
   </data>
-  <data name="ChannelVerificationFailed" xml:space="preserve">
+	<data name="ChannelVerificationFailed" xml:space="preserve">
     <value>Channel {0} verification failed</value>
   </data>
-  <data name="ChannelVerificationInProgress" xml:space="preserve">
+	<data name="ChannelVerificationInProgress" xml:space="preserve">
     <value>Channel {0} verification in progress</value>
   </data>
-  <data name="ChannelVerificationTimedOut" xml:space="preserve">
+	<data name="ChannelVerificationTimedOut" xml:space="preserve">
     <value>Channel {0} verification timeout</value>
   </data>
-  <data name="DeviceAlreadyExists" xml:space="preserve">
+	<data name="DeviceAlreadyExists" xml:space="preserve">
     <value>Vault already exists</value>
   </data>
-  <data name="DeviceIsLocked" xml:space="preserve">
+	<data name="DeviceIsLocked" xml:space="preserve">
     <value>Vault is locked. Contact your system administrator.</value>
   </data>
-  <data name="DeviceNotAssignedToUser" xml:space="preserve">
+	<data name="DeviceNotAssignedToUser" xml:space="preserve">
     <value>The vault is not assigned to any user</value>
   </data>
-  <data name="FwUpdateBootBadImageFile" xml:space="preserve">
+	<data name="FwUpdateBootBadImageFile" xml:space="preserve">
     <value>Bad firmware image file</value>
   </data>
-  <data name="FwUpdateBootConnectFailed" xml:space="preserve">
+	<data name="FwUpdateBootConnectFailed" xml:space="preserve">
     <value>Failed to connect the bootloader</value>
   </data>
-  <data name="FwUpdateNoBootInImage" xml:space="preserve">
+	<data name="FwUpdateNoBootInImage" xml:space="preserve">
     <value>Firmware image has not the bootloader in it</value>
   </data>
-  <data name="HesConnectionNotInitialized" xml:space="preserve">
+	<data name="HesConnectionNotInitialized" xml:space="preserve">
     <value>HES connection is not initialized</value>
   </data>
-  <data name="HesDeviceAuthorizationFailed" xml:space="preserve">
+	<data name="HesDeviceAuthorizationFailed" xml:space="preserve">
     <value>Vault authorization failed</value>
   </data>
-  <data name="HesDeviceNotFound" xml:space="preserve">
+	<data name="HesDeviceNotFound" xml:space="preserve">
     <value>Vault not found</value>
   </data>
-  <data name="HesEmptyDeviceAccessProfile" xml:space="preserve">
+	<data name="HesEmptyDeviceAccessProfile" xml:space="preserve">
     <value>Access profile is not set for the vault</value>
   </data>
-  <data name="HesEmptyMasterKey" xml:space="preserve">
+	<data name="HesEmptyMasterKey" xml:space="preserve">
     <value>The master key is empty for the vault</value>
   </data>
-  <data name="HesFailedEstablishRemoteDeviceConnection" xml:space="preserve">
+	<data name="HesFailedEstablishRemoteDeviceConnection" xml:space="preserve">
     <value>Failed to establish remote vault connection</value>
   </data>
-  <data name="HesUnknownError" xml:space="preserve">
+	<data name="HesUnknownError" xml:space="preserve">
     <value>HES unknown error</value>
   </data>
-  <data name="HesVerificationFailed" xml:space="preserve">
+	<data name="HesVerificationFailed" xml:space="preserve">
     <value>HES verification failed</value>
   </data>
-  <data name="HesWorkstationNotApproved" xml:space="preserve">
+	<data name="HesWorkstationNotApproved" xml:space="preserve">
     <value>Workstation is not approved. Contact your system administrator.</value>
   </data>
-  <data name="LongOperationNotFound" xml:space="preserve">
+	<data name="LongOperationNotFound" xml:space="preserve">
     <value>Operation not found</value>
   </data>
-  <data name="MainChannelNotVerified" xml:space="preserve">
+	<data name="MainChannelNotVerified" xml:space="preserve">
     <value>The main channel is not verified</value>
   </data>
-  <data name="NoConnectedUI" xml:space="preserve">
+	<data name="NoConnectedUI" xml:space="preserve">
     <value>UI is not connected to the service</value>
   </data>
-  <data name="NonHideezException" xml:space="preserve">
+	<data name="NonHideezException" xml:space="preserve">
     <value>&lt;placeholder&gt;</value>
   </data>
-  <data name="Ok" xml:space="preserve">
+	<data name="Ok" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="PmInvalidFlagsMask" xml:space="preserve">
+	<data name="PmInvalidFlagsMask" xml:space="preserve">
     <value>Invalid flags mask</value>
   </data>
-  <data name="RemoteChannelNotVerified" xml:space="preserve">
+	<data name="RemoteChannelNotVerified" xml:space="preserve">
     <value>Remote channel {0} is not verified</value>
   </data>
-  <data name="StorageWriteError" xml:space="preserve">
+	<data name="StorageWriteError" xml:space="preserve">
     <value>Failed to write the storage</value>
   </data>
-  <data name="UnknownError" xml:space="preserve">
+	<data name="UnknownError" xml:space="preserve">
     <value>Unknown error</value>
   </data>
-  <data name="ZeroChannelCannotBeVerfieid" xml:space="preserve">
+	<data name="ZeroChannelCannotBeVerfieid" xml:space="preserve">
     <value>Channel 0 cannot be verified</value>
   </data>
-  <data name="DeviceHasBeenWiped" xml:space="preserve">
+	<data name="DeviceHasBeenWiped" xml:space="preserve">
     <value>The vault has been successfully wiped. It can now be assigned to another user.</value>
   </data>
-  <data name="HesDeviceNotAssignedToAnyUser" xml:space="preserve">
+	<data name="HesDeviceNotAssignedToAnyUser" xml:space="preserve">
     <value>Vault is not assigned to any user. Please, contact your system administrator.</value>
   </data>
-  <data name="GetPinTimeout" xml:space="preserve">
+	<data name="GetPinTimeout" xml:space="preserve">
     <value>PIN request from the user has been timed out</value>
   </data>
-  <data name="DeviceAuthorizationFailed" xml:space="preserve">
+	<data name="DeviceAuthorizationFailed" xml:space="preserve">
     <value>Vault authorization failed. Check vault access profile settings.</value>
   </data>
-  <data name="BleDisconnecting" xml:space="preserve">
+	<data name="BleDisconnecting" xml:space="preserve">
     <value>Vault disconnecting</value>
   </data>
-  <data name="DeviceInitializationTimeout" xml:space="preserve">
+	<data name="DeviceInitializationTimeout" xml:space="preserve">
     <value>Vault initialization timeout</value>
   </data>
-  <data name="DeviceDisconnected" xml:space="preserve">
+	<data name="DeviceDisconnected" xml:space="preserve">
     <value>Vault disconnected</value>
   </data>
-  <data name="DeviceRemoved" xml:space="preserve">
+	<data name="DeviceRemoved" xml:space="preserve">
     <value>Vault removed</value>
   </data>
-  <data name="HesAppHubDisconnected" xml:space="preserve">
+	<data name="HesAppHubDisconnected" xml:space="preserve">
     <value>The application SignalR connection has been disconnected</value>
   </data>
-  <data name="HesDeviceHubDisconnected" xml:space="preserve">
+	<data name="HesDeviceHubDisconnected" xml:space="preserve">
     <value>The vault SignalR connection has been disconnected</value>
   </data>
-  <data name="DeviceNotFound" xml:space="preserve">
+	<data name="DeviceNotFound" xml:space="preserve">
     <value>Requested vault {0} was not found</value>
   </data>
-  <data name="RemoteDeviceNotFound" xml:space="preserve">
+	<data name="RemoteDeviceNotFound" xml:space="preserve">
     <value>Requested remote vault {0} was not found</value>
   </data>
-  <data name="WorkstationUnlockerConnectTimeout" xml:space="preserve">
+	<data name="WorkstationUnlockerConnectTimeout" xml:space="preserve">
     <value>Workstation unlocker connect timeout</value>
   </data>
-  <data name="ERR_NO_LICENSE" xml:space="preserve">
+	<data name="ERR_NO_LICENSE" xml:space="preserve">
     <value>No license for vault. Contact your system administrator.</value>
   </data>
-  <data name="ERR_DEVICE_LOCKED_BY_PIN" xml:space="preserve">
+	<data name="ERR_DEVICE_LOCKED_BY_PIN" xml:space="preserve">
     <value>Vault locked. Contact your system administrator.</value>
   </data>
-  <data name="ERR_DEVICE_LOCKED_BY_CODE" xml:space="preserve">
+	<data name="ERR_DEVICE_LOCKED_BY_CODE" xml:space="preserve">
     <value>Vault locked. Contact your system administrator.</value>
   </data>
-  <data name="ERR_LICENSE_EXPIRED" xml:space="preserve">
+	<data name="ERR_LICENSE_EXPIRED" xml:space="preserve">
     <value>Vault license expired. Contact your system administrator.</value>
   </data>
-  <data name="ERR_INVALID_LICENSE" xml:space="preserve">
+	<data name="ERR_INVALID_LICENSE" xml:space="preserve">
     <value>Invalid license. Contact your system administrator.</value>
   </data>
-  <data name="HesDeviceCompromised" xml:space="preserve">
+	<data name="HesDeviceCompromised" xml:space="preserve">
     <value>Vault compromised. Contact your system administrator.</value>
   </data>
-  <data name="HesDeviceLocked" xml:space="preserve">
+	<data name="HesDeviceLocked" xml:space="preserve">
     <value>Vault locked. Contact your system administrator.</value>
   </data>
-  <data name="HesDeviceLinkedToAnotherServer" xml:space="preserve">
+	<data name="HesDeviceLinkedToAnotherServer" xml:space="preserve">
     <value>Looks like your vault was linked on another server. Contact your system administrator.</value>
   </data>
-  <data name="HesDeviceWipedOnAnotherServer" xml:space="preserve">
+	<data name="HesDeviceWipedOnAnotherServer" xml:space="preserve">
     <value>Vault wiped on another server.</value>
   </data>
-  <data name="HesAlarm" xml:space="preserve">
+	<data name="HesAlarm" xml:space="preserve">
     <value>Failed to connect to the server</value>
   </data>
-  <data name="HesRequestTimeout" xml:space="preserve">
+	<data name="HesRequestTimeout" xml:space="preserve">
     <value>Server did not reply in a specified amount of time. Please try again after 30 seconds.</value>
   </data>
-  <data name="DeviceInBootloaderMode" xml:space="preserve">
+	<data name="DeviceInBootloaderMode" xml:space="preserve">
     <value>Your device is in bootloader mode. Please, contact your system administrator to update your firmware.</value>
   </data>
-  <data name="HesInvalidMasterKey" xml:space="preserve">
+	<data name="HesInvalidMasterKey" xml:space="preserve">
     <value>Looks like your vault was linked on another server. Contact your system administrator.</value>
   </data>
-  <data name="HesVaultWasManuallyWiped" xml:space="preserve">
+	<data name="HesVaultWasManuallyWiped" xml:space="preserve">
     <value>This vault was manually reset. It must be reassigned to the user. Please, contact your system administrator.</value>
   </data>
 </root>

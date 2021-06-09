@@ -117,4 +117,47 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="DP.Description" xml:space="preserve">
+    <value>Включає два типи ключа безпеки:</value>
+  </data>
+	<data name="DP.Header" xml:space="preserve">
+    <value>Hideez Authentication Solution для Користувачів</value>
+  </data>
+	<data name="DP.HideezKey.Description" xml:space="preserve">
+    <value>Фізична мітка із підключенням Bluetooth
+Прошивка мінімум 3.6.10</value>
+  </data>
+	<data name="DP.HideezKey.Header" xml:space="preserve">
+    <value>Hideez Key</value>
+  </data>
+	<data name="HKP.Description1" xml:space="preserve">
+    <value>Вставте Hideez Bluetooth Dongle у порт USB</value>
+  </data>
+	<data name="HKP.Description2" xml:space="preserve">
+    <value>Переконайтеся, що індикатор Dongle у нижньому лівому куті зелений</value>
+  </data>
+	<data name="HKP.Description3" xml:space="preserve">
+    <value>Натисніть кнопку на Hideez Key</value>
+  </data>
+	<data name="HKP.Description4" xml:space="preserve">
+    <value>Торкніть Hideez Key до адаптера та утримуйте</value>
+  </data>
+	<data name="HKP.Description5" xml:space="preserve">
+    <value>Натисніть зелену кнопку на Hideez Key</value>
+  </data>
+	<data name="HKP.Description6" xml:space="preserve">
+    <value>Дотримуйтесь сповіщень на екрані</value>
+  </data>
+	<data name="LowBatteryNotification.Message" xml:space="preserve">
+    <value>Рівень заряду акумулятора у вашому сховищі нижче 25%.</value>
+  </data>
+	<data name="Notification.DeviceLockedByCode.Message" xml:space="preserve">
+    <value>Щоб розблокувати ключ, введіть майстер-пароль.</value>
+  </data>
+	<data name="Notification.DeviceLockedByPin.Message" xml:space="preserve">
+    <value>Забагато неправильних введень PIN.</value>
+  </data>
+	<data name="Vault.Error.Pin.LockedByInvalidAttempts" xml:space="preserve">
+    <value>Ключ заблоковано через занадто багато неправильних спроб введення PIN.</value>
+  </data>
 </root>

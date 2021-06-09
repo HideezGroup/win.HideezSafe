@@ -1344,4 +1344,25 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
   <data name="MessageBox.DisablingUnlock.Message" xml:space="preserve">
     <value>Disabling PC Unlock will remove unlock credentials from your Hideez Vault storage. Disable anyway?</value>
   </data>
+  <data name="LanguageSettings.Title" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="en-US" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="LanguageSettings.Button.RestartApp" xml:space="preserve">
+    <value>Restart app</value>
+  </data>
+  <data name="LanguageSettings.Description" xml:space="preserve">
+    <value>Choose language - Changes will be applied after restarting the app</value>
+  </data>
+  <data name="uk-UA" xml:space="preserve">
+    <value>Ukrainian</value>
+  </data>
+  <data name="DS.Label.Storage" xml:space="preserve">
+    <value>Storage ({0} KB): </value>
+  </data>
+  <data name="DS.Label.Storage.Free" xml:space="preserve">
+    <value>{0}% free</value>
+  </data>
 </root>

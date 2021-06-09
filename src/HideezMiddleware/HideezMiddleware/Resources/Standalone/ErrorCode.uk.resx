@@ -117,4 +117,25 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="DeviceInBootloaderMode" xml:space="preserve">
+    <value>Ваш пристрій перебуває в режимі завантажувача. Будь ласка, оновіть свою прошивку.</value>
+  </data>
+	<data name="DeviceIsLocked" xml:space="preserve">
+    <value>Ключ заблоковано.</value>
+  </data>
+	<data name="ERR_DEVICE_LOCKED_BY_CODE" xml:space="preserve">
+    <value>Ключ заблоковано. Введіть майстер-пароль.</value>
+  </data>
+	<data name="ERR_DEVICE_LOCKED_BY_PIN" xml:space="preserve">
+    <value>Сейф заблоковано через занадто багато неправильних спроб введень PIN-коду.</value>
+  </data>
+	<data name="ERR_INVALID_LICENSE" xml:space="preserve">
+    <value>Недійсна ліцензія.</value>
+  </data>
+	<data name="ERR_LICENSE_EXPIRED" xml:space="preserve">
+    <value>Термін дії ліцензії на ключі закінчився.</value>
+  </data>
+	<data name="ERR_NO_LICENSE" xml:space="preserve">
+    <value>Немає ліцензії на ключі.</value>
+  </data>
 </root>

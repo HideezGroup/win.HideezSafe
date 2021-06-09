@@ -8,6 +8,7 @@ using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
 using HideezMiddleware.IPC.DTO;
 using HideezMiddleware.IPC.IncommingMessages;
 using HideezMiddleware.IPC.Messages;
+using HideezMiddleware.Localize;
 using HideezMiddleware.Modules.DeviceManagement.Messages;
 using HideezMiddleware.Modules.Hes.Messages;
 using HideezMiddleware.Modules.ServiceEvents.Messages;
@@ -16,6 +17,7 @@ using Meta.Lib.Modules.PubSub;
 using Meta.Lib.Modules.PubSub.Messages;
 using Microsoft.Win32;
 using System;
+using System.Globalization;
 using System.IO.Pipes;
 using System.Linq;
 using System.Security.AccessControl;
@@ -101,6 +103,8 @@ namespace HideezMiddleware.Modules.ClientPipe
             _messenger.Subscribe(GetSafeHandler<LoadUserProximitySettingsMessage>(LoadUserProximitySettings));
             _messenger.Subscribe(GetSafeHandler<SaveUserProximitySettingsMessage>(SaveUserProximitySettings));
             _messenger.Subscribe(GetSafeHandler<RemoveUserProximitySettingsMessage>(RemoveUserProximitySettings));
+
+            _messenger.Subscribe(GetSafeHandler<LanguageSettingsChangedMessage>(OnClientLanguageSettingsChanged));
         }
 
         private void Error(Exception ex, string message = "")
@@ -177,6 +181,9 @@ namespace HideezMiddleware.Modules.ClientPipe
         {
             WriteLine($"Service client login");
 
+            TranslationSource.Instance.CurrentCulture = arg.ClientCulture;
+            HideezExceptionLocalization.Culture = arg.ClientCulture;
+
             await RefreshServiceInfo();
 
             try
@@ -251,6 +258,14 @@ namespace HideezMiddleware.Modules.ClientPipe
             var settings = _userProximtiySettingsManager.Settings;
             settings.RemoveProximitySettings(msg.DeviceConnectionId);
             _userProximtiySettingsManager.SaveSettings(settings);
+
+            return Task.CompletedTask;
+        }
+
+        private Task OnClientLanguageSettingsChanged(LanguageSettingsChangedMessage arg)
+        {
+            TranslationSource.Instance.CurrentCulture = new CultureInfo(arg.NewLanguageName);
+            HideezExceptionLocalization.Culture = new CultureInfo(arg.NewLanguageName);
 
             return Task.CompletedTask;
         }
