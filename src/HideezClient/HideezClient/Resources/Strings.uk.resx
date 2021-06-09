@@ -961,7 +961,7 @@
     <value>Введіть URL</value>
   </data>
   <data name="PM.EnterOtp" xml:space="preserve">
-    <value>Введіть секретний ключ</value>
+    <value>Введіть секрет</value>
   </data>
   <data name="PM.Label.Account" xml:space="preserve">
     <value>ОБЛІКОВИЙ ЗАПИС</value>
@@ -1004,6 +1004,9 @@
   </data>
   <data name="ProximitySettings.TextBlock.SignalLevel" xml:space="preserve">
     <value>Виберіть рівень сигналу Bluetooth для блокування та розблокування комп'ютера.</value>
+  </data>
+  <data name="ProximitySettings.UnlockMode" xml:space="preserve">
+    <value>Режим розблокування</value>
   </data>
   <data name="ProximitySettings.UnlockMode.Automatic" xml:space="preserve">
     <value>Автоматичне Розблокування</value>

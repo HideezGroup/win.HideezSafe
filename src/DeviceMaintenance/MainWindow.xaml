@@ -6,6 +6,7 @@
     xmlns:Metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:controls="clr-namespace:DeviceMaintenance.Controls" 
+    xmlns:l="clr-namespace:DeviceMaintenance.Localize"
     x:Class="DeviceMaintenance.MainWindow"
     mc:Ignorable="d"
     Title="{Binding Title}" 
@@ -35,7 +36,7 @@
                         Visibility="{Binding IsButtonsVisible, Converter={StaticResource InvertBooleanToVisibilityConverter}}"
                         Command="{Binding GoToStartPageCommand}">
                         <Button.Content>
-                            <TextBlock Text="Start page"/>
+                            <TextBlock Text="{l:Localization Button.StartPage}"/>
                         </Button.Content>
                     </Button>
                     <controls:StateControl
@@ -68,7 +69,7 @@
                             Command="{Binding QuickUpdateCommand}"
                             FontSize="20">
                             <TextBlock 
-                                Text="Quick update"
+                                Text="{l:Localization QuickUpdate.Text}"
                                 Margin="10,4"/>
                         </Button>
                         <Button
@@ -76,26 +77,26 @@
                             Margin="0,10"
                             Command="{Binding AdvancedUpdateCommand}"
                             FontSize="12"
-                            Content="Advanced update"/>
+                            Content="{l:Localization AdvancedUpdate.Text}"/>
                     </WrapPanel>
                     <StackPanel Visibility="{Binding IsAdvancedUpdate, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <TextBlock
                             FontSize="20"
                             Foreground="White"
                             FontWeight="DemiBold"
-                            Text="Advanced update"
+                            Text="{l:Localization AdvancedUpdate.Text}"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"/>
                         <RadioButton
                             x:Name="serverRdBtn"
                             GroupName="FileLoading"
                             IsChecked="{Binding IsAdvancedUpdateFromServerEnabled}"
-                            Content="Choose available version for your device model"
+                            Content="{l:Localization AdvancedUpdate.RadioButton.ChooseVersion}"
                             Margin="0,0,0,10"/>
                         <RadioButton
                             x:Name="fileRdBtn"
                             GroupName="FileLoading"
-                            Content="Select a file"
+                            Content="{l:Localization AdvancedUpdate.RadioButton.File}"
                             IsChecked="{Binding IsUpdateFromFileEnabled}"
                             Margin="0,0,0,10"/>
                         <Grid Height="55">
@@ -110,10 +111,10 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <TextBlock 
-                                    Text="Model"/>
+                                    Text="{l:Localization AdvancedUpdate.Text.Model}"/>
                                 <TextBlock
                                     Grid.Column="2"
-                                    Text="Version"/>
+                                    Text="{l:Localization AdvancedUpdate.Text.Version}"/>
                                 <ComboBox
                                     Grid.Row="1"
                                     ItemsSource="{Binding DeviceModels}"
@@ -133,7 +134,7 @@
                                 Visibility="{Binding ElementName=fileRdBtn, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <Button
                                     Style="{DynamicResource BlueButton}"
-                                    Content="Select firmware file"
+                                    Content="{l:Localization AdvancedUpdate.Button.File}"
                                     Command="{Binding SelectFirmwareCommand}"/>
                                 <TextBlock 
                                     Text="{Binding FirmwareFilePath}" 
@@ -151,7 +152,7 @@
                                 FontSize="20"
                                 Foreground="White"
                                 FontWeight="DemiBold"
-                                Text="Quick update"
+                                Text="{l:Localization QuickUpdate.Text}"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"/>
 
@@ -162,7 +163,7 @@
                     <CheckBox 
                         Style="{DynamicResource MetroCheckBox}"
                         Margin="0,10,20,0"
-                        Content="Automatically start uploading device firmware" 
+                        Content="{l:Localization CheckBox.Autostart}" 
                         HorizontalAlignment="Left" 
                         IsChecked="{Binding AutomaticallyUploadFirmware, Mode=TwoWay}"
                         Visibility="{Binding Path=IsCsrEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -180,7 +181,7 @@
                             VerticalAlignment="Center"/>
                         <TextBlock
                             Margin="10"
-                            Text="Please, select firmware file"
+                            Text="{l:Localization AdvancedUpdate.Text.SelectFile}"
                             FontSize="14"
                             Foreground="White"
                             FontWeight="DemiBold"
@@ -188,7 +189,7 @@
                             Visibility="{Binding Path=IsFirmwareSelected, Converter={StaticResource InvertBooleanToVisibilityConverter}}"/>
                         <TextBlock 
                             Margin="10"
-                            Text="Tap the device on the bluetooth dongle to upload new firmware" 
+                            Text="{l:Localization Text.TapToStart}" 
                             FontSize="14"
                             Foreground="White"
                             FontWeight="DemiBold"
@@ -196,7 +197,7 @@
                             Visibility="{Binding Path=IsTapEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         <TextBlock 
                             Margin="10"
-                            Text="Pair device through Windows Bluetooth Settings to upload new firmware" 
+                            Text="{l:Localization Text.PairToStart}" 
                             FontSize="14"
                             Foreground="White"
                             FontWeight="DemiBold"
@@ -237,7 +238,7 @@
 
                                     <TextBlock
                                         Grid.Column="2"
-                                        Text="Connecting..."
+                                        Text="{l:Localization Device.Text.Connecting}"
                                         FontWeight="Bold"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
@@ -246,7 +247,7 @@
 
                                     <TextBlock
                                         Grid.Column="2"
-                                        Text="PRESS THE BUTTON, Connecting..."
+                                        Text="{l:Localization Device.Text.Connecting.PressButton}"
                                         FontWeight="Bold"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
@@ -260,7 +261,7 @@
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center">
                                         <Button
-                                            Content="Wipe"
+                                            Content="{l:Localization Device.Button.Wipe}"
                                             FontWeight="Bold"
                                             Background="Red"
                                             Command="{Binding WipeDevice}"
@@ -268,7 +269,7 @@
                                             Visibility="{Binding ReadyToUpdateState, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                         
                                         <Button
-                                            Content="Update"
+                                            Content="{l:Localization Device.Button.Update}"
                                             FontWeight="Bold"
                                             Margin="10,0,0,0"
                                             Command="{Binding UpdateDevice}" CommandParameter="{Binding DataContext.FilePath, RelativeSource={RelativeSource FindAncestor, AncestorType=Metro:MetroWindow}}"
@@ -281,7 +282,7 @@
 
                                     <TextBlock
                                         Grid.Column="2"
-                                        Text="Entering boot mode..."
+                                        Text="{l:Localization Device.Text.EnteringBoot}"
                                         FontWeight="Bold"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
@@ -290,7 +291,7 @@
 
                                     <TextBlock
                                         Grid.Column="2"
-                                        Text="Wiping the device..."
+                                        Text="{l:Localization Device.Text.Wiping}"
                                         FontWeight="Bold"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
@@ -304,7 +305,7 @@
                                         VerticalAlignment="Center"
                                         Visibility="{Binding UpdatingState, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <TextBlock
-                                            Text="uploading firmware... "/>
+                                            Text="{l:Localization Device.Text.UploadingFw}"/>
                                         <TextBlock 
                                             FontWeight="Bold"
                                             Text="{Binding Progress, Mode=OneWay, StringFormat=\{0:#0.00\'%\'\}}"
@@ -330,7 +331,7 @@
                                         Width="22"
                                         Margin="10,0"
                                         Visibility="{Binding SuccessState, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        ToolTip="Update finished"
+                                        ToolTip="{l:Localization Device.Icon.Finished.Tooltip}"
                                         Background="Transparent"
                                         Padding="2"
                                     />
@@ -365,7 +366,7 @@
                                                 <TextBlock 
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Text="Failed"
+                                                    Text="{l:Localization Device.Text.Failed}"
                                                     FontSize="14"/>
                                                 <iconPacks:PackIconMaterial
                                                     Kind="Cancel"

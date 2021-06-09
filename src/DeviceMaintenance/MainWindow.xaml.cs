@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using DeviceMaintenance.Messages;
 using DeviceMaintenance.ViewModel;
+using HideezMiddleware.Localize;
 using MahApps.Metro.Controls;
 using Meta.Lib.Modules.PubSub;
 
@@ -26,10 +27,8 @@ namespace DeviceMaintenance
             if (vm.IsFirmwareUpdateInProgress)
             {
                 var mb = MessageBox.Show(
-                    "Firmware update in progress!" +
-                    Environment.NewLine +
-                    "Are you sure you want to exit?",
-                    "Exit application",
+                    TranslationSource.Instance["CloseOnUpdating.Text"],
+                    TranslationSource.Instance["CloseOnUpdating.Title"],
                     MessageBoxButton.YesNoCancel, 
                     MessageBoxImage.Exclamation);
 

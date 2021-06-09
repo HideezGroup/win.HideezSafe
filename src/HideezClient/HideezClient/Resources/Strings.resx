@@ -1365,4 +1365,10 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
   <data name="DS.Label.Storage.Free" xml:space="preserve">
     <value>{0}% free</value>
   </data>
+  <data name="ProximitySettings.Title" xml:space="preserve">
+    <value>Proximity Settings</value>
+  </data>
+  <data name="ProximitySettings.UnlockMode" xml:space="preserve">
+    <value>Unlock mode</value>
+  </data>
 </root>

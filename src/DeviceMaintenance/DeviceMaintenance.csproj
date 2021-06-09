@@ -153,6 +153,7 @@
     <Compile Include="Controls\StateControl.xaml.cs">
       <DependentUpon>StateControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Localize\LocalizationExtension.cs" />
     <Compile Include="Messages\ClosingEvent.cs" />
     <Compile Include="Messages\ConnectDeviceCommand.cs" />
     <Compile Include="Messages\ConnectDeviceResponse.cs" />
@@ -164,6 +165,11 @@
     <Compile Include="Messages\FilePathDetectionMessage.cs" />
     <Compile Include="Messages\FilePathDetectionResponse.cs" />
     <Compile Include="Messages\MessageBase.cs" />
+    <Compile Include="Resources\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Service\HideezServiceController.cs" />
     <Compile Include="Utils\DelegateCommand.cs" />
     <Compile Include="Messages\AdvertismentReceivedEvent.cs" />
@@ -213,6 +219,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Strings.uk.resx" />
     <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
