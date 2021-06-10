@@ -271,8 +271,25 @@
                         <Label></Label>
                         <Label></Label>
 
-
-
+                        <Label>Fingerprint:</Label>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Margin="0,0,2,0" Command="{Binding FpBeginCommand}">Begin</Button>
+                            <Button Grid.Column="1" Margin="2,0,0,0" Command="{Binding FpNextCommand}">Next</Button>
+                        </Grid>
+                        <Button Margin="0,10,0,0" Command="{Binding FpGetInfoCommand}">GetInfo</Button>
+                        <Button Margin="0,10,0,0" Command="{Binding FpSearchCommand}">Search</Button>
+                        <Label>Id:</Label>
+                        <TextBox Text="{Binding FpId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Margin="0,10,0,0" Command="{Binding FpRemoveCommand}">Remove</Button>
+                        <Button Margin="0,10,0,0" Command="{Binding FpCancelCommand}">Cancel</Button>
+                        <Label>Output:</Label>
+                        <TextBox Margin="0,10,0,0" IsReadOnly="True" Text="{Binding FpOutput,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Margin="0,10,0,0" Command="{Binding FpStateSubscribeCommand}">Subscribe to FP State</Button>
+                        
                     </StackPanel>
 
                     <StackPanel Margin="10">

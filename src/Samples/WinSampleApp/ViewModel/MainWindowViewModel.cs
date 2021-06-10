@@ -9,17 +9,12 @@ using System.Windows.Input;
 using Hideez.CsrBLE;
 using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.Device;
-using Hideez.SDK.Communication.FW;
 using Hideez.SDK.Communication.HES.Client;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Log;
-using Hideez.SDK.Communication.LongOperations;
 using Hideez.SDK.Communication.PasswordManager;
-using Hideez.SDK.Communication.BLE;
 using Hideez.SDK.Communication.Utils;
 using HideezMiddleware;
-using HideezMiddleware.DeviceConnection;
-using HideezMiddleware.DeviceConnection.Workflow;
 using HideezMiddleware.Settings;
 using HideezMiddleware.Workstation;
 using Microsoft.Win32;
@@ -35,7 +30,7 @@ using HideezMiddleware.ConnectionModeProvider;
 
 namespace WinSampleApp.ViewModel
 {
-    public class MainWindowViewModel : ViewModelBase, IClientUiProxy, IWorkstationUnlocker
+    public class MainWindowViewModel : ViewModelBase, IClientUiProxy
     {
         readonly EventLogger _log;
         readonly IMetaPubSub _messenger;
@@ -227,6 +222,34 @@ namespace WinSampleApp.ViewModel
                 {
                     backupPasswordText = value;
                     NotifyPropertyChanged(nameof(BackupPasswordText));
+                }
+            }
+        }
+
+        string fpId = "0";
+        public string FpId
+        {
+            get { return fpId; }
+            set
+            {
+                if (fpId != value)
+                {
+                    fpId = value;
+                    NotifyPropertyChanged(nameof(fpId));
+                }
+            }
+        }
+
+        string fpOutput = string.Empty;
+        public string FpOutput
+        {
+            get { return fpOutput; }
+            set
+            {
+                if (fpOutput != value)
+                {
+                    fpOutput = value;
+                    NotifyPropertyChanged(nameof(FpOutput));
                 }
             }
         }
@@ -1039,6 +1062,135 @@ namespace WinSampleApp.ViewModel
                     CommandAction = (x) =>
                     {
                         _ = RunDeviceRestoreProcedure(CurrentDevice);
+                    }
+                };
+            }
+        }
+
+        public ICommand FpBeginCommand
+        {
+            get
+            {
+                return new DelegateCommand
+                {
+                    CanExecuteFunc = () =>
+                    {
+                        return CurrentDevice != null;
+                    },
+                    CommandAction = (x) =>
+                    {
+                        _ = FpBegin(CurrentDevice);
+                    }
+                };
+            }
+        }
+
+
+
+        public ICommand FpNextCommand
+        {
+            get
+            {
+                return new DelegateCommand
+                {
+                    CanExecuteFunc = () =>
+                    {
+                        return CurrentDevice != null;
+                    },
+                    CommandAction = (x) =>
+                    {
+                        _ = FpNext(CurrentDevice);
+                    }
+                };
+            }
+        }
+
+        public ICommand FpGetInfoCommand
+        {
+            get
+            {
+                return new DelegateCommand
+                {
+                    CanExecuteFunc = () =>
+                    {
+                        return CurrentDevice != null;
+                    },
+                    CommandAction = (x) =>
+                    {
+                        _ = FpGetInfo(CurrentDevice);
+                    }
+                };
+            }
+        }
+
+        public ICommand FpSearchCommand
+        {
+            get
+            {
+                return new DelegateCommand
+                {
+                    CanExecuteFunc = () =>
+                    {
+                        return CurrentDevice != null;
+                    },
+                    CommandAction = (x) =>
+                    {
+                        _ = FpSearch(CurrentDevice);
+                    }
+                };
+            }
+        }
+
+        public ICommand FpRemoveCommand
+        {
+            get
+            {
+                return new DelegateCommand
+                {
+                    CanExecuteFunc = () =>
+                    {
+                        return CurrentDevice != null;
+                    },
+                    CommandAction = (x) =>
+                    {
+                        _ = FpRemove(CurrentDevice);
+                    }
+                };
+            }
+        }
+
+        public ICommand FpCancelCommand
+        {
+            get
+            {
+                return new DelegateCommand
+                {
+                    CanExecuteFunc = () =>
+                    {
+                        return CurrentDevice != null;
+                    },
+                    CommandAction = (x) =>
+                    {
+                        _ = FpCancel(CurrentDevice);
+                    }
+                };
+            }
+        }
+
+        // Todo: Temporary impl
+        public ICommand FpStateSubscribeCommand
+        {
+            get
+            {
+                return new DelegateCommand
+                {
+                    CanExecuteFunc = () =>
+                    {
+                        return CurrentDevice != null;
+                    },
+                    CommandAction = (x) =>
+                    {
+                        FpStateSubscribe(CurrentDevice);
                     }
                 };
             }
@@ -1926,20 +2078,6 @@ namespace WinSampleApp.ViewModel
             }
         }
 
-        /*
-        async Task DeviceFetchLog(DeviceViewModel device)
-        {
-            try
-            {
-                //await device.Device.
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        */
-
         async Task RunDeviceBackupProcedure(DeviceViewModel currentDevice)
         {
             try
@@ -2000,6 +2138,119 @@ namespace WinSampleApp.ViewModel
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        readonly sbyte FP_TIMEOUT = 10;
+        async Task FpBegin(DeviceViewModel device)
+        {
+            try
+            {
+                var result = await device.Device.AddFingerprint(true, FP_TIMEOUT);
+                var sb = new StringBuilder();
+                sb.AppendLine($"Status:{result.Status}");
+                sb.AppendLine($"Id:{result.Id}");
+                sb.AppendLine($"Remaining:{result.RemainingEntries}");
+                MessageBox.Show(sb.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        async Task FpNext(DeviceViewModel device)
+        {
+            try
+            {
+                var result = await device.Device.AddFingerprint(false, FP_TIMEOUT);
+                var sb = new StringBuilder();
+                sb.AppendLine($"Status:{result.Status}");
+                sb.AppendLine($"Id:{result.Id}");
+                sb.AppendLine($"Remaining:{result.RemainingEntries}");
+                MessageBox.Show(sb.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        
+        async Task FpGetInfo(DeviceViewModel device)
+        {
+            try
+            {
+                var result = await device.Device.GetFingerprintInfo(FP_TIMEOUT);
+                var sb = new StringBuilder();
+                sb.Append($"Status:{result.Available}");
+                sb.Append($"TypeSensor:{result.TypeSensor}");
+                sb.Append($"MinSamples:{result.MinSamplesRequired}");
+                sb.Append($"Enrolled:{result.EnrolledPrints}");
+                sb.Append($"Status:{result.Status}");
+                MessageBox.Show(sb.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        async Task FpSearch(DeviceViewModel device)
+        {
+            try
+            {
+                var result = await device.Device.SearchFingerprint(FP_TIMEOUT);
+                var sb = new StringBuilder();
+                sb.Append($"Status:{result.Status}");
+                sb.Append($"Id:{result.Id}");
+                sb.Append($"MatchScore:{result.MatchScore}");
+                MessageBox.Show(sb.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        async Task FpRemove(DeviceViewModel device)
+        {
+            try
+            {
+                var result = await device.Device.RemoveFingerprint((sbyte)int.Parse(FpId), FP_TIMEOUT);
+                var sb = new StringBuilder();
+                sb.Append($"Status:{result.Status}");
+                sb.Append($"Id:{result.Id}");
+                MessageBox.Show(sb.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        async Task FpCancel(DeviceViewModel device)
+        {
+            try
+            {
+                var result = await device.Device.CancelFingerprintOperation(FP_TIMEOUT);
+                var sb = new StringBuilder();
+                sb.Append($"Status:{result}");
+                MessageBox.Show(sb.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        void FpStateSubscribe(DeviceViewModel device)
+        {
+            device.Device.FingerprintStateChanged += (e, a) =>
+            {
+                FpOutput = $"{DateTime.UtcNow.Second} {a.State}";
+            };
+            MessageBox.Show("Subscribed to FP State change");
+            FpOutput = "<subscribed>";
         }
 
         #region IClientUiProxy
@@ -2100,16 +2351,6 @@ namespace WinSampleApp.ViewModel
         }
 
         #endregion IClientUiProxy
-
-        #region IWorkstationUnlocker
-        public bool IsConnected => true;
-
-        public Task<bool> SendLogonRequest(string login, string password, string previousPassword)
-        {
-            Debug.WriteLine($"IWorkstationUnlocker.SendLogonRequest: {login}, {password}, {previousPassword}");
-            return Task.FromResult(true);
-        }
-        #endregion IWorkstationUnlocker
 
     }
 }
