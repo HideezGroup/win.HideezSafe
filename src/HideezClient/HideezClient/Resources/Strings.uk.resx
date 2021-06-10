@@ -355,7 +355,7 @@
     <value>Назва ключа: </value>
   </data>
   <data name="DS.Label.FirmwareVersion" xml:space="preserve">
-    <value>Версія прошивки:</value>
+    <value>Версія прошивки: </value>
   </data>
   <data name="DS.Label.MAC" xml:space="preserve">
     <value>MAC: </value>
@@ -626,13 +626,13 @@
     <value>Рівень заряду батареї ключа низький</value>
   </data>
   <data name="MasterPassword.ChangeMP.Label" xml:space="preserve">
-    <value>Зміна майстер-пароля ключа (мінімум 8)</value>
+    <value>Зміна майстер-пароля (мінімум 8)</value>
   </data>
   <data name="MasterPassword.ConfirmMP.Label" xml:space="preserve">
-    <value>Підтвердьте майстер-пароль</value>
+    <value>Підтвердьте пароль</value>
   </data>
   <data name="MasterPassword.CurrentMP.Label" xml:space="preserve">
-    <value>Поточний майстер-пароль</value>
+    <value>Поточний пароль</value>
   </data>
   <data name="MasterPassword.EnterMP.Label" xml:space="preserve">
     <value>Введіть майстер-пароль ключа</value>
@@ -641,7 +641,7 @@
     <value>Новий майстер-пароль та пароль підтвердження не збігаються</value>
   </data>
   <data name="MasterPassword.NewMP.Label" xml:space="preserve">
-    <value>Новий майстер-пароль</value>
+    <value>Новий пароль</value>
   </data>
   <data name="MasterPassword.Title" xml:space="preserve">
     <value>Створення нового майстер-пароля для ключа (мінімум 8)</value>
@@ -1002,8 +1002,14 @@
   <data name="ProximitySettings.Label.UserName" xml:space="preserve">
     <value>Ім'я Користувача</value>
   </data>
+  <data name="ProximitySettings.TextBlock.Lock" xml:space="preserve">
+    <value>Блокування</value>
+  </data>
   <data name="ProximitySettings.TextBlock.SignalLevel" xml:space="preserve">
     <value>Виберіть рівень сигналу Bluetooth для блокування та розблокування комп'ютера.</value>
+  </data>
+  <data name="ProximitySettings.TextBlock.Unlock" xml:space="preserve">
+    <value>Розблокування</value>
   </data>
   <data name="ProximitySettings.UnlockMode" xml:space="preserve">
     <value>Режим розблокування</value>
@@ -1353,8 +1359,8 @@
   </data>
   <data name="WipeDialog.Description" xml:space="preserve">
     <value>- Усі ваші облікові записи буде видалено з вашого ключа
-  - Ваш ключ буде від’єднано з усіма пристроями
-  - Якщо увімкнено блокування на відстані, ця робоча станція буде заблокована</value>
+ - Ваш ключ буде від’єднано з усіма пристроями
+ - Якщо увімкнено блокування на відстані, ця робоча станція буде заблокована</value>
   </data>
   <data name="WipeDialog.Description.Fido.Part1" xml:space="preserve">
     <value>- Усі ваші дані FIDO будуть видалені з ключа</value>

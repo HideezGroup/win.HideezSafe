@@ -99,7 +99,12 @@ namespace HideezClient.ViewModels
 
         private void OnRestartApp()
         {
-            _messenger.PublishOnServer(new LanguageSettingsChangedMessage(SelectedLanguage.Name));
+            try
+            {
+                _messenger.PublishOnServer(new LanguageSettingsChangedMessage(SelectedLanguage.Name));
+            }
+            catch { }
+
             _windowsManager.RestartApplication();
         }
 

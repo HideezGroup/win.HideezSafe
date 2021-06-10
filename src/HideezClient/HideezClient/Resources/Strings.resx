@@ -1371,4 +1371,10 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
   <data name="ProximitySettings.UnlockMode" xml:space="preserve">
     <value>Unlock mode</value>
   </data>
+  <data name="ProximitySettings.TextBlock.Lock" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="ProximitySettings.TextBlock.Unlock" xml:space="preserve">
+    <value>Unlock</value>
+  </data>
 </root>

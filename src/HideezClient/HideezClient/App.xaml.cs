@@ -176,6 +176,8 @@ namespace HideezClient
 
             InitializeDIContainer();
 
+            _metaMessenger = Container.Resolve<IMetaPubSub>();
+
             var _connectionModeProvider = Container.Resolve<IConnectionModeProvider>();
             _log.WriteLine($"Connection mode: {_connectionModeProvider.ConnectionMode}");
 
@@ -192,6 +194,8 @@ namespace HideezClient
             ISettingsManager<HotkeySettings> hotkeySettingsManager = Container.Resolve<ISettingsManager<HotkeySettings>>();
             ApplicationSettings settings = null;
             ISettingsManager<ApplicationSettings> appSettingsManager = Container.Resolve<ISettingsManager<ApplicationSettings>>();
+            _subroutineContainer = Container.Resolve<SubroutineContainer>();
+            Container.Resolve<DefineInstalledCultureSubroutine>();
 
             try
             {
@@ -204,8 +208,17 @@ namespace HideezClient
                 var removeEmptyHotkeysProc = new RemoveEmptyHotkeysProc(hotkeySettingsManager);
                 await removeEmptyHotkeysProc.Run();
 
-                // Init localization
-                var culture = new CultureInfo(settings.SelectedUiLanguage);
+                //Init localization
+                CultureInfo culture = null;
+
+                //if no culture is specified in settings, select the installed system culture
+                if (string.IsNullOrEmpty(settings.SelectedUiLanguage))
+                {
+                    await _metaMessenger.Publish(new ApplicationSettingsLoadedMessage(settings));
+                    appSettingsManager.SaveSettings(settings);
+                }
+                culture = new CultureInfo(settings.SelectedUiLanguage);
+
                 TranslationSource.Instance.CurrentCulture = culture;
                 Thread.CurrentThread.CurrentCulture = culture;
                 Thread.CurrentThread.CurrentUICulture = culture;
@@ -228,11 +241,11 @@ namespace HideezClient
             _startupHelper = Container.Resolve<IStartupHelper>();
             _workstationManager = Container.Resolve<IWorkstationManager>();
 
-            _metaMessenger = Container.Resolve<IMetaPubSub>();
+            
 
             _metaMessenger.Subscribe<ConnectedToServerEvent>(OnConnectedToServer);
 
-            _subroutineContainer = Container.Resolve<SubroutineContainer>();
+            
             _serviceWatchdog = Container.Resolve<IServiceWatchdog>();
             _serviceWatchdog.Start();
             _deviceManager = Container.Resolve<IDeviceManager>();
@@ -265,7 +278,7 @@ namespace HideezClient
             // Handle first launch
             if (settings.IsFirstLaunch)
             {
-                OnFirstLaunch(settings);
+                OnFirstLaunch();
 
                 settings.IsFirstLaunch = false;
                 appSettingsManager.SaveSettings(settings);
@@ -315,20 +328,9 @@ namespace HideezClient
             return true;
         }
 
-        private void OnFirstLaunch(ApplicationSettings settings)
+        private void OnFirstLaunch()
         {
             _log.WriteLine("First Hideez Client launch");
-            var currentCulture = CultureInfo.InstalledUICulture;
-            var uaCulture = new CultureInfo("uk-UA");
-
-            if (currentCulture.Equals(new CultureInfo("ru-RU")) || currentCulture.Equals(uaCulture))
-            {
-                TranslationSource.Instance.CurrentCulture = uaCulture;
-                Thread.CurrentThread.CurrentCulture = uaCulture;
-                Thread.CurrentThread.CurrentUICulture = uaCulture;
-
-                settings.SelectedUiLanguage = uaCulture.Name;
-            }
 
             Container.Resolve<ShowMinimizedWindowNotificationSubroutine>();
         }
