@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
+	<!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,105 +59,105 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="DP.Description" xml:space="preserve">
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="DP.Description" xml:space="preserve">
     <value>Includes two type of a security key:</value>
   </data>
-  <data name="DP.Header" xml:space="preserve">
+	<data name="DP.Header" xml:space="preserve">
     <value>Hideez Authentication Solution for Consumers</value>
   </data>
-  <data name="DP.HideezKey.Description" xml:space="preserve">
+	<data name="DP.HideezKey.Description" xml:space="preserve">
     <value>Hardware token with Bluetooth connection
 Firmware minimum 3.6.10</value>
   </data>
-  <data name="DP.HideezKey.Header" xml:space="preserve">
+	<data name="DP.HideezKey.Header" xml:space="preserve">
     <value>Hideez Key</value>
   </data>
-  <data name="HKP.Description1" xml:space="preserve">
+	<data name="HKP.Description1" xml:space="preserve">
     <value>Insert Hideez Bluetooth Dongle to USB Port</value>
   </data>
-  <data name="HKP.Description2" xml:space="preserve">
+	<data name="HKP.Description2" xml:space="preserve">
     <value>Make sure that Dongle indicator in the bottom left corner are green</value>
   </data>
-  <data name="HKP.Description3" xml:space="preserve">
+	<data name="HKP.Description3" xml:space="preserve">
     <value>Push button on the Hideez Key</value>
   </data>
-  <data name="HKP.Description4" xml:space="preserve">
+	<data name="HKP.Description4" xml:space="preserve">
     <value>Long tap Hideez Key to the Dongle</value>
   </data>
-  <data name="HKP.Description5" xml:space="preserve">
+	<data name="HKP.Description5" xml:space="preserve">
     <value>Push Green Button on the Hideez Key</value>
   </data>
-  <data name="HKP.Description6" xml:space="preserve">
+	<data name="HKP.Description6" xml:space="preserve">
     <value>Follow the screen notifications</value>
   </data>
-  <data name="LowBatteryNotification.Message" xml:space="preserve">
+	<data name="LowBatteryNotification.Message" xml:space="preserve">
     <value>The battery level in your vault is below 25%.</value>
   </data>
-  <data name="Notification.DeviceLockedByCode.Message" xml:space="preserve">
+	<data name="Notification.DeviceLockedByCode.Message" xml:space="preserve">
     <value>To unlock the vault, enter master password.</value>
   </data>
-  <data name="Notification.DeviceLockedByPin.Message" xml:space="preserve">
+	<data name="Notification.DeviceLockedByPin.Message" xml:space="preserve">
     <value>Too many incorrect PIN entries.</value>
   </data>
-  <data name="Vault.Error.Pin.LockedByInvalidAttempts" xml:space="preserve">
+	<data name="Vault.Error.Pin.LockedByInvalidAttempts" xml:space="preserve">
     <value>Vault got locked due to too many incorrect pin attempts.</value>
   </data>
 </root>

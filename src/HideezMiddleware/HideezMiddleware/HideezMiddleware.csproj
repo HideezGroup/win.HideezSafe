@@ -203,6 +203,7 @@
     <Compile Include="IPC\IncommingMessages\EstablishRemoteDeviceConnectionMessageReply.cs" />
     <Compile Include="IPC\IncommingMessages\GetAvailableChannelsMessage.cs" />
     <Compile Include="IPC\IncommingMessages\GetAvailableChannelsMessageReply.cs" />
+    <Compile Include="IPC\IncommingMessages\LanguageSettingsChangedMessage.cs" />
     <Compile Include="IPC\IncommingMessages\LoadUserProximitySettingsMessage.cs" />
     <Compile Include="IPC\IncommingMessages\LoadUserProximitySettingsMessageReply.cs" />
     <Compile Include="IPC\IncommingMessages\PublishEventMessage.cs" />
@@ -399,19 +400,23 @@
     <EmbeddedResource Include="Resources\ErrorCode.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ErrorCode.uk.resx" />
     <EmbeddedResource Include="Resources\Standalone\ErrorCode.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorCode.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Standalone\ErrorCode.uk.resx" />
     <EmbeddedResource Include="Resources\Standalone\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Standalone\Strings.uk.resx" />
     <EmbeddedResource Include="Resources\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Strings.uk.resx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

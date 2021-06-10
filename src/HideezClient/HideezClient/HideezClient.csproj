@@ -397,6 +397,7 @@
     <Compile Include="Extension\VisualEx.cs" />
     <Compile Include="Messages\ActiveDeviceChangedMessage.cs" />
     <Compile Include="Messages\AddAccountForAppMessage.cs" />
+    <Compile Include="Messages\ApplicationSettingsLoadedMessage.cs" />
     <Compile Include="Messages\ApplicationStartupFinishedMessage.cs" />
     <Compile Include="Messages\ButtonPressedMessage.cs" />
     <Compile Include="Messages\ConnectionChangedMessage.cs" />
@@ -515,6 +516,7 @@
     <Compile Include="Modules\SettingsManager\HSSettingsManager.cs" />
     <Compile Include="Modules\EventPublisher\EventPublisher.cs" />
     <Compile Include="Modules\EventPublisher\IEventPublisher.cs" />
+    <Compile Include="Modules\Subroutines\DefineInstalledCultureSubroutine.cs" />
     <Compile Include="Modules\Subroutines\ShowMainWindowAfterStartupSubroutine.cs" />
     <Compile Include="Modules\Subroutines\SubroutineBase.cs" />
     <Compile Include="Modules\Subroutines\ShowMinimizedWindowNotificationSubroutine.cs" />
@@ -590,6 +592,7 @@
     <Compile Include="ViewModels\Dialog\WipeViewModel.cs" />
     <Compile Include="ViewModels\HotkeySettingsViewModel.cs" />
     <Compile Include="ViewModels\HotkeyViewModel.cs" />
+    <Compile Include="ViewModels\LanguageSettingViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\NotificationsContainerViewModel.cs" />
     <Compile Include="PageViewModels\PasswordManagerViewModel.cs" />
@@ -900,6 +903,7 @@
     <EmbeddedResource Include="Resources\StandaloneStrings\Strings.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\StandaloneStrings\Strings.uk.resx" />
     <EmbeddedResource Include="Resources\Strings.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

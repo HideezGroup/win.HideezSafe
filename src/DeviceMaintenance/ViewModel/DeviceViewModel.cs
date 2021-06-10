@@ -3,6 +3,7 @@ using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.Connection;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.LongOperations;
+using HideezMiddleware.Localize;
 using Meta.Lib.Modules.PubSub;
 using MvvmExtensions.Attributes;
 using MvvmExtensions.PropertyChangedMonitoring;
@@ -199,9 +200,9 @@ namespace DeviceMaintenance.ViewModel
                 if (res.Device == null)
                 {
                     if(_connectionId.IdProvider == (byte)DefaultConnectionIdProvider.WinBle)
-                        throw new Exception("Failed to connect device. Repair device or turn the Bluetooth off and on.");
+                        throw new Exception(TranslationSource.Instance["Error.FailedConnection.WinBle"]);
                     else if(_connectionId.IdProvider == (byte)DefaultConnectionIdProvider.Csr)
-                        throw new Exception("Failed to connect device");
+                        throw new Exception(TranslationSource.Instance["Error.FailedConnection.Csr"]);
                 }
 
                 CurrentState = State.Connected;
@@ -226,7 +227,7 @@ namespace DeviceMaintenance.ViewModel
                 string filePath = response.FilePath;
 
                 if (string.IsNullOrWhiteSpace(filePath))
-                    throw new Exception("No available firmware");
+                    throw new Exception(TranslationSource.Instance["Error.NoAvailableFw"]);
 
                 CurrentState = State.EnteringBoot;
 
@@ -246,17 +247,13 @@ namespace DeviceMaintenance.ViewModel
             }
         }
 
+
         async Task OnWipeDevice()
         {
             try
             {
-                var mb = MessageBox.Show(
-                    "After performing wipe:\n" +
-                    "- All your FIDO data will be erased from your vault(this data cannot be restored!)\n" +
-                    "- All your credentials will be erased from your vault\n" +
-                    "- Your vault will be disconnected and unpaired from all devices\n\n" +
-                    "To wipe the device, press OK, wait for the green light on the device then press and hold the button for 15 seconds.",
-                    "Wipe the device",
+                var mb = MessageBox.Show(TranslationSource.Instance["Wipe.Text"],
+                    TranslationSource.Instance["Wipe.Title"],
                     MessageBoxButton.OKCancel,
                     MessageBoxImage.Exclamation);
 

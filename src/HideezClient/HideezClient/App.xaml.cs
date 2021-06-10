@@ -176,6 +176,8 @@ namespace HideezClient
 
             InitializeDIContainer();
 
+            _metaMessenger = Container.Resolve<IMetaPubSub>();
+
             var _connectionModeProvider = Container.Resolve<IConnectionModeProvider>();
             _log.WriteLine($"Connection mode: {_connectionModeProvider.ConnectionMode}");
 
@@ -192,6 +194,8 @@ namespace HideezClient
             ISettingsManager<HotkeySettings> hotkeySettingsManager = Container.Resolve<ISettingsManager<HotkeySettings>>();
             ApplicationSettings settings = null;
             ISettingsManager<ApplicationSettings> appSettingsManager = Container.Resolve<ISettingsManager<ApplicationSettings>>();
+            _subroutineContainer = Container.Resolve<SubroutineContainer>();
+            Container.Resolve<DefineInstalledCultureSubroutine>();
 
             try
             {
@@ -204,8 +208,17 @@ namespace HideezClient
                 var removeEmptyHotkeysProc = new RemoveEmptyHotkeysProc(hotkeySettingsManager);
                 await removeEmptyHotkeysProc.Run();
 
-                // Init localization
-                var culture = new CultureInfo(settings.SelectedUiLanguage);
+                //Init localization
+                CultureInfo culture = null;
+
+                //if no culture is specified in settings, select the installed system culture
+                if (string.IsNullOrEmpty(settings.SelectedUiLanguage))
+                {
+                    await _metaMessenger.Publish(new ApplicationSettingsLoadedMessage(settings));
+                    appSettingsManager.SaveSettings(settings);
+                }
+                culture = new CultureInfo(settings.SelectedUiLanguage);
+
                 TranslationSource.Instance.CurrentCulture = culture;
                 Thread.CurrentThread.CurrentCulture = culture;
                 Thread.CurrentThread.CurrentUICulture = culture;
@@ -228,11 +241,11 @@ namespace HideezClient
             _startupHelper = Container.Resolve<IStartupHelper>();
             _workstationManager = Container.Resolve<IWorkstationManager>();
 
-            _metaMessenger = Container.Resolve<IMetaPubSub>();
+            
 
             _metaMessenger.Subscribe<ConnectedToServerEvent>(OnConnectedToServer);
 
-            _subroutineContainer = Container.Resolve<SubroutineContainer>();
+            
             _serviceWatchdog = Container.Resolve<IServiceWatchdog>();
             _serviceWatchdog.Start();
             _deviceManager = Container.Resolve<IDeviceManager>();
@@ -318,6 +331,7 @@ namespace HideezClient
         private void OnFirstLaunch()
         {
             _log.WriteLine("First Hideez Client launch");
+
             Container.Resolve<ShowMinimizedWindowNotificationSubroutine>();
         }
 
@@ -338,7 +352,7 @@ namespace HideezClient
             Container.RegisterType<PinViewModel>();
             Container.RegisterType<MasterPasswordViewModel>();
             Container.RegisterType<HelpPageViewModel>();
-            Container.RegisterType<SettingsPageViewModel>();
+            Container.RegisterType<SettingsPageViewModel>(new ContainerControlledLifetimeManager());
             Container.RegisterType<PasswordManagerViewModel>(new ContainerControlledLifetimeManager());
             Container.RegisterType<DeviceSettingsPageViewModel>(new ContainerControlledLifetimeManager());
             Container.RegisterType<ServerAddressEditControlViewModel>(new ContainerControlledLifetimeManager());
@@ -462,7 +476,7 @@ namespace HideezClient
         /// <returns></returns>
         async Task OnConnectedToServer(ConnectedToServerEvent arg)
         {
-            await _metaMessenger.PublishOnServer(new LoginClientRequestMessage());
+            await _metaMessenger.PublishOnServer(new LoginClientRequestMessage(TranslationSource.Instance.CurrentCulture));
         }
     }
 }

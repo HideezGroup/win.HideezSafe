@@ -29,6 +29,7 @@ using HideezClient.Messages.Dialogs.BackupPassword;
 using HideezClient.Messages.Dialogs.Wipe;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace HideezClient.Modules
 {
@@ -259,6 +260,13 @@ namespace HideezClient.Modules
                     }
                 }
             });
+        }
+        
+        public void RestartApplication()
+        {
+            log.WriteLine("Hideez Client restart");
+            Process.Start(Process.GetCurrentProcess().MainModule.FileName);
+            UIDispatcher.Invoke(Application.Current.Shutdown);
         }
 
         private void SetStartupLocation(Window window, bool mainWindowWasOpen, bool hideMainWindow = false)

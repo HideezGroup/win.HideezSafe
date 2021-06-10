@@ -14,7 +14,7 @@ namespace HideezClient.Models.Settings
             SettingsVersion = new Version(1, 3, 1);
             IsFirstLaunch = true;
             LaunchApplicationOnStartup = false;
-            SelectedUiLanguage = "en-us";
+            SelectedUiLanguage = string.Empty;
             AddEnterAfterInput = false;
             LimitPasswordEntry = false;
             UseSimplifiedUI = false;

@@ -20,6 +20,7 @@ namespace HideezClient.Modules
         event EventHandler<bool> MainWindowVisibleChanged;
         bool IsMainWindowVisible { get; }
         void CloseWindow(string id);
+        void RestartApplication();
 
 
         Task<bool> ShowAccountNotFoundAsync(string message, string title = null);

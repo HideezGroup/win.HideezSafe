@@ -1,0 +1,510 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="AlreadyStarted" xml:space="preserve">
+    <value>Операція вже розпочата</value>
+  </data>
+	<data name="BleCharacteristicWriteError" xml:space="preserve">
+    <value>BLE помилка запису</value>
+  </data>
+	<data name="BleConnectionNotConnected" xml:space="preserve">
+    <value>Ключ BLE не підключений</value>
+  </data>
+	<data name="BleDisconnecting" xml:space="preserve">
+    <value>Відключення ключа</value>
+  </data>
+	<data name="BleInvalidPacketNumber" xml:space="preserve">
+    <value>Invalid bluetooth packet number</value>
+  </data>
+	<data name="BlePacketParseError" xml:space="preserve">
+    <value>Error occured while parsing bluetooth packet</value>
+  </data>
+	<data name="BleResponseTimeout" xml:space="preserve">
+    <value>Bluetooth response timeout</value>
+  </data>
+	<data name="BleSendError" xml:space="preserve">
+    <value>Bluetooth sending error</value>
+  </data>
+	<data name="BootUnknownError" xml:space="preserve">
+    <value>Botloader returned unknown error code: {0}</value>
+  </data>
+	<data name="BOOT_STATUS_ALREADY_SET" xml:space="preserve">
+    <value>Bootloader error: Already set</value>
+  </data>
+	<data name="BOOT_STATUS_BAD_SIGNATURE" xml:space="preserve">
+    <value>Bootloader error: Bad signature</value>
+  </data>
+	<data name="BOOT_STATUS_CRC_ERROR" xml:space="preserve">
+    <value>Bootloader error: Wrong CRC</value>
+  </data>
+	<data name="BOOT_STATUS_ERASE_REQ" xml:space="preserve">
+    <value>Bootloader error: Erase required</value>
+  </data>
+	<data name="BOOT_STATUS_HARDWARE" xml:space="preserve">
+    <value>Bootloader error: Hardware fault</value>
+  </data>
+	<data name="BOOT_STATUS_INVALID_ADDR" xml:space="preserve">
+    <value>Bootloader error: Invalid address</value>
+  </data>
+	<data name="BOOT_STATUS_LOW_BATTERY" xml:space="preserve">
+    <value>Bootloader error: Low battery</value>
+  </data>
+	<data name="BOOT_STATUS_PARTIAL" xml:space="preserve">
+    <value>Bootloader error: Partial data</value>
+  </data>
+	<data name="BOOT_STATUS_WRITE_ERROR" xml:space="preserve">
+    <value>Bootloader error: Write error</value>
+  </data>
+	<data name="BOOT_STATUS_WRONG_PARAMETER" xml:space="preserve">
+    <value>Bootloader error: Wrong parameter</value>
+  </data>
+	<data name="ButtonConfirmationTimeout" xml:space="preserve">
+    <value>Button confirmation timed out</value>
+  </data>
+	<data name="ChannelAlreadyExists" xml:space="preserve">
+    <value>Channel {0} already exists</value>
+  </data>
+	<data name="ChannelAlreadyVerified" xml:space="preserve">
+    <value>Channel {0} already verified</value>
+  </data>
+	<data name="ChannelInitializationFailed" xml:space="preserve">
+    <value>Channel {0} initialization failed</value>
+  </data>
+	<data name="ChannelNotAuthorized" xml:space="preserve">
+    <value>Channel {0} not authorized</value>
+  </data>
+	<data name="ChannelNotFound" xml:space="preserve">
+    <value>Channel {0} not found</value>
+  </data>
+	<data name="ChannelNotInitialized" xml:space="preserve">
+    <value>Channel {0} is not initialized</value>
+  </data>
+	<data name="ChannelNotVerified" xml:space="preserve">
+    <value>Channel {0} is not verified</value>
+  </data>
+	<data name="ChannelVerificationFailed" xml:space="preserve">
+    <value>Channel {0} verification failed</value>
+  </data>
+	<data name="ChannelVerificationInProgress" xml:space="preserve">
+    <value>Channel {0} verification in progress</value>
+  </data>
+	<data name="ChannelVerificationTimedOut" xml:space="preserve">
+    <value>Channel {0} verification timeout</value>
+  </data>
+	<data name="CryptolibUnknownError" xml:space="preserve">
+    <value>Cryptolib returned unknown error code: {0}</value>
+  </data>
+	<data name="DeviceAlreadyExists" xml:space="preserve">
+    <value>Vault already exists</value>
+  </data>
+	<data name="DeviceAuthorizationFailed" xml:space="preserve">
+    <value>Помилка під час авторизації ключа. Перевірте налаштування профілю доступу до ключа.</value>
+  </data>
+	<data name="DeviceDisconnected" xml:space="preserve">
+    <value>Ключ відключено</value>
+  </data>
+	<data name="DeviceHasBeenWiped" xml:space="preserve">
+    <value>Ключ успішно очищено. Тепер його можна призначити іншому користувачеві.</value>
+  </data>
+	<data name="DeviceInBootloaderMode" xml:space="preserve">
+    <value>Ваш пристрій перебуває в режимі завантажувача. Будь ласка, зверніться до системного адміністратора, щоб оновити прошивку.</value>
+  </data>
+	<data name="DeviceInitializationTimeout" xml:space="preserve">
+    <value>Час очікування ініціалізації ключа минув</value>
+  </data>
+	<data name="DeviceIsLocked" xml:space="preserve">
+    <value>Ключ заблоковано. Зверніться до системного адміністратора.</value>
+  </data>
+	<data name="DeviceNotAssignedToUser" xml:space="preserve">
+    <value>Ключ не прив'язано до жодного користувача</value>
+  </data>
+	<data name="DeviceNotConnectedToAnyHost" xml:space="preserve">
+    <value>Віддалений ключ не підключено до жодного хоста </value>
+  </data>
+	<data name="DeviceNotFound" xml:space="preserve">
+    <value>Очкуваний ключ {0} не знайдено</value>
+  </data>
+	<data name="DeviceRemoved" xml:space="preserve">
+    <value>Ключ видалено</value>
+  </data>
+	<data name="ERR_ALREADY_INITIALIZED" xml:space="preserve">
+    <value>Помилка FW: Ключ уже проініціалізовано</value>
+  </data>
+	<data name="ERR_BUTTON_REQ" xml:space="preserve">
+    <value>Помилка FW: Потрібне підтвердження кнопки</value>
+  </data>
+	<data name="ERR_CHANNEL_BUSY" xml:space="preserve">
+    <value>Помилка FW: Канал зайнятий</value>
+  </data>
+	<data name="ERR_DEVICE_BUSY" xml:space="preserve">
+    <value>Помилка FW: Ключ зайнятий</value>
+  </data>
+	<data name="ERR_DEVICE_LOCKED" xml:space="preserve">
+    <value>Помилка FW: Ключ заблоковано</value>
+  </data>
+	<data name="ERR_DEVICE_LOCKED_BY_CODE" xml:space="preserve">
+    <value>Ключ заблоковано. Зверніться до системного адміністратора.</value>
+  </data>
+	<data name="ERR_DEVICE_LOCKED_BY_PIN" xml:space="preserve">
+    <value>Ключ заблоковано. Зверніться до системного адміністратора.</value>
+  </data>
+	<data name="ERR_ENCRYPTION_REQ" xml:space="preserve">
+    <value>Помилка FW: Необхідне шифрування</value>
+  </data>
+	<data name="ERR_HARDWARE_FAULT" xml:space="preserve">
+    <value>Помилка FW: Несправність обладнання</value>
+  </data>
+	<data name="ERR_INVALID_LICENSE" xml:space="preserve">
+    <value>Недійсна ліцензія. Зверніться до системного адміністратора.</value>
+  </data>
+	<data name="ERR_INVALID_PARAMETER" xml:space="preserve">
+    <value>Помилка FW: невірний параметр</value>
+  </data>
+	<data name="ERR_KEY_WRONG" xml:space="preserve">
+    <value>Помилка FW: невірний ключ</value>
+  </data>
+	<data name="ERR_LICENSE_EXPIRED" xml:space="preserve">
+    <value>Термін дії ліцензії ключа закінчився. Зверніться до системного адміністратора.</value>
+  </data>
+	<data name="ERR_MESSAGE_TOO_LONG" xml:space="preserve">
+    <value>Помилка FW: Надіслане або отримане повідомлення занадто довге</value>
+  </data>
+	<data name="ERR_NOT_INITIALIZED" xml:space="preserve">
+    <value>Помилка FW: Ключ не проініціалізовано</value>
+  </data>
+	<data name="ERR_NO_DATA" xml:space="preserve">
+    <value>Помилка FW: немає даних</value>
+  </data>
+	<data name="ERR_NO_ENCRYPTION" xml:space="preserve">
+    <value>Помилка FW: Немає шифрування</value>
+  </data>
+	<data name="ERR_NO_LICENSE" xml:space="preserve">
+    <value>Немає ліцензії на ключі. Зверніться до системного адміністратора.</value>
+  </data>
+	<data name="ERR_OPERATION_CANCELED" xml:space="preserve">
+    <value>Помилка FW: Операцію скасовано</value>
+  </data>
+	<data name="ERR_PIN_NOT_SET" xml:space="preserve">
+    <value>Помилка FW: PIN-код не встановлено</value>
+  </data>
+	<data name="ERR_PIN_REQ" xml:space="preserve">
+    <value>Помилка FW: потрібен PIN-код</value>
+  </data>
+	<data name="ERR_PIN_TOO_SHORT" xml:space="preserve">
+    <value>Помилка FW: PIN-код занадто короткий</value>
+  </data>
+	<data name="ERR_PIN_WRONG" xml:space="preserve">
+    <value>Неправильний PIN-код</value>
+  </data>
+	<data name="ERR_SC_INVALID_BUFSIZE" xml:space="preserve">
+    <value>Cryptolib error: invalid buffer size</value>
+  </data>
+	<data name="ERR_SC_INVALID_LENGTH" xml:space="preserve">
+    <value>Cryptolib error: invalid length</value>
+  </data>
+	<data name="ERR_SC_INVALID_PARAMS" xml:space="preserve">
+    <value>Cryptolib error: invalid parameter</value>
+  </data>
+	<data name="ERR_SC_INVALID_PRIVKEY" xml:space="preserve">
+    <value>Cryptolib error: invalid private key</value>
+  </data>
+	<data name="ERR_SC_INVALID_PUBKEY" xml:space="preserve">
+    <value>Cryptolib error: invalid public key</value>
+  </data>
+	<data name="ERR_SC_INVALID_SIGNATURE" xml:space="preserve">
+    <value>Cryptolib error: invalid signature</value>
+  </data>
+	<data name="ERR_SC_INVALID_SO" xml:space="preserve">
+    <value>Cryptolib error: invalid SO</value>
+  </data>
+	<data name="ERR_SC_INVALID_STATE" xml:space="preserve">
+    <value>Cryptolib error: invalid state</value>
+  </data>
+	<data name="ERR_SC_NO_RNG_FUNCTION" xml:space="preserve">
+    <value>Cryptolib error: no RNG function</value>
+  </data>
+	<data name="ERR_SC_WRONG_SECRET" xml:space="preserve">
+    <value>Cryptolib error: wrong secret</value>
+  </data>
+	<data name="ERR_TIMEOUT" xml:space="preserve">
+    <value>Помилка FW: Час очікування минув</value>
+  </data>
+	<data name="ERR_UNAUTHORIZED" xml:space="preserve">
+    <value>Помилка FW: Несанкціонований доступ</value>
+  </data>
+	<data name="ERR_UNKNOWN_MESSAGE" xml:space="preserve">
+    <value>Помилка FW: Невідоме повідомлення</value>
+  </data>
+	<data name="ERR_UNSUPPORTED" xml:space="preserve">
+    <value>Помилка FW: Операція не підтримується</value>
+  </data>
+	<data name="FailedToEstablishRemoteConnection" xml:space="preserve">
+    <value>Не вдалося встановити віддалене з’єднання</value>
+  </data>
+	<data name="FwUnknownError" xml:space="preserve">
+    <value>Прошивка повернула невідомий код помилки: {0}</value>
+  </data>
+	<data name="FwUpdateBootBadImageFile" xml:space="preserve">
+    <value>Bad firmware image file</value>
+  </data>
+	<data name="FwUpdateBootConnectFailed" xml:space="preserve">
+    <value>Не вдалося підключити завантажувач</value>
+  </data>
+	<data name="FwUpdateNoBootInImage" xml:space="preserve">
+    <value>Firmware image has not the bootloader in it</value>
+  </data>
+	<data name="GetPinTimeout" xml:space="preserve">
+    <value>Запит PIN-коду від користувача минув</value>
+  </data>
+	<data name="HesAlarm" xml:space="preserve">
+    <value>Не вдалося підключитися до сервера</value>
+  </data>
+	<data name="HesAppHubDisconnected" xml:space="preserve">
+    <value>The application SignalR connection has been disconnected</value>
+  </data>
+	<data name="HesConnectionNotInitialized" xml:space="preserve">
+    <value>З'єднання HES не ініціалізоване</value>
+  </data>
+	<data name="HesDeviceAuthorizationFailed" xml:space="preserve">
+    <value>Помилка під час авторизації ключа</value>
+  </data>
+	<data name="HesDeviceCompromised" xml:space="preserve">
+    <value>Ключ порушено. Зверніться до системного адміністратора.</value>
+  </data>
+	<data name="HesDeviceHubDisconnected" xml:space="preserve">
+    <value>The vault SignalR connection has been disconnected</value>
+  </data>
+	<data name="HesDeviceLinkedToAnotherServer" xml:space="preserve">
+    <value>Схоже, ваше сховище було прив'язане до іншого сервера. Зверніться до системного адміністратора.</value>
+  </data>
+	<data name="HesDeviceLocked" xml:space="preserve">
+    <value>Ключ заблоковано. Зверніться до системного адміністратора.</value>
+  </data>
+	<data name="HesDeviceNotAssignedToAnyUser" xml:space="preserve">
+    <value>Ключ не прив'язаний до жодного користувача. Зверніться до свого системного адміністратора.</value>
+  </data>
+	<data name="HesDeviceNotFound" xml:space="preserve">
+    <value>Ключ не знайдено</value>
+  </data>
+	<data name="HesDeviceWipedOnAnotherServer" xml:space="preserve">
+    <value>Ключ очищено на іншому сервері.</value>
+  </data>
+	<data name="HesEmptyDeviceAccessProfile" xml:space="preserve">
+    <value>Профіль доступу не встановлений для ключа</value>
+  </data>
+	<data name="HesEmptyMasterKey" xml:space="preserve">
+    <value>Майстер-ключ порожній для сховища</value>
+  </data>
+	<data name="HesFailedEstablishRemoteDeviceConnection" xml:space="preserve">
+    <value>Не вдалося встановити підключення віддаленого ключа</value>
+  </data>
+	<data name="HesInvalidMasterKey" xml:space="preserve">
+    <value>Схоже, ваше сховище було прив'язане до іншого сервера. Зверніться до системного адміністратора.</value>
+  </data>
+	<data name="HesNotConnected" xml:space="preserve">
+    <value>Не підключений до HES</value>
+  </data>
+	<data name="HesRequestTimeout" xml:space="preserve">
+    <value>Сервер не відповів за вказаний проміжок часу. Повторіть спробу через 30 секунд.</value>
+  </data>
+	<data name="HesUnknownError" xml:space="preserve">
+    <value>HES невідома помилка</value>
+  </data>
+	<data name="HesVaultWasManuallyWiped" xml:space="preserve">
+    <value>Цей ключ було скинуто вручну. Він повинен бути перепризначений користувачеві. Зверніться до свого системного адміністратора.</value>
+  </data>
+	<data name="HesVerificationFailed" xml:space="preserve">
+    <value>Помилка перевірки HES</value>
+  </data>
+	<data name="HesWorkstationNotApproved" xml:space="preserve">
+    <value>Робоча станція не підтверджена. Зверніться до системного адміністратора.</value>
+  </data>
+	<data name="InvalidChannelNo" xml:space="preserve">
+    <value>Invalid channel number:  {0} </value>
+  </data>
+	<data name="InvalidMessageSignuture" xml:space="preserve">
+    <value>Invalid message signature</value>
+  </data>
+	<data name="LongOperationNotFound" xml:space="preserve">
+    <value>Operation not found</value>
+  </data>
+	<data name="MainChannelNotVerified" xml:space="preserve">
+    <value>The main channel is not verified</value>
+  </data>
+	<data name="NoConnectedUI" xml:space="preserve">
+    <value>UI is not connected to the service</value>
+  </data>
+	<data name="NonHideezException" xml:space="preserve">
+    <value>&lt;placeholder&gt;</value>
+  </data>
+	<data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+	<data name="PmInvalidFlagsMask" xml:space="preserve">
+    <value>Invalid flags mask</value>
+  </data>
+	<data name="PmLoginCannotBeEmpty" xml:space="preserve">
+    <value>Логін облікового запису не може бути порожнім</value>
+  </data>
+	<data name="PmOtpSecretHasInvalidFormat" xml:space="preserve">
+    <value>OTP-секрет має невірний формат</value>
+  </data>
+	<data name="PmPasswordCannotBeEmpty" xml:space="preserve">
+    <value>Пароль облікового запису не може бути порожнім</value>
+  </data>
+	<data name="PmPasswordNameAlreadyExists" xml:space="preserve">
+    <value>Ім'я облікового запису вже використовується іншим обліковим записом</value>
+  </data>
+	<data name="PmPasswordNameCannotBeEmpty" xml:space="preserve">
+    <value>Ім'я облікового запису не може бути порожнім</value>
+  </data>
+	<data name="PmPasswordNotFound" xml:space="preserve">
+    <value>Пароль для облікового запису не знайдено</value>
+  </data>
+	<data name="RemoteChannelNotVerified" xml:space="preserve">
+    <value>Віддалений канал {0} не підтверджено</value>
+  </data>
+	<data name="RemoteConnectionTimedOut" xml:space="preserve">
+    <value>Час очікування віддаленого з’єднання минув</value>
+  </data>
+	<data name="RemoteDeviceNotFound" xml:space="preserve">
+    <value>Запитаний віддалений ключ {0} не знайдено</value>
+  </data>
+	<data name="RemoteSendError" xml:space="preserve">
+    <value>Remote send error</value>
+  </data>
+	<data name="StorageWriteError" xml:space="preserve">
+    <value>Failed to write the storage</value>
+  </data>
+	<data name="UnknownError" xml:space="preserve">
+    <value>Unknown error</value>
+  </data>
+	<data name="WorkstationUnlockerConnectTimeout" xml:space="preserve">
+    <value>Workstation unlocker connect timeout</value>
+  </data>
+	<data name="WrongPayloadLength" xml:space="preserve">
+    <value>Wrong payload length</value>
+  </data>
+	<data name="WrongReplyData" xml:space="preserve">
+    <value>Wrong reply data</value>
+  </data>
+	<data name="ZeroChannelCannotBeVerfieid" xml:space="preserve">
+    <value>Channel 0 cannot be verified</value>
+  </data>
+</root>

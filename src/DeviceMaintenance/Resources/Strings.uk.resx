@@ -117,4 +117,98 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="AdvancedUpdate.Button.File" xml:space="preserve">
+    <value>Виберіть файл прошивки</value>
+  </data>
+	<data name="AdvancedUpdate.RadioButton.ChooseVersion" xml:space="preserve">
+    <value>Виберіть доступну версію для вашої моделі пристрою</value>
+  </data>
+	<data name="AdvancedUpdate.RadioButton.File" xml:space="preserve">
+    <value>Виберіть файл</value>
+  </data>
+	<data name="AdvancedUpdate.Text" xml:space="preserve">
+    <value>Розширене оновлення </value>
+  </data>
+	<data name="AdvancedUpdate.Text.SelectFile" xml:space="preserve">
+    <value>Виберіть файл прошивки</value>
+  </data>
+	<data name="Button.AdvancedUpdate" xml:space="preserve">
+    <value>Розширене оновлення </value>
+  </data>
+	<data name="Button.StartPage" xml:space="preserve">
+    <value>На початок</value>
+  </data>
+	<data name="CheckBox.Autostart" xml:space="preserve">
+    <value>Автоматично розпочати завантаження прошивки пристрою</value>
+  </data>
+	<data name="Device.Button.Update" xml:space="preserve">
+    <value>Оновити</value>
+  </data>
+	<data name="Device.Button.Wipe" xml:space="preserve">
+    <value>Очистити</value>
+  </data>
+	<data name="Device.Icon.Finished.Tooltip" xml:space="preserve">
+    <value>Оновлення завершено</value>
+  </data>
+	<data name="Device.Text.Connecting" xml:space="preserve">
+    <value>Підключення...</value>
+  </data>
+	<data name="Device.Text.Connecting.PressButton" xml:space="preserve">
+    <value>НАТИСНІТЬ КНОПКУ, підключення...</value>
+  </data>
+	<data name="Device.Text.EnteringBoot" xml:space="preserve">
+    <value>Вхід у режим завантаження...</value>
+  </data>
+	<data name="Device.Text.Failed" xml:space="preserve">
+    <value>Помилка</value>
+  </data>
+	<data name="Device.Text.UploadingFw" xml:space="preserve">
+    <value>завантаження прошивки...</value>
+  </data>
+	<data name="Device.Text.Wiping" xml:space="preserve">
+    <value>Очищення пристрою...</value>
+  </data>
+	<data name="Error.FailedConnection.Csr" xml:space="preserve">
+    <value>Не вдалося підключити пристрій</value>
+  </data>
+	<data name="Error.FailedConnection.WinBle" xml:space="preserve">
+    <value>Не вдалося підключити пристрій. Перестворіть пару із пристроєм або вимкніть і ввімкніть Bluetooth знову.</value>
+  </data>
+	<data name="Error.NoAvailableFw" xml:space="preserve">
+    <value>Немає доступної прошивки</value>
+  </data>
+	<data name="QuickUpdate.Text" xml:space="preserve">
+    <value>Швидке оновлення</value>
+  </data>
+	<data name="Text.PairToStart" xml:space="preserve">
+    <value>Підключіть пристрій через Налаштування Bluetooth Windows, щоб почати оновлювати прошивку</value>
+  </data>
+	<data name="Text.TapToStart" xml:space="preserve">
+    <value>Торкніться пристроєм до адаптера Bluetooth, щоб завантажити нову прошивку</value>
+  </data>
+	<data name="Wipe.Text" xml:space="preserve">
+    <value>Після очищення:
+- Усі ваші дані FIDO будуть видалені з вашого ключа(ці дані неможливо відновити!)
+- Усі ваші облікові записи буде видалено з вашого ключа
+- Ваш ключ буде від’єднано з усіма пристроями
+
+Щоб очистити пристрій, натисніть OK, дочекайтеся, поки кнопка на пристрої загориться зеленим, а потім натисніть і утримуйте її протягом 15 секунд.</value>
+  </data>
+	<data name="Wipe.Title" xml:space="preserve">
+    <value>Очищення пристрою</value>
+  </data>
+	<data name="AdvancedUpdate.Text.Model" xml:space="preserve">
+		<value>Модель</value>
+	</data>
+	<data name="AdvancedUpdate.Text.Version" xml:space="preserve">
+		<value>Версія</value>
+	</data>
+	<data name="CloseOnUpdating.Text" xml:space="preserve">
+		<value>Триває оновлення прошивки!
+
+Ви впевнені що хочете вийти?</value>
+	</data>
+	<data name="CloseOnUpdating.Title" xml:space="preserve">
+		<value>Вихід із програми</value>
+	</data>
 </root>

@@ -117,4 +117,98 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="AdvancedUpdate.Button.File" xml:space="preserve">
+    <value>Select firmware file</value>
+  </data>
+	<data name="AdvancedUpdate.RadioButton.ChooseVersion" xml:space="preserve">
+    <value>Choose available version for your device model</value>
+  </data>
+	<data name="AdvancedUpdate.RadioButton.File" xml:space="preserve">
+    <value>Select a file</value>
+  </data>
+	<data name="AdvancedUpdate.Text" xml:space="preserve">
+    <value>Advanced update</value>
+  </data>
+	<data name="AdvancedUpdate.Text.Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+	<data name="AdvancedUpdate.Text.SelectFile" xml:space="preserve">
+    <value>Please, select firmware file</value>
+  </data>
+	<data name="AdvancedUpdate.Text.Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+	<data name="Button.AdvancedUpdate" xml:space="preserve">
+    <value>Advanced update</value>
+  </data>
+	<data name="Button.StartPage" xml:space="preserve">
+    <value>Start page</value>
+  </data>
+	<data name="CheckBox.Autostart" xml:space="preserve">
+    <value>Automatically start uploading device firmware</value>
+  </data>
+	<data name="CloseOnUpdating.Text" xml:space="preserve">
+    <value>Firmware update in progress!
+
+Are you sure you want to exit?</value>
+  </data>
+	<data name="CloseOnUpdating.Title" xml:space="preserve">
+    <value>Exit application</value>
+  </data>
+	<data name="Device.Button.Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+	<data name="Device.Button.Wipe" xml:space="preserve">
+    <value>Wipe</value>
+  </data>
+	<data name="Device.Icon.Finished.Tooltip" xml:space="preserve">
+    <value>Update finished</value>
+  </data>
+	<data name="Device.Text.Connecting" xml:space="preserve">
+    <value>Connecting...</value>
+  </data>
+	<data name="Device.Text.Connecting.PressButton" xml:space="preserve">
+    <value>PRESS THE BUTTON, Connecting...</value>
+  </data>
+	<data name="Device.Text.EnteringBoot" xml:space="preserve">
+    <value>Entering boot mode...</value>
+  </data>
+	<data name="Device.Text.Failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+	<data name="Device.Text.UploadingFw" xml:space="preserve">
+    <value>uploading firmware...</value>
+  </data>
+	<data name="Device.Text.Wiping" xml:space="preserve">
+    <value>Wiping the device...</value>
+  </data>
+	<data name="Error.FailedConnection.Csr" xml:space="preserve">
+    <value>Failed to connect device</value>
+  </data>
+	<data name="Error.FailedConnection.WinBle" xml:space="preserve">
+    <value>Failed to connect device. Repair device or turn the Bluetooth off and on.</value>
+  </data>
+	<data name="Error.NoAvailableFw" xml:space="preserve">
+    <value>No available firmware</value>
+  </data>
+	<data name="QuickUpdate.Text" xml:space="preserve">
+    <value>Quick update</value>
+  </data>
+	<data name="Text.PairToStart" xml:space="preserve">
+    <value>Pair device through Windows Bluetooth Settings to upload new firmware</value>
+  </data>
+	<data name="Text.TapToStart" xml:space="preserve">
+    <value>Tap the device on the bluetooth dongle to upload new firmware</value>
+  </data>
+	<data name="Wipe.Text" xml:space="preserve">
+    <value>After performing wipe:
+- All your FIDO data will be erased from your vault(this data cannot be restored!)
+- All your credentials will be erased from your vault
+- Your vault will be disconnected and unpaired from all devices
+
+To wipe the device, press OK, wait for the green light on the device then press and hold the button for 15 seconds.</value>
+  </data>
+	<data name="Wipe.Title" xml:space="preserve">
+    <value>Wipe the device</value>
+  </data>
 </root>

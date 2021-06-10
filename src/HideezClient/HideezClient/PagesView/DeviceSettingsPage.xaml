@@ -143,11 +143,24 @@
                         Grid.Row="2"
                         Grid.Column="2"
                         Orientation="Horizontal">
-                        <TextBlock Text="{Binding Device.StorageTotalSizeKb, StringFormat='Storage ({0} KB): '}" />
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource FormatStringConverter}">
+                                    <Binding Path="[DS.Label.Storage]" Source="{x:Static localization:TranslationSource.Instance}" />
+                                    <Binding Path="Device.StorageTotalSizeKb"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                         <TextBlock
                             FontWeight="DemiBold"
-                            Foreground="{DynamicResource DarkForeground}"
-                            Text="{Binding Device.StorageFreePercent, StringFormat='{}{0}% free'}" />
+                            Foreground="{DynamicResource DarkForeground}">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource FormatStringConverter}">
+                                    <Binding Path="[DS.Label.Storage.Free]" Source="{x:Static localization:TranslationSource.Instance}" />
+                                    <Binding Path="Device.StorageFreePercent"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </StackPanel>
 
                     <StackPanel
@@ -331,7 +344,7 @@
                     </StackPanel.Style>
                     <TextBlock 
                         Style="{StaticResource SettingsHeaderStyle}"
-                        Text="Proximity settings" />
+                        Text="{l:Localization ProximitySettings.Title}" />
                     <Border Style="{StaticResource SettingsSectionBorderStyle}">
                         <Grid>
                             <StackPanel Margin="24">
@@ -357,7 +370,7 @@
                                             <TextBlock
                                                 Style="{StaticResource LabelStyle}"
                                                 HorizontalAlignment="Left"
-                                                Text="Unlock mode" 
+                                                Text="{l:Localization ProximitySettings.UnlockMode}" 
                                                 Margin="0,10,0,8" />
                                             <ComboBox
                                                 Style="{StaticResource ComboBoxStyle}"
@@ -595,7 +608,7 @@
                                         Grid.Column="1"
                                         Margin="8,0,0,0"
                                         VerticalAlignment="Center"
-                                        Text="Lock" />
+                                        Text="{l:Localization ProximitySettings.TextBlock.Lock}" />
                                     <TextBlock
                                         Grid.Column="3"
                                         HorizontalAlignment="Left"
@@ -612,7 +625,7 @@
                                         Grid.Column="5"
                                         Margin="0,0,8,0"
                                         VerticalAlignment="Center"
-                                        Text="Unlock" />
+                                        Text="{l:Localization ProximitySettings.TextBlock.Unlock}" />
                                     <Border
                                         Grid.Column="6"
                                         Padding="12,5"
