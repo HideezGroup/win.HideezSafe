@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HideezMiddleware.Modules.FwUpdateCheck
 {
@@ -13,11 +9,16 @@ namespace HideezMiddleware.Modules.FwUpdateCheck
         Release
     }
 
-    public class FwUpdateInfo
+    public class FwUpdateInfo: IComparable<FwUpdateInfo>
     {
         public string Id { get; set; }
         public string Version { get; set; }
         public int ModelCode { get; set; }
         public ReleaseStage ReleaseStage { get; set; }
+
+        public int CompareTo(FwUpdateInfo other)
+        {
+            return new Version(Version).CompareTo(new Version(other.Version));
+        }
     }
 }

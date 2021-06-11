@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,148 +59,160 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="metadata">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" />
-							</xsd:sequence>
-							<xsd:attribute name="name" use="required" type="xsd:string" />
-							<xsd:attribute name="type" type="xsd:string" />
-							<xsd:attribute name="mimetype" type="xsd:string" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="assembly">
-						<xsd:complexType>
-							<xsd:attribute name="alias" type="xsd:string" />
-							<xsd:attribute name="name" type="xsd:string" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-							<xsd:attribute ref="xml:space" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>2.0</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="AdvancedUpdate.Button.File" xml:space="preserve">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AdvancedUpdate.Button.File" xml:space="preserve">
     <value>Select firmware file</value>
   </data>
-	<data name="AdvancedUpdate.RadioButton.ChooseVersion" xml:space="preserve">
+  <data name="AdvancedUpdate.RadioButton.ChooseVersion" xml:space="preserve">
     <value>Choose available version for your device model</value>
   </data>
-	<data name="AdvancedUpdate.RadioButton.File" xml:space="preserve">
+  <data name="AdvancedUpdate.RadioButton.File" xml:space="preserve">
     <value>Select a file</value>
   </data>
-	<data name="AdvancedUpdate.Text" xml:space="preserve">
+  <data name="AdvancedUpdate.Text" xml:space="preserve">
     <value>Advanced update</value>
   </data>
-	<data name="AdvancedUpdate.Text.Model" xml:space="preserve">
+  <data name="AdvancedUpdate.Text.Model" xml:space="preserve">
     <value>Model</value>
   </data>
-	<data name="AdvancedUpdate.Text.SelectFile" xml:space="preserve">
+  <data name="AdvancedUpdate.Text.SelectFile" xml:space="preserve">
     <value>Please, select firmware file</value>
   </data>
-	<data name="AdvancedUpdate.Text.Version" xml:space="preserve">
+  <data name="AdvancedUpdate.Text.Version" xml:space="preserve">
     <value>Version</value>
   </data>
-	<data name="Button.AdvancedUpdate" xml:space="preserve">
+  <data name="Button.AdvancedUpdate" xml:space="preserve">
     <value>Advanced update</value>
   </data>
-	<data name="Button.StartPage" xml:space="preserve">
+  <data name="Button.StartPage" xml:space="preserve">
     <value>Start page</value>
   </data>
-	<data name="CheckBox.Autostart" xml:space="preserve">
+  <data name="CheckBox.Autostart" xml:space="preserve">
     <value>Automatically start uploading device firmware</value>
   </data>
-	<data name="CloseOnUpdating.Text" xml:space="preserve">
+  <data name="CloseOnUpdating.Text" xml:space="preserve">
     <value>Firmware update in progress!
 
 Are you sure you want to exit?</value>
   </data>
-	<data name="CloseOnUpdating.Title" xml:space="preserve">
+  <data name="CloseOnUpdating.Title" xml:space="preserve">
     <value>Exit application</value>
   </data>
-	<data name="Device.Button.Update" xml:space="preserve">
+  <data name="Csr.Error" xml:space="preserve">
+    <value>Hideez Dongle is unavailable.</value>
+  </data>
+  <data name="Device.Button.Update" xml:space="preserve">
     <value>Update</value>
   </data>
-	<data name="Device.Button.Wipe" xml:space="preserve">
+  <data name="Device.Button.Wipe" xml:space="preserve">
     <value>Wipe</value>
   </data>
-	<data name="Device.Icon.Finished.Tooltip" xml:space="preserve">
+  <data name="Device.Icon.Finished.Tooltip" xml:space="preserve">
     <value>Update finished</value>
   </data>
-	<data name="Device.Text.Connecting" xml:space="preserve">
+  <data name="Device.Text.Connecting" xml:space="preserve">
     <value>Connecting...</value>
   </data>
-	<data name="Device.Text.Connecting.PressButton" xml:space="preserve">
+  <data name="Device.Text.Connecting.PressButton" xml:space="preserve">
     <value>PRESS THE BUTTON, Connecting...</value>
   </data>
-	<data name="Device.Text.EnteringBoot" xml:space="preserve">
+  <data name="Device.Text.EnteringBoot" xml:space="preserve">
     <value>Entering boot mode...</value>
   </data>
-	<data name="Device.Text.Failed" xml:space="preserve">
+  <data name="Device.Text.Failed" xml:space="preserve">
     <value>Failed</value>
   </data>
-	<data name="Device.Text.UploadingFw" xml:space="preserve">
+  <data name="Device.Text.UploadingFw" xml:space="preserve">
     <value>uploading firmware...</value>
   </data>
-	<data name="Device.Text.Wiping" xml:space="preserve">
+  <data name="Device.Text.Wiping" xml:space="preserve">
     <value>Wiping the device...</value>
   </data>
-	<data name="Error.FailedConnection.Csr" xml:space="preserve">
+  <data name="Error.FailedConnection.Csr" xml:space="preserve">
     <value>Failed to connect device</value>
   </data>
-	<data name="Error.FailedConnection.WinBle" xml:space="preserve">
+  <data name="Error.FailedConnection.WinBle" xml:space="preserve">
     <value>Failed to connect device. Repair device or turn the Bluetooth off and on.</value>
   </data>
-	<data name="Error.NoAvailableFw" xml:space="preserve">
+  <data name="Error.NoAvailableFw" xml:space="preserve">
     <value>No available firmware</value>
   </data>
-	<data name="QuickUpdate.Text" xml:space="preserve">
+  <data name="QuickUpdate.Text" xml:space="preserve">
     <value>Quick update</value>
   </data>
-	<data name="Text.PairToStart" xml:space="preserve">
+  <data name="QuickUpdate.Text.LatestVersion" xml:space="preserve">
+    <value>The latest firmware version for your device model:</value>
+  </data>
+  <data name="ST102" xml:space="preserve">
+    <value>Hideez Key 2</value>
+  </data>
+  <data name="Text.PairToStart" xml:space="preserve">
     <value>Pair device through Windows Bluetooth Settings to upload new firmware</value>
   </data>
-	<data name="Text.TapToStart" xml:space="preserve">
+  <data name="Text.TapToStart" xml:space="preserve">
     <value>Tap the device on the bluetooth dongle to upload new firmware</value>
   </data>
-	<data name="Wipe.Text" xml:space="preserve">
+  <data name="WinBle.Error" xml:space="preserve">
+    <value>Windows Bluetooth is unavailable. Make sure that your Bluetooth is turned on in Windows Settings.</value>
+  </data>
+  <data name="Wipe.Text" xml:space="preserve">
     <value>After performing wipe:
 - All your FIDO data will be erased from your vault(this data cannot be restored!)
 - All your credentials will be erased from your vault
@@ -208,7 +220,7 @@ Are you sure you want to exit?</value>
 
 To wipe the device, press OK, wait for the green light on the device then press and hold the button for 15 seconds.</value>
   </data>
-	<data name="Wipe.Title" xml:space="preserve">
+  <data name="Wipe.Title" xml:space="preserve">
     <value>Wipe the device</value>
   </data>
 </root>
