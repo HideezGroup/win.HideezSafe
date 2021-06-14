@@ -1,10 +1,14 @@
-﻿using System.Windows;
+﻿using ReactiveUI;
+using System.Windows;
 using WinSampleApp.ViewModel;
 
 namespace WinSampleApp
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IViewFor<MainWindowViewModel>
     {
+        public static readonly DependencyProperty ViewModelProperty = DependencyProperty
+            .Register(nameof(ViewModel), typeof(MainWindowViewModel), typeof(MainWindow));
+
         public MainWindow()
         {
             InitializeComponent();
@@ -13,10 +17,20 @@ namespace WinSampleApp
 
         async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var vm = (MainWindowViewModel)DataContext;
-            await vm.Close();
-
+            await ViewModel.Close();
             Properties.Settings.Default.Save();
+        }
+
+        public MainWindowViewModel ViewModel
+        {
+            get => (MainWindowViewModel)GetValue(ViewModelProperty);
+            set => SetValue(ViewModelProperty, value);
+        }
+
+        object IViewFor.ViewModel
+        {
+            get => ViewModel;
+            set => ViewModel = (MainWindowViewModel)value;
         }
     }
 }

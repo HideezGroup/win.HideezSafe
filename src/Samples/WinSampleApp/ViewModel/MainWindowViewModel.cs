@@ -27,10 +27,13 @@ using Hideez.SDK.Communication.Backup;
 using System.Threading;
 using HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle;
 using HideezMiddleware.ConnectionModeProvider;
+using ReactiveUI;
+using System.Reactive;
+using System.Reactive.Linq;
 
 namespace WinSampleApp.ViewModel
 {
-    public class MainWindowViewModel : ViewModelBase, IClientUiProxy
+    public class MainWindowViewModel : ReactiveObject, IClientUiProxy
     {
         readonly EventLogger _log;
         readonly IMetaPubSub _messenger;
@@ -101,110 +104,49 @@ namespace WinSampleApp.ViewModel
         string _clientUiStatus;
         public string ClientUiStatus
         {
-            get
-            {
-                return _clientUiStatus;
-            }
-            set
-            {
-                if (_clientUiStatus != value)
-                {
-                    _clientUiStatus = value;
-                    NotifyPropertyChanged(nameof(ClientUiStatus));
-                }
-            }
+            get { return _clientUiStatus; }
+            set { this.RaiseAndSetIfChanged(ref _clientUiStatus, value); }
         }
 
         string _clientUiNotification;
         public string ClientUiNotification
         {
-            get
-            {
-                return _clientUiNotification;
-            }
-            set
-            {
-                if (_clientUiNotification != value)
-                {
-                    _clientUiNotification = value;
-                    NotifyPropertyChanged(nameof(ClientUiNotification));
-                }
-            }
+            get { return _clientUiNotification; }
+            set { this.RaiseAndSetIfChanged(ref _clientUiNotification, value); }
         }
 
         string _clientUiError;
         public string ClientUiError
         {
-            get
-            {
-                return _clientUiError;
-            }
-            set
-            {
-                if (_clientUiError != value)
-                {
-                    _clientUiError = value;
-                    NotifyPropertyChanged(nameof(ClientUiError));
-                }
-            }
+            get { return _clientUiError; }
+            set { this.RaiseAndSetIfChanged(ref _clientUiError, value); } 
         }
 
         bool bleAdapterDiscovering;
         public bool BleAdapterDiscovering
         {
-            get
-            {
-                return bleAdapterDiscovering;
-            }
-            set
-            {
-                if (bleAdapterDiscovering != value)
-                {
-                    bleAdapterDiscovering = value;
-                    NotifyPropertyChanged(nameof(BleAdapterDiscovering));
-                }
-            }
+            get { return bleAdapterDiscovering; }
+            set { this.RaiseAndSetIfChanged(ref bleAdapterDiscovering, value); }
         }
 
         DeviceViewModel currentDevice;
         public DeviceViewModel CurrentDevice
         {
-            get
-            {
-                return currentDevice;
-            }
-            set
-            {
-                if (currentDevice != value)
-                {
-                    currentDevice = value;
-                    NotifyPropertyChanged(nameof(CurrentDevice));
-                }
-            }
+            get { return currentDevice; }
+            set { this.RaiseAndSetIfChanged(ref currentDevice, value); }
         }
 
-        DiscoveredDeviceAddedEventArgs currentDiscoveredDevice;
         private GetPinWindow _getPinWindow;
 
+        DiscoveredDeviceAddedEventArgs currentDiscoveredDevice;
         public DiscoveredDeviceAddedEventArgs CurrentDiscoveredDevice
         {
-            get
-            {
-                return currentDiscoveredDevice;
-            }
-            set
-            {
-                if (currentDiscoveredDevice != value)
-                {
-                    currentDiscoveredDevice = value;
-                    NotifyPropertyChanged(nameof(CurrentDiscoveredDevice));
-                }
-            }
+            get { return currentDiscoveredDevice; }
+            set { this.RaiseAndSetIfChanged(ref currentDiscoveredDevice, value); }
         }
 
         public ObservableCollection<DiscoveredDeviceAddedEventArgs> DiscoveredDevices { get; }
             = new ObservableCollection<DiscoveredDeviceAddedEventArgs>();
-
 
         public ObservableCollection<DeviceViewModel> Devices { get; }
             = new ObservableCollection<DeviceViewModel>();
@@ -212,989 +154,92 @@ namespace WinSampleApp.ViewModel
         string backupPasswordText = "12345678";
         public string BackupPasswordText
         {
-            get 
-            { 
-                return backupPasswordText; 
-            }
-            set
-            {
-                if (backupPasswordText != value)
-                {
-                    backupPasswordText = value;
-                    NotifyPropertyChanged(nameof(BackupPasswordText));
-                }
-            }
+            get  { return backupPasswordText; }
+            set { this.RaiseAndSetIfChanged(ref backupPasswordText, value); }
         }
 
         string fpId = "0";
         public string FpId
         {
             get { return fpId; }
-            set
-            {
-                if (fpId != value)
-                {
-                    fpId = value;
-                    NotifyPropertyChanged(nameof(fpId));
-                }
-            }
+            set { this.RaiseAndSetIfChanged(ref fpId, value); }
         }
 
         string fpOutput = string.Empty;
         public string FpOutput
         {
             get { return fpOutput; }
-            set
-            {
-                if (fpOutput != value)
-                {
-                    fpOutput = value;
-                    NotifyPropertyChanged(nameof(FpOutput));
-                }
-            }
+            set { this.RaiseAndSetIfChanged(ref fpOutput, value); }
         }
         #endregion Properties
 
 
         #region Commands
 
-        public ICommand CancelConnectionFlowCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        CancelConnectionFlow(CurrentDevice);
-                    }
-                };
-            }
-        }
+        public ReactiveCommand<Unit, Unit> CancelConnectionFlowCommand { get; }
+        public ReactiveCommand<Unit, Unit> SetPinCommand { get; }
+        public ReactiveCommand<Unit, Unit> ForceSetPinCommand { get; }
+        public ReactiveCommand<Unit, Unit> EnterPinCommand { get; }
+        public ReactiveCommand<Unit, Unit> CheckPassphraseCommand { get; }
+        public ReactiveCommand<Unit, Unit> LinkDeviceCommand { get; }
+        public ReactiveCommand<Unit, Unit> AccessDeviceCommand { get; }
+        public ReactiveCommand<Unit, Unit> WipeDeviceCommand { get; }
+        public ReactiveCommand<Unit, Unit> WipeDeviceManualCommand { get; }
+        public ReactiveCommand<Unit, Unit> UnlockDeviceCommand { get; }
 
-        public ICommand SetPinCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = async (x) =>
-                    {
-                        await SetPin(CurrentDevice);
-                    }
-                };
-            }
-        }
+        public ReactiveCommand<Unit, Unit> ConnectHesCommand { get; }
+        public ReactiveCommand<Unit, Unit> DisconnectHesCommand { get; }
+        public ReactiveCommand<Unit, Unit> UnlockByRfidCommand { get; }
+        public ReactiveCommand<Unit, Unit> BleAdapterResetCommand { get; }
 
-        public ICommand ForceSetPinCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = async (x) =>
-                    {
-                        await ForceSetPin(CurrentDevice);
-                    }
-                };
-            }
-        }
+        public ReactiveCommand<Unit, Unit> StartDiscoveryCommand { get; }
+        public ReactiveCommand<Unit, Unit> StopDiscoveryCommand { get; }
+        public ReactiveCommand<Unit, Unit> ClearDiscoveredDeviceListCommand { get; }
+        public ReactiveCommand<Unit, Unit> RemoveAllDevicesCommand { get; }
+        public ReactiveCommand<Unit, Unit> ConnectDiscoveredDeviceCommand { get; }
+        public ReactiveCommand<string, Unit> ConnectByMacCommand { get; } // ConectByMacAddress1, ConectByMacAddress2
 
-        public ICommand EnterPinCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = EnterPin(CurrentDevice);
-                    }
-                };
-            }
-        }
+        public ReactiveCommand<Unit, Unit> SyncDevicesCommand { get; }
 
-        public ICommand CheckPassphraseCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = CheckPassphrase(CurrentDevice);
-                    }
-                };
-            }
-        }
+        public ReactiveCommand<Unit, Unit> ConnectDeviceCommand { get; }
+        public ReactiveCommand<Unit, Unit> DisconnectDeviceCommand { get; }
+        public ReactiveCommand<Unit, Unit> PingDeviceCommand { get; }
+        public ReactiveCommand<Unit, Unit> VerifyAndInitializeDeviceCommand { get; }
+        public ReactiveCommand<Unit, Unit> AddDeviceChannelCommand { get; }
+        public ReactiveCommand<Unit, Unit> RemoveDeviceChannelCommand { get; }
 
-        public ICommand LinkDeviceCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = LinkDevice(CurrentDevice);
-                    }
-                };
-            }
-        }
+        public ReactiveCommand<Unit, Unit> Test1Command { get; }
 
-        public ICommand AccessDeviceCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = AccessDevice(CurrentDevice);
-                    }
-                };
-            }
-        }
+        public ReactiveCommand<Unit, Unit> WritePrimaryAccountCommand { get; }
+        public ReactiveCommand<Unit, Unit> DeviceInfoCommand { get; }
+        public ReactiveCommand<Unit, Unit> ConfirmCommand { get; }
+        public ReactiveCommand<Unit, Unit> GetOtpCommand { get; }
+        public ReactiveCommand<Unit, Unit> StorageCommand { get; }
 
-        public ICommand WipeDeviceCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = WipeDevice(CurrentDevice);
-                    }
-                };
-            }
-        }
+        public ReactiveCommand<Unit, Unit> LoadLicenseCommand { get; }
+        public ReactiveCommand<Unit, Unit> LoadLicenseIntoEmptyCommand { get; }
+        public ReactiveCommand<Unit, Unit> QueryLicenseCommand { get; }
+        public ReactiveCommand<Unit, Unit> QueryAllLicensesCommand { get; }
+        public ReactiveCommand<Unit, Unit> QueryActiveLicenseCommand { get; }
+        public ReactiveCommand<Unit, Unit> FetchLogCommand { get; }
+        public ReactiveCommand<Unit, Unit> ClearLogCommand { get; }
 
-        public ICommand WipeDeviceManualCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = WipeDeviceManual(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand UnlockDeviceCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = UnlockDevice(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand ConnectHesCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return true;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        ConnectHes();
-                    }
-                };
-            }
-        }
-
-        public ICommand DisconnectHesCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return true;
-                    },
-                    CommandAction = async (x) =>
-                    {
-                        await DisconnectHes();
-                    }
-                };
-            }
-        }
-
-        public ICommand UnlockByRfidCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return true;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        UnlockByRfid();
-                    }
-                };
-            }
-        }
-
-
-        public ICommand BleAdapterResetCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return true;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        ResetBleAdapter();
-                    }
-                };
-            }
-        }
-
-        public ICommand StartDiscoveryCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return _csrConnectionManager.State == BluetoothAdapterState.PoweredOn && !BleAdapterDiscovering;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        StartDiscovery();
-                    }
-                };
-            }
-        }
-
-        public ICommand StopDiscoveryCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return _csrConnectionManager.State == BluetoothAdapterState.PoweredOn && BleAdapterDiscovering;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        StopDiscovery();
-                    }
-                };
-            }
-        }
-
-        public ICommand ClearDiscoveredDeviceListCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return true;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        ClearDiscoveredDeviceList();
-                    }
-                };
-            }
-        }
-
-        public ICommand RemoveAllDevicesCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return Devices.Count > 0;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        RemoveAllDevices();
-                    }
-                };
-            }
-        }
-
-        public ICommand ConnectDiscoveredDeviceCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDiscoveredDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        ConnectDiscoveredDevice(CurrentDiscoveredDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand ConnectByMacCommand1
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return true;
-                    },
-                    CommandAction = async (x) =>
-                    {
-                        await ConnectDeviceByMac(ConectByMacAddress1);
-                    }
-                };
-            }
-        }
-
-        public ICommand ConnectByMacCommand2
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return true;
-                    },
-                    CommandAction = async (x) =>
-                    {
-                        await ConnectDeviceByMac(ConectByMacAddress2);
-                    }
-                };
-            }
-        }
-
-        public ICommand SyncDevicesCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        SyncDevices();
-                    }
-                };
-            }
-        }
-
-        public ICommand ConnectDeviceCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        ConnectDevice(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand DisconnectDeviceCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = DisconnectDevice(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand PingDeviceCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = PingDevice(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand VerifyAndInitializeDeviceCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;  
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = VerifyAndInitializeDevice(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand AddDeviceChannelCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        AddDeviceChannel(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand RemoveDeviceChannelCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        RemoveDeviceChannel(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand Test1Command
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        Test();
-                    }
-                };
-            }
-        }
-
-        public ICommand WritePrimaryAccountCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = WritePrimaryAccount(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand DeviceInfoCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = DeviceInfo(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand ConfirmCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = OnConfirmAsync(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand GetOtpCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = OnGetOtpAsync(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand StorageCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        OpenStorageVindow(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand LoadLicenseCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = LoadLicense(CurrentDevice, 0, LicenseText);
-                    }
-                };
-            }
-        }
-
-        public ICommand LoadLicenseIntoEmptyCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = LoadLicense(CurrentDevice, LicenseText);
-                    }
-                };
-            }
-        }
-        public ICommand QueryLicenseCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = QueryLicense(CurrentDevice, 0);
-                    }
-                };
-            }
-        }
-
-        public ICommand QueryAllLicensesCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = QueryAllLicenses(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand QueryActiveLicenseCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = QueryActiveLicense(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand FetchLogCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = FetchDeviceLog(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand ClearLogCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = ClearDeviceLog(CurrentDevice);
-                    }
-                };
-            }
-        }
         //
-        public ICommand LockDeviceCodeCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = LockDeviceCode(CurrentDevice);
-                    }
-                };
-            }
-        }
-        public ICommand UnlockDeviceCodeCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = UnlockDeviceCode(CurrentDevice);
-                    }
-                };
-            }
-        }
 
-        public ICommand BackupCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = RunDeviceBackupProcedure(CurrentDevice);
-                    }
-                };
-            }
-        }
+        public ReactiveCommand<Unit, Unit> LockDeviceCodeCommand { get; }
+        public ReactiveCommand<Unit, Unit> UnlockDeviceCodeCommand { get; }
+        public ReactiveCommand<Unit, Unit> BackupCommand { get; }
+        public ReactiveCommand<Unit, Unit> RestoreCommand { get; }
 
-        public ICommand RestoreCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = RunDeviceRestoreProcedure(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand FpBeginCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = FpBegin(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-
-
-        public ICommand FpNextCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = FpNext(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand FpGetInfoCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = FpGetInfo(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand FpSearchCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = FpSearch(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand FpRemoveCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = FpRemove(CurrentDevice);
-                    }
-                };
-            }
-        }
-
-        public ICommand FpCancelCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        _ = FpCancel(CurrentDevice);
-                    }
-                };
-            }
-        }
+        public ReactiveCommand<Unit, Unit> FpBeginCommand { get; }
+        public ReactiveCommand<Unit, Unit> FpNextCommand { get; }
+        public ReactiveCommand<Unit, Unit> FpGetInfoCommand { get; }
+        public ReactiveCommand<Unit, Unit> FpSearchCommand { get; }
+        public ReactiveCommand<Unit, Unit> FpRemoveCommand { get; }
+        public ReactiveCommand<Unit, Unit> FpCancelCommand { get; }
 
         // Todo: Temporary impl
-        public ICommand FpStateSubscribeCommand
-        {
-            get
-            {
-                return new DelegateCommand
-                {
-                    CanExecuteFunc = () =>
-                    {
-                        return CurrentDevice != null;
-                    },
-                    CommandAction = (x) =>
-                    {
-                        FpStateSubscribe(CurrentDevice);
-                    }
-                };
-            }
-        }
+        public ReactiveCommand<Unit, Unit> FpStateSubscribeCommand { get; }
 
         #endregion
 
@@ -1276,7 +321,7 @@ namespace WinSampleApp.ViewModel
 
                 string workstationId = Guid.NewGuid().ToString();
                 _hesConnection = new HesAppConnection(workstationInfoProvider, _log);
-                _hesConnection.HubConnectionStateChanged += (sender, e) => NotifyPropertyChanged(nameof(HesState));
+                _hesConnection.HubConnectionStateChanged += (sender, e) => this.RaisePropertyChanged(nameof(HesState));
                 //_hesConnection.Start(HesAddress);
 
                 // Credential provider ==============================
@@ -1324,6 +369,66 @@ namespace WinSampleApp.ViewModel
             {
                 ClientUiError = ex.Message;
             }
+
+            // Setup ReactiveUI
+            var isDeviceAvailable = this.WhenAnyValue(x => x.CurrentDevice).Select(x => x != null);
+            var isDongleAvailable = this.WhenAnyValue(x => x._csrConnectionManager.State)
+                .Select(x => x == BluetoothAdapterState.PoweredOn);
+
+            CancelConnectionFlowCommand = ReactiveCommand.Create(CancelConnectionFlow, isDeviceAvailable); // CurrentDevice param
+            SetPinCommand = ReactiveCommand.CreateFromTask(async () => await SetPin(CurrentDevice), isDeviceAvailable); // CurrentDevice param
+            ForceSetPinCommand = ReactiveCommand.CreateFromTask(async () => await ForceSetPin(CurrentDevice), isDeviceAvailable); // CurrentDevice param
+            EnterPinCommand = ReactiveCommand.CreateFromTask(async () => await EnterPin(CurrentDevice), isDeviceAvailable); // CurrentDevice param
+            CheckPassphraseCommand = ReactiveCommand.CreateFromTask(async () => await CheckPassphrase(CurrentDevice), isDeviceAvailable); // CurrentDevice param
+            LinkDeviceCommand = ReactiveCommand.CreateFromTask(async () => await LinkDevice(CurrentDevice), isDeviceAvailable); // CurrentDevice param
+            AccessDeviceCommand = ReactiveCommand.CreateFromTask(async () => await AccessDevice(CurrentDevice), isDeviceAvailable); // CurrentDevice param
+            WipeDeviceCommand = ReactiveCommand.CreateFromTask(async () => await WipeDevice(CurrentDevice), isDeviceAvailable); // CurrentDevice param
+            WipeDeviceManualCommand = ReactiveCommand.CreateFromTask(async () => await WipeDeviceManual(CurrentDevice), isDeviceAvailable); // CurrentDevice param
+            UnlockDeviceCommand = ReactiveCommand.CreateFromTask(async () => await UnlockDevice(CurrentDevice), isDeviceAvailable); // CurrentDevice param
+
+            ConnectHesCommand = ReactiveCommand.Create(ConnectHes);
+            DisconnectHesCommand = ReactiveCommand.CreateFromTask(DisconnectHes);
+            UnlockByRfidCommand = ReactiveCommand.Create(UnlockByRfid);
+            BleAdapterResetCommand = ReactiveCommand.Create(ResetBleAdapter);
+
+            StartDiscoveryCommand = ReactiveCommand.Create(StartDiscovery, isDongleAvailable);
+            StopDiscoveryCommand = ReactiveCommand.Create(StopDiscovery, isDongleAvailable);
+            ClearDiscoveredDeviceListCommand = ReactiveCommand.Create(ClearDiscoveredDeviceList);
+            RemoveAllDevicesCommand = ReactiveCommand.Create(RemoveAllDevices, this.WhenAnyValue(x => x.Devices.Count).Select(x => x > 0));
+            ConnectDiscoveredDeviceCommand = ReactiveCommand.CreateFromTask(async () => await ConnectDiscoveredDevice(CurrentDiscoveredDevice), this.WhenAnyValue(x => x.CurrentDiscoveredDevice).Select(x => x != null));
+            ConnectByMacCommand = ReactiveCommand.CreateFromTask<string>(ConnectDeviceByMac);
+            SyncDevicesCommand = ReactiveCommand.Create(SyncDevices, isDeviceAvailable);
+            ConnectDeviceCommand = ReactiveCommand.Create(() => ConnectDevice(CurrentDevice), isDeviceAvailable);
+            DisconnectDeviceCommand = ReactiveCommand.CreateFromTask(async () => await DisconnectDevice(CurrentDevice), isDeviceAvailable);
+            PingDeviceCommand = ReactiveCommand.CreateFromTask(async () => await PingDevice(CurrentDevice), isDeviceAvailable);
+            VerifyAndInitializeDeviceCommand = ReactiveCommand.CreateFromTask(async () => await VerifyAndInitializeDevice(CurrentDevice), isDeviceAvailable);
+            AddDeviceChannelCommand = ReactiveCommand.Create(() => AddDeviceChannel(CurrentDevice), isDeviceAvailable);
+            RemoveDeviceChannelCommand = ReactiveCommand.Create(() => RemoveDeviceChannel(CurrentDevice), isDeviceAvailable);
+            Test1Command = ReactiveCommand.Create(Test, isDeviceAvailable);
+            WritePrimaryAccountCommand = ReactiveCommand.CreateFromTask(async () => await WritePrimaryAccount(CurrentDevice), isDeviceAvailable);
+            DeviceInfoCommand = ReactiveCommand.CreateFromTask(async () => await DeviceInfo(CurrentDevice), isDeviceAvailable);
+            ConfirmCommand = ReactiveCommand.CreateFromTask(async () => await Confirm(CurrentDevice), isDeviceAvailable);
+            GetOtpCommand = ReactiveCommand.CreateFromTask(async () => await GetOtp(CurrentDevice), isDeviceAvailable);
+            StorageCommand = ReactiveCommand.Create(() => OpenStorageWindow(CurrentDevice), isDeviceAvailable);
+            LoadLicenseCommand = ReactiveCommand.CreateFromTask(() => LoadLicense(CurrentDevice, 0, LicenseText), isDeviceAvailable);
+            LoadLicenseIntoEmptyCommand = ReactiveCommand.CreateFromTask(() => LoadLicense(CurrentDevice, LicenseText), isDeviceAvailable);
+            QueryLicenseCommand = ReactiveCommand.CreateFromTask(() => QueryLicense(CurrentDevice, 0), isDeviceAvailable);
+            QueryAllLicensesCommand = ReactiveCommand.CreateFromTask(() => QueryAllLicenses(CurrentDevice), isDeviceAvailable);
+            QueryActiveLicenseCommand = ReactiveCommand.CreateFromTask(() => QueryActiveLicense(CurrentDevice), isDeviceAvailable);
+            FetchLogCommand = ReactiveCommand.CreateFromTask(async () => await FetchDeviceLog(CurrentDevice), isDeviceAvailable);
+            ClearLogCommand = ReactiveCommand.CreateFromTask(async () => await ClearDeviceLog(CurrentDevice), isDeviceAvailable);
+            LockDeviceCodeCommand = ReactiveCommand.CreateFromTask(async () => await LockDeviceCode(CurrentDevice), isDeviceAvailable);
+            UnlockDeviceCodeCommand = ReactiveCommand.CreateFromTask(async () => await UnlockDeviceCode(CurrentDevice), isDeviceAvailable);
+            BackupCommand = ReactiveCommand.CreateFromTask(async () => await RunDeviceBackupProcedure(CurrentDevice), isDeviceAvailable);
+            RestoreCommand = ReactiveCommand.CreateFromTask(async () => await RunDeviceRestoreProcedure(CurrentDevice), isDeviceAvailable);
+            FpBeginCommand = ReactiveCommand.CreateFromTask(async () => await FpBegin(CurrentDevice), isDeviceAvailable);
+            FpNextCommand = ReactiveCommand.CreateFromTask(async () => await FpNext(CurrentDevice), isDeviceAvailable);
+            FpGetInfoCommand = ReactiveCommand.CreateFromTask(async () => await FpGetInfo(CurrentDevice), isDeviceAvailable);
+            FpSearchCommand = ReactiveCommand.CreateFromTask(async () => await FpSearch(CurrentDevice), isDeviceAvailable);
+            FpRemoveCommand = ReactiveCommand.CreateFromTask(async () => await FpRemove(CurrentDevice), isDeviceAvailable);
+            FpCancelCommand = ReactiveCommand.CreateFromTask(async () => await FpCancel(CurrentDevice), isDeviceAvailable);
+            FpStateSubscribeCommand = ReactiveCommand.Create(() => FpStateSubscribe(CurrentDevice), isDeviceAvailable);
+            // ...
         }
 
         void ConnectHes()
@@ -1404,7 +509,7 @@ namespace WinSampleApp.ViewModel
 
         void ConnectionManager_AdapterStateChanged(object sender, EventArgs e)
         {
-            NotifyPropertyChanged(nameof(BleAdapterState));
+            this.RaisePropertyChanged(nameof(BleAdapterState));
         }
 
         void ResetBleAdapter()
@@ -1444,7 +549,7 @@ namespace WinSampleApp.ViewModel
             }
         }
 
-        async void ConnectDiscoveredDevice(DiscoveredDeviceAddedEventArgs e)
+        async Task ConnectDiscoveredDevice(DiscoveredDeviceAddedEventArgs e)
         {
             await _deviceManager.Connect(new ConnectionId(e.Id, (byte)DefaultConnectionIdProvider.Csr));
         }
@@ -1893,7 +998,7 @@ namespace WinSampleApp.ViewModel
             }
         }
 
-        async Task OnConfirmAsync(DeviceViewModel device)
+        async Task Confirm(DeviceViewModel device)
         {
             try
             {
@@ -1905,7 +1010,7 @@ namespace WinSampleApp.ViewModel
             }
         }
 
-        async Task OnGetOtpAsync(DeviceViewModel device)
+        async Task GetOtp(DeviceViewModel device)
         {
             try
             {
@@ -1920,7 +1025,7 @@ namespace WinSampleApp.ViewModel
             }
         }
 
-        void OpenStorageVindow(DeviceViewModel device)
+        void OpenStorageWindow(DeviceViewModel device)
         {
             try
             {
@@ -2060,7 +1165,7 @@ namespace WinSampleApp.ViewModel
             }
         }
 
-        void CancelConnectionFlow(DeviceViewModel currentDevice)
+        void CancelConnectionFlow()
         {
             _connectionFlowProcessor.Cancel("reason");
         }
