@@ -21,4 +21,5 @@
     <converters:BooleanToVisibilityCollapsedConverter x:Key="BooleanToVisibilityCollapsedConverter" />
     <converters:SliderWidthToMinRangeWidthConverter x:Key="SliderWidthToMinRangeWidthConverter" />
     <converters:IsNullOrWhiteSpaceConverter x:Key="IsNullOrWhiteSpaceConverter" />
+    <converters:FullUserNameToOnlyNameConverter x:Key="FullUserNameToOnlyNameConverter" />
 </ResourceDictionary>

@@ -426,13 +426,31 @@
                                                     <Run Text="{l:Localization ProximitySettings.Label.UserName}" />
                                                     <Run Text=":" />
                                                 </TextBlock>
+                                                <Grid Grid.Column="2">
+                                                    <ComboBox
+                                                        Style="{StaticResource ComboBoxStyle}"
+                                                        HorizontalAlignment="Stretch"
+                                                        IsTabStop="True"
+                                                        Visibility="{Binding HasWorkstationOneUser, Converter={StaticResource InvertBooleanToVisibilityConverter}}"
+                                                        ItemsSource="{Binding UserNames}"
+                                                        SelectedItem="{Binding UserName}" >
+                                                        <ComboBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock
+                                                                    Text="{Binding Converter={StaticResource FullUserNameToOnlyNameConverter}}"
+                                                                    TextTrimming="CharacterEllipsis"/>
+                                                            </DataTemplate>
+                                                        </ComboBox.ItemTemplate>
+                                                    </ComboBox>
 
-                                                <TextBlock
-                                                    Grid.Column="2"
-                                                    VerticalAlignment="Center"
-                                                    Style="{StaticResource LabelValuesStyle}"
-                                                    Text="{Binding UserName}">
-                                                </TextBlock>
+                                                    <TextBlock
+                                                        Style="{StaticResource LabelValuesStyle}"
+                                                        VerticalAlignment="Center"
+                                                        TextTrimming="CharacterEllipsis"
+                                                        Visibility="{Binding HasWorkstationOneUser, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                        Text="{Binding UserName, Converter={StaticResource FullUserNameToOnlyNameConverter}}">
+                                                    </TextBlock>
+                                                </Grid>
                                             </Grid>
                                         </ContentControl>
                                         <!--  Password  -->
