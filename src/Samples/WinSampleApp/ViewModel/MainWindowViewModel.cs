@@ -238,9 +238,6 @@ namespace WinSampleApp.ViewModel
         public ReactiveCommand<Unit, Unit> FpRemoveCommand { get; }
         public ReactiveCommand<Unit, Unit> FpCancelCommand { get; }
 
-        // Todo: Temporary impl
-        public ReactiveCommand<Unit, Unit> FpStateSubscribeCommand { get; }
-
         #endregion
 
         public MainWindowViewModel()
@@ -427,7 +424,18 @@ namespace WinSampleApp.ViewModel
             FpSearchCommand = ReactiveCommand.CreateFromTask(async () => await FpSearch(CurrentDevice), isDeviceAvailable);
             FpRemoveCommand = ReactiveCommand.CreateFromTask(async () => await FpRemove(CurrentDevice), isDeviceAvailable);
             FpCancelCommand = ReactiveCommand.CreateFromTask(async () => await FpCancel(CurrentDevice), isDeviceAvailable);
-            FpStateSubscribeCommand = ReactiveCommand.Create(() => FpStateSubscribe(CurrentDevice), isDeviceAvailable);
+
+            this.WhenAnyValue(x => x.CurrentDevice)
+                .Buffer(2, 1)
+                .Select(b => (Previous: b[0], Current: b[1]))
+                .Subscribe(t => 
+                {
+                    if (t.Previous != null)
+                        t.Previous.Device.FingerprintStateChanged -= CurrentDevice_FingerprintStateChanged;
+                    if (t.Current != null)
+                        t.Current.Device.FingerprintStateChanged += CurrentDevice_FingerprintStateChanged;
+                    FpOutput = string.Empty;
+                });
             // ...
         }
 
@@ -510,6 +518,11 @@ namespace WinSampleApp.ViewModel
         void ConnectionManager_AdapterStateChanged(object sender, EventArgs e)
         {
             this.RaisePropertyChanged(nameof(BleAdapterState));
+        }
+
+        void CurrentDevice_FingerprintStateChanged(object sender, FingerprintStateEventArgs args)
+        {
+            FpOutput = $"m:{DateTime.UtcNow.Minute} s:{DateTime.UtcNow.Second}| {ConvertUtils.ByteArrayToHexString(args.State.Data)}";
         }
 
         void ResetBleAdapter()
@@ -1252,9 +1265,9 @@ namespace WinSampleApp.ViewModel
             {
                 var result = await device.Device.AddFingerprint(true, FP_TIMEOUT);
                 var sb = new StringBuilder();
-                sb.AppendLine($"Status:{result.Status}");
-                sb.AppendLine($"Id:{result.Id}");
-                sb.AppendLine($"Remaining:{result.RemainingEntries}");
+                sb.AppendLine($"Status: {result.Status}");
+                sb.AppendLine($"Id: {result.Id}");
+                sb.AppendLine($"Remaining: {result.RemainingEntries}");
                 MessageBox.Show(sb.ToString());
             }
             catch (Exception ex)
@@ -1284,13 +1297,13 @@ namespace WinSampleApp.ViewModel
         {
             try
             {
-                var result = await device.Device.GetFingerprintInfo(FP_TIMEOUT);
+                var result = await device.Device.GetFingerprintInfo();
                 var sb = new StringBuilder();
-                sb.Append($"Status:{result.Available}");
-                sb.Append($"TypeSensor:{result.TypeSensor}");
-                sb.Append($"MinSamples:{result.MinSamplesRequired}");
-                sb.Append($"Enrolled:{result.EnrolledPrints}");
-                sb.Append($"Status:{result.Status}");
+                sb.AppendLine($"Status: {result.Available}");
+                sb.AppendLine($"TypeSensor: {result.TypeSensor}");
+                sb.AppendLine($"MinSamples: {result.MinSamplesRequired}");
+                sb.AppendLine($"Enrolled: {result.EnrolledPrints}");
+                sb.AppendLine($"Status: {result.Status}");
                 MessageBox.Show(sb.ToString());
             }
             catch (Exception ex)
@@ -1305,9 +1318,9 @@ namespace WinSampleApp.ViewModel
             {
                 var result = await device.Device.SearchFingerprint(FP_TIMEOUT);
                 var sb = new StringBuilder();
-                sb.Append($"Status:{result.Status}");
-                sb.Append($"Id:{result.Id}");
-                sb.Append($"MatchScore:{result.MatchScore}");
+                sb.AppendLine($"Status: {result.Status}");
+                sb.AppendLine($"Id: {result.Id}");
+                sb.AppendLine($"MatchScore: {result.MatchScore}");
                 MessageBox.Show(sb.ToString());
             }
             catch (Exception ex)
@@ -1323,8 +1336,8 @@ namespace WinSampleApp.ViewModel
             {
                 var result = await device.Device.RemoveFingerprint((sbyte)int.Parse(FpId), FP_TIMEOUT);
                 var sb = new StringBuilder();
-                sb.Append($"Status:{result.Status}");
-                sb.Append($"Id:{result.Id}");
+                sb.AppendLine($"Status: {result.Status}");
+                sb.AppendLine($"Id: {result.Id}");
                 MessageBox.Show(sb.ToString());
             }
             catch (Exception ex)
@@ -1339,23 +1352,13 @@ namespace WinSampleApp.ViewModel
             {
                 var result = await device.Device.CancelFingerprintOperation(FP_TIMEOUT);
                 var sb = new StringBuilder();
-                sb.Append($"Status:{result}");
+                sb.AppendLine($"Status: {result}");
                 MessageBox.Show(sb.ToString());
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-
-        void FpStateSubscribe(DeviceViewModel device)
-        {
-            device.Device.FingerprintStateChanged += (e, a) =>
-            {
-                FpOutput = $"{DateTime.UtcNow.Second} {a.State}";
-            };
-            MessageBox.Show("Subscribed to FP State change");
-            FpOutput = "<subscribed>";
         }
 
         #region IClientUiProxy
