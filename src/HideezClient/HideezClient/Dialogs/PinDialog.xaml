@@ -121,6 +121,7 @@
                                     <TextBlock
                                         Grid.Column="0"
                                         Style="{StaticResource DialogLabelTextBlockStyle}"
+                                        TextWrapping="Wrap"
                                         VerticalAlignment="Center"
                                         Text="{l:Localization Pin.CurrentPin.Label}" />
                                     <PasswordBox
@@ -155,6 +156,7 @@
                                     <TextBlock 
                                         Style="{StaticResource DialogLabelTextBlockStyle}" 
                                         VerticalAlignment="Center"
+                                        TextWrapping="Wrap"
                                         Text="{l:Localization Pin.NewPin.Label}" />
                                     <PasswordBox
                                         x:Name="NewPinPasswordBox"
@@ -186,6 +188,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Style="{StaticResource DialogLabelTextBlockStyle}"
                                                Text="{l:Localization Pin.ConfirmPin.Label}" 
+                                               TextWrapping="Wrap"
                                                VerticalAlignment="Center"/>
                                     <PasswordBox
                                         x:Name="ConfirmPinPasswordBox"
