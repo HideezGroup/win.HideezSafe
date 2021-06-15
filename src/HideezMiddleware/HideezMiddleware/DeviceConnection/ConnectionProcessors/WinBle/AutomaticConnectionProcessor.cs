@@ -8,6 +8,7 @@ using Hideez.SDK.Communication.Log;
 using Hideez.SDK.Communication.Proximity.Interfaces;
 using HideezMiddleware.CredentialProvider;
 using HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle;
+using HideezMiddleware.DeviceConnection.Workflow;
 using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
 using HideezMiddleware.IPC.IncommingMessages;
 using HideezMiddleware.Localize;
@@ -143,15 +144,28 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
                 return;
 
             // Proximity related checks
-            if (_advIgnoreListMonitor.IsIgnored(adv.Id))
-                return;
-
             var connectionId = new ConnectionId(adv.Id, (byte)DefaultConnectionIdProvider.WinBle);
             if (_workstationHelper.IsActiveSessionLocked() && !_proximitySettingsProvider.IsEnabledUnlockByProximity(connectionId))
                 return;
 
             var proximity = BleUtils.RssiToProximity(adv.Rssi);
             if (proximity < _proximitySettingsProvider.GetUnlockProximity(connectionId))
+                return;
+
+            // Checks below are in place to fix ghosted devices that are connected by cannot
+            // start workflow because their advertisements are ignored by advIgnoreList
+            // Checking that ignored advertisements are from device that is not connected solves this issue
+
+            var device = _deviceManager.Devices.FirstOrDefault(d =>
+            {
+                return WinBleUtils.WinBleIdToMac(d.DeviceConnection.Connection.ConnectionId.Id)
+                    == WinBleUtils.WinBleIdToMac(connectionId.Id)
+                    && !(d is IRemoteDeviceProxy)
+                    && !d.IsBoot;
+            });
+
+            // Only break for ignored devices that are also not connected or don't exist devices
+            if (device?.IsConnected != true && _advIgnoreListMonitor.IsIgnored(adv.Id))
                 return;
 
             if (Interlocked.CompareExchange(ref _isConnecting, 1, 0) == 0)
@@ -161,17 +175,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
                     try
                     {
                         // If device from advertisement already exists and is connected, ignore advertisement
-                        var device = _deviceManager.Devices.FirstOrDefault(d =>
-                        {
-                            return WinBleUtils.WinBleIdToMac(d.DeviceConnection.Connection.ConnectionId.Id)
-                                == WinBleUtils.WinBleIdToMac(connectionId.Id)
-                                && !(d is IRemoteDeviceProxy);
-                        });
-
-                        if (device != null
-                            && device.IsConnected
-                            && device.GetUserProperty<HwVaultConnectionState>(CustomProperties.HW_CONNECTION_STATE_PROP)
-                            == HwVaultConnectionState.Online)
+                        if (device?.GetUserProperty<bool>(WorkflowProperties.HV_FINISHED_WF) == true)
                             return;
 
                         await ConnectAndUnlockByConnectionId(connectionId);

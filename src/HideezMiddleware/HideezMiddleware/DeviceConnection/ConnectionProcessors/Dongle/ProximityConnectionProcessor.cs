@@ -9,6 +9,7 @@ using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Log;
 using Hideez.SDK.Communication.Proximity.Interfaces;
+using HideezMiddleware.DeviceConnection.Workflow;
 using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
 using Meta.Lib.Modules.PubSub;
 
@@ -103,18 +104,21 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle
                 {
                     var device = _deviceManager.Devices.FirstOrDefault(d => d.Id == adv.Id && !(d is IRemoteDeviceProxy) && !d.IsBoot);
 
-                    // Unlocked Workstation, Device not found OR Device not connected - dont add to ignore
-                    if (!_workstationUnlocker.IsConnected && (device == null || (device != null && !device.IsConnected)))
+                    // Unlocked Workstation and device haven't finished main workflow - break and dont add to ignore
+                    if (!_workstationUnlocker.IsConnected 
+                        && device?.GetUserProperty<bool>(WorkflowProperties.HV_FINISHED_WF) != true)
                         return;
 
                     try
                     {
-                        // Unlocked Workstation, Device connected - add to ignore
-                        if (!_workstationUnlocker.IsConnected && device != null && device.IsConnected)
+                        // Unlocked Workstation and device finished main workflow - break and add to ignore
+                        if (!_workstationUnlocker.IsConnected 
+                            && device?.GetUserProperty<bool>(WorkflowProperties.HV_FINISHED_WF) == true)
                             return;
 
-                        // Locked Workstation, Device not found OR not connected - connect add to ignore
-                        if (_workstationUnlocker.IsConnected && (device == null || (device != null && !device.IsConnected)))
+                        // Locked Workstation and haven't finished main workflow - connect add to ignore
+                        if (_workstationUnlocker.IsConnected 
+                            && device?.GetUserProperty<bool>(WorkflowProperties.HV_FINISHED_WF) != true)
                         {
                             await ConnectAndUnlockByConnectionId(connectionId);
                         }

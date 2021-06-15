@@ -3,6 +3,7 @@ using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.HES.DTO;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Log;
+using HideezMiddleware.DeviceConnection.Workflow;
 using HideezMiddleware.IPC.DTO;
 using HideezMiddleware.IPC.IncommingMessages;
 using HideezMiddleware.IPC.Messages;
@@ -101,7 +102,10 @@ namespace HideezMiddleware.Modules.DeviceManagement
                 if (sender is IDevice device)
                 {
                     if (!device.IsConnected)
+                    {
                         device.SetUserProperty(CustomProperties.HW_CONNECTION_STATE_PROP, HwVaultConnectionState.Offline);
+                        device.SetUserProperty(WorkflowProperties.HV_FINISHED_WF, false);
+                    }
 
                     await SafePublish(new DeviceConnectionStateChangedMessage(new DeviceDTO(device)));
                 }

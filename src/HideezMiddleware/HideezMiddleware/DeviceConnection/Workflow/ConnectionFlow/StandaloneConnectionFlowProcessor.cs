@@ -22,15 +22,15 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
 {
     public sealed class StandaloneConnectionFlowProcessor : ConnectionFlowProcessorBase
     {
-        public struct StandaloneConnectionFlowSubprocessorsStruct
+        public class StandaloneConnectionFlowSubprocessorsStruct
         {
-            public IVaultConnectionProcessor VaultConnectionProcessor;
-            public IVaultAuthorizationProcessor MasterkeyProcessor;
-            public IUserAuthorizationProcessor UserAuthorizationProcessor;
-            public IUnlockProcessor UnlockProcessor;
+            public IVaultConnectionProcessor VaultConnectionProcessor { get; set; }
+            public IVaultAuthorizationProcessor MasterkeyProcessor { get; set; }
+            public IUserAuthorizationProcessor UserAuthorizationProcessor { get; set; }
+            public IUnlockProcessor UnlockProcessor { get; set; }
         }
 
-        readonly DeviceManager _deviceManager;
+        readonly IDeviceManager _deviceManager;
         readonly IWorkstationUnlocker _workstationUnlocker; // Todo: remove and replace calls with unlockProcessor
         readonly IScreenActivator _screenActivator;
         readonly IClientUiManager _ui;
@@ -48,7 +48,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
         public override event EventHandler<string> UnlockAttempted;
 
         public StandaloneConnectionFlowProcessor(
-            DeviceManager deviceManager,
+            IDeviceManager deviceManager,
             IWorkstationUnlocker workstationUnlocker,
             IScreenActivator screenActivator,
             IClientUiManager ui,
@@ -73,12 +73,12 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
         }
 
         protected override async Task MainWorkflow(ConnectionId connectionId, ConnectionFlowOptions options, Action<WorkstationUnlockResult> onUnlockAttempt, CancellationToken ct)
-        {
-            // Ignore MainFlow requests for devices that are already connected
-            // IsConnected-true indicates that device already finished main flow or is in progress
-            var existingDevice = _deviceManager.Devices.FirstOrDefault(d => d.DeviceConnection.Connection.ConnectionId == connectionId
+         {
+            // Ignore MainFlow requests for devices that are already connected and finished mainworkflow
+            var existingDevice = _deviceManager.Devices.FirstOrDefault(d => 
+                d.DeviceConnection.Connection.ConnectionId == connectionId
                 && d.ChannelNo == (int)DefaultDeviceChannel.Main);
-            if (existingDevice != null && existingDevice.IsConnected && existingDevice.IsInitialized && !_workstationHelper.IsActiveSessionLocked())
+            if (existingDevice?.GetUserProperty<bool>(WorkflowProperties.HV_FINISHED_WF) == true)
                 return;
 
             WriteLine($"Started main workflow ({connectionId.Id}, {(DefaultConnectionIdProvider)connectionId.IdProvider})");
@@ -169,6 +169,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                 DeviceFinilizingMainFlow?.Invoke(this, device);
 
                 device.SetUserProperty(CustomProperties.HW_CONNECTION_STATE_PROP, HwVaultConnectionState.Online);
+                device.SetUserProperty(WorkflowProperties.HV_FINISHED_WF, true);
 
                 workflowFinishedSuccessfully = true;
             }

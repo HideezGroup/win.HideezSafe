@@ -119,10 +119,11 @@
     <Compile Include="BaseSettingsTests.cs" />
     <Compile Include="MockFactory.cs" />
     <Compile Include="VaultConnectionTests\AccountsUpdateProcessorTests.cs" />
-    <Compile Include="VaultConnectionTests\ConnectionFlowProcessorTests.cs" />
+    <Compile Include="VaultConnectionTests\EnterpriseConnectionFlowProcessorTests.cs" />
     <Compile Include="VaultConnectionTests\LicensingProcessorTests.cs" />
     <Compile Include="VaultConnectionTests\Dongle\ProximityConnectionProcessorTests.cs" />
     <Compile Include="VaultConnectionTests\Other\ActivityConnectionProcessorTests.cs" />
+    <Compile Include="VaultConnectionTests\StandaloneConnectionFlowProcessorTests.cs" />
     <Compile Include="VaultConnectionTests\StateUpdateProcessorTests.cs" />
     <Compile Include="VaultConnectionTests\Dongle\TapConnectionProcessorTests.cs" />
     <Compile Include="VaultConnectionTests\VaultAuthorizationProcessorTests.cs" />

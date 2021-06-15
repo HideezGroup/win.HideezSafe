@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HideezClient.Modules.Remote
 {
-    public class PipeRemoteDeviceConnection: IConnectionController
+    public class PipeRemoteDeviceConnection : IConnectionController
     {
         private readonly IMetaPubSub _metaPubSub;
 
@@ -29,6 +29,7 @@ namespace HideezClient.Modules.Remote
         public event EventHandler DeviceIsBusy;
         public event EventHandler<FwWipeStatus> WipeFinished;
         public event EventHandler ConnectionStateChanged;
+        public event EventHandler<byte[]> FingerprintStateChanged; // Not implemented on the service side
 
         public PipeRemoteDeviceConnection(IMetaPubSub metaPubSub, string id, string mac, string name, bool isConnected)
         {

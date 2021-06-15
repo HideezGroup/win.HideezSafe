@@ -26,21 +26,21 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
 {
     public sealed class EnterpriseConnectionFlowProcessor : ConnectionFlowProcessorBase
     {
-        public struct ConnectionFlowSubprocessorsStruct
+        public class ConnectionFlowSubprocessorsStruct
         {
-            public IPermissionsCheckProcessor PermissionsCheckProcessor;
-            public IVaultConnectionProcessor VaultConnectionProcessor;
-            public ICacheVaultInfoProcessor CacheVaultInfoProcessor;
-            public ILicensingProcessor LicensingProcessor;
-            public IStateUpdateProcessor StateUpdateProcessor;
-            public IActivationProcessor ActivationProcessor;
-            public IVaultAuthorizationProcessor MasterkeyProcessor;
-            public IAccountsUpdateProcessor AccountsUpdateProcessor;
-            public IUserAuthorizationProcessor UserAuthorizationProcessor;
-            public IUnlockProcessor UnlockProcessor;
+            public IPermissionsCheckProcessor PermissionsCheckProcessor { get; set; }
+            public IVaultConnectionProcessor VaultConnectionProcessor { get; set; }
+            public ICacheVaultInfoProcessor CacheVaultInfoProcessor { get; set; }
+            public ILicensingProcessor LicensingProcessor { get; set; }
+            public IStateUpdateProcessor StateUpdateProcessor { get; set; }
+            public IActivationProcessor ActivationProcessor { get; set; }
+            public IVaultAuthorizationProcessor MasterkeyProcessor { get; set; }
+            public IAccountsUpdateProcessor AccountsUpdateProcessor { get; set; }
+            public IUserAuthorizationProcessor UserAuthorizationProcessor { get; set; }
+            public IUnlockProcessor UnlockProcessor { get; set; }
         }
 
-        readonly DeviceManager _deviceManager;
+        readonly IDeviceManager _deviceManager;
         readonly IWorkstationUnlocker _workstationUnlocker; // Todo: remove and replace calls with unlockProcessor
         readonly IScreenActivator _screenActivator;
         readonly IClientUiManager _ui;
@@ -60,7 +60,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
         public override event EventHandler<string> UnlockAttempted;
 
         public EnterpriseConnectionFlowProcessor(
-            DeviceManager deviceManager,
+            IDeviceManager deviceManager,
             IHesAppConnection hesConnection,
             IWorkstationUnlocker workstationUnlocker,
             IScreenActivator screenActivator,
@@ -104,11 +104,10 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
 
         protected override async Task MainWorkflow(ConnectionId connectionId, ConnectionFlowOptions options, Action<WorkstationUnlockResult> onUnlockAttempt, CancellationToken ct)
         {
-            // Ignore MainFlow requests for devices that are already connected
-            // IsConnected-true indicates that device already finished main flow or is in progress
+            // Ignore MainFlow requests for devices that are already connected and finished mainworkflow
             var existingDevice = _deviceManager.Devices.FirstOrDefault(d => d.DeviceConnection.Connection.ConnectionId == connectionId
                 && d.ChannelNo == (int)DefaultDeviceChannel.Main);
-            if (existingDevice != null && existingDevice.IsConnected && existingDevice.IsInitialized && !_workstationHelper.IsActiveSessionLocked())
+            if (existingDevice?.GetUserProperty<bool>(WorkflowProperties.HV_FINISHED_WF) == true)
                 return;
 
             WriteLine($"Started main workflow ({connectionId.Id}, {(DefaultConnectionIdProvider)connectionId.IdProvider})");
@@ -214,6 +213,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                 await _subp.AccountsUpdateProcessor.UpdateAccounts(device, vaultInfo, false);
 
                 device.SetUserProperty(CustomProperties.HW_CONNECTION_STATE_PROP, HwVaultConnectionState.Online);
+                device.SetUserProperty(WorkflowProperties.HV_FINISHED_WF, true);
 
                 if (_hesConnection.State == HesConnectionState.Connected)
                     await _hesConnection.UpdateHwVaultProperties(new HwVaultInfoFromClientDto(device), false);
