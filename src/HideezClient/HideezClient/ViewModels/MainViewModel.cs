@@ -439,9 +439,6 @@ namespace HideezClient.ViewModels
         private void OnOpenSoftwareKeyPage()
         {
             ProcessNavRequest("SoftwareKeyPage");
-
-            // Todo: Temporary for Try&Buy
-            _softwareUnlock.IsChecked = true;
         }
 
         private void OnOpenUpdateAvailablePage()

@@ -97,86 +97,115 @@
             Text="{l:Localization HMK.MobileKey.Description}"
             TextWrapping="Wrap" />
 
-        <!--  3 line  -->
-        <StackPanel 
-            Orientation="Horizontal"
-            Grid.Row="6"
-            Grid.Column="2"
-            Margin="0,0,0,8">
-            <TextBlock
-                FontWeight="DemiBold"
-                Foreground="{DynamicResource DarkForeground}"
-                Text="{l:Localization HMK.ActivationCode.Header}"
-                TextWrapping="Wrap" />
-
-            <!--<controls:InfoButton Margin="2,-2,0,0"/>-->
-        </StackPanel>
-
-        <Border
-            Grid.Row="7"
-            Grid.Column="0"
-            Width="152"
-            Height="152"
-            BorderThickness="0"
-            Background="#C4C4C4"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top">
-            <Image 
-                Source="{Binding ActivationQR}"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch" >
-                <Image.Triggers>
-                    <EventTrigger RoutedEvent="Binding.TargetUpdated">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </Image.Triggers>
-            </Image>
-        </Border>
-
         <Grid
-            Grid.Row="7"
-            Grid.Column="2">
+            Grid.Row="6"
+            Grid.Column="0"
+            Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="10" />
-                <ColumnDefinition />
+                <ColumnDefinition Width="24" />
+                <ColumnDefinition Width="320" />
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <TextBlock
-                FontWeight="DemiBold"
-                Foreground="{DynamicResource DarkForeground}"
-                Text="1."/>
-
-            <TextBlock
+            <!--  3 line  -->
+            <StackPanel 
+                Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                Orientation="Horizontal"
+                Grid.Row="0"
                 Grid.Column="2"
-                FontWeight="DemiBold"
-                Foreground="{DynamicResource DarkForeground}"
-                Text="{l:Localization HMK.ActivationCode.Description1}"
-                TextWrapping="Wrap" />
+                Margin="0,0,0,8">
+                <TextBlock
+                    FontWeight="DemiBold"
+                    Foreground="{DynamicResource DarkForeground}"
+                    Text="{l:Localization HMK.ActivationCode.Header}"
+                    TextWrapping="Wrap" />
 
-            <TextBlock
-                Grid.Row="2"
-                FontWeight="DemiBold"
-                Foreground="{DynamicResource DarkForeground}"
-                Text="2."/>
-
-            <TextBlock
-                Grid.Column="2"
-                Grid.Row="2"
-                FontWeight="DemiBold"
-                Foreground="{DynamicResource DarkForeground}"
-                Text="{l:Localization HMK.ActivationCode.Description2}"
-                TextWrapping="Wrap" />
-        </Grid>
+                <!--<controls:InfoButton Margin="2,-2,0,0"/>-->
+            </StackPanel>
         
+            <Border
+                Grid.Row="1"
+                Grid.Column="0"
+                Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                Width="152"
+                Height="152"
+                BorderThickness="0"
+                Background="#C4C4C4"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top">
+                <Image 
+                    Source="{Binding ActivationQR}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" >
+                    <Image.Triggers>
+                        <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Image.Triggers>
+                </Image>
+            </Border>
+
+            <Grid
+                Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                Grid.Row="1"
+                Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    FontWeight="DemiBold"
+                    Foreground="{DynamicResource DarkForeground}"
+                    Text="1."/>
+
+                <TextBlock
+                    Grid.Column="2"
+                    FontWeight="DemiBold"
+                    Foreground="{DynamicResource DarkForeground}"
+                    Text="{l:Localization HMK.ActivationCode.Description1}"
+                    TextWrapping="Wrap" />
+
+                <TextBlock
+                    Grid.Row="2"
+                    FontWeight="DemiBold"
+                    Foreground="{DynamicResource DarkForeground}"
+                    Text="2."/>
+
+                <TextBlock
+                    Grid.Column="2"
+                    Grid.Row="2"
+                    FontWeight="DemiBold"
+                    Foreground="{DynamicResource DarkForeground}"
+                    Text="{l:Localization HMK.ActivationCode.Description2}"
+                    TextWrapping="Wrap" />
+            </Grid>
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                >
+                <Button
+                Visibility="{Binding IsEnabled, Converter={StaticResource InvertBooleanToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                Style="{StaticResource ConfirmButtonStyle}"
+                Command="{Binding ShowActivationCodeCommand}"
+                Content="{l:Localization HMK.Button.ShowCode}"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

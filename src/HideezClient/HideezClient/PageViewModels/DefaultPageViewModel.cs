@@ -49,9 +49,6 @@ namespace HideezClient.PageViewModels
         void OnOpenMobileAuthenticatorPage()
         {
             _metaMessenger.Publish(new OpenMobileAuthenticatorPageMessage());
-
-            // Todo: Temporary for Try&Buy
-            _softwareUnlock.IsChecked = true;
         }
     }
 }

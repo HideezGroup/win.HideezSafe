@@ -1377,4 +1377,7 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
   <data name="ProximitySettings.TextBlock.Unlock" xml:space="preserve">
     <value>Unlock</value>
   </data>
+  <data name="HMK.Button.ShowCode" xml:space="preserve">
+    <value>Show activation code</value>
+  </data>
 </root>

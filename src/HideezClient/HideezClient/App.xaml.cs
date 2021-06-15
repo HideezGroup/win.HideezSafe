@@ -359,7 +359,7 @@ namespace HideezClient
             Container.RegisterType<ServiceViewModel>(new ContainerControlledLifetimeManager());
             Container.RegisterType<DefaultPageViewModel>();
             Container.RegisterType<HardwareKeyPageViewModel>();
-            Container.RegisterType<SoftwareKeyPageViewModel>();
+            Container.RegisterType<SoftwareKeyPageViewModel>(new ContainerControlledLifetimeManager());
             Container.RegisterType<SoftwareUnlockSettingViewModel>(new ContainerControlledLifetimeManager());
             Container.RegisterType<ActivationViewModel>();
             Container.RegisterType<VaultAccessSettingsControlViewModel>(new ContainerControlledLifetimeManager());
