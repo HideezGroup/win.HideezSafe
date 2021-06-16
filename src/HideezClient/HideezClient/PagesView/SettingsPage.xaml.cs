@@ -29,5 +29,11 @@ namespace HideezClient.PagesView
         {
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
         }
+
+        private void ScrollViewer_ManipulationBoundaryFeedback(object sender, ManipulationBoundaryFeedbackEventArgs e)
+        {
+            // Prevents window from shaking when performing finger-drag on tablet
+            e.Handled = true;
+        }
     }
 }

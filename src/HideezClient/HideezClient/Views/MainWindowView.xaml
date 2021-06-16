@@ -138,6 +138,8 @@
                 MaxHeight="220"
                 VerticalAlignment="Bottom"
                 VerticalScrollBarVisibility="Auto"
+                ScrollViewer.PanningMode="Both"
+                ManipulationBoundaryFeedback="ScrollViewer_ManipulationBoundaryFeedback"
                 Visibility="{Binding Path=Devices.Count, Converter={StaticResource IntToVisibilityConverter}}">
                 <controls:SelectableDevicesList
                     Devices="{Binding Devices}" >

@@ -639,7 +639,13 @@ namespace HideezClient.Models
                                                 return;
                                             }
 
-                                            _log.WriteLine($"({_remoteDevice.SerialNo}) Remote vault created");
+                                            if (_remoteDevice == null)
+                                            {
+                                                _log.WriteLine($"({SerialNo}) Remove vault creation failed");
+                                                return;
+                                            }
+
+                                            _log.WriteLine($"({SerialNo}) Remote vault created");
                                             await _remoteDevice.RefreshDeviceInfo();
                                         }
                                         finally

@@ -80,5 +80,11 @@ namespace HideezClient.Views
                 }
             });
         }
+
+        private void ScrollViewer_ManipulationBoundaryFeedback(object sender, ManipulationBoundaryFeedbackEventArgs e)
+        {
+            // Prevents window from shaking when performing finger-drag on tablet
+            e.Handled = true;
+        }
     }
 }

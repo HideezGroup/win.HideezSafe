@@ -48,7 +48,10 @@
             <Setter Property="Background" Value="#E1F3F8" />
         </Style>
     </Page.Resources>
-    <ScrollViewer VerticalScrollBarVisibility="Visible">
+    <ScrollViewer 
+        ScrollViewer.PanningMode="Both"
+        ManipulationBoundaryFeedback="ScrollViewer_ManipulationBoundaryFeedback"
+        VerticalScrollBarVisibility="Visible">
         <Grid Margin="16" VerticalAlignment="Stretch" Grid.IsSharedSizeScope="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

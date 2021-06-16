@@ -19,6 +19,8 @@
         x:Name="scrollViewer"
         HorizontalScrollBarVisibility="Hidden"
         VerticalScrollBarVisibility="Auto"
+        ScrollViewer.PanningMode="Both"
+        ManipulationBoundaryFeedback="ScrollViewer_ManipulationBoundaryFeedback"
         CanContentScroll="True">
 
         <Grid Margin="16" VerticalAlignment="Stretch">
