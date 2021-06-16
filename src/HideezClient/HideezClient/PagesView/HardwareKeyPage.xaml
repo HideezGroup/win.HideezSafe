@@ -14,218 +14,184 @@
     DataContext="{Binding HardwareKeyPageViewModel, Mode=OneWay, Source={StaticResource Locator}}"
     Style="{DynamicResource PageStyle}"
     mc:Ignorable="d">
-    <Grid
-        HorizontalAlignment="Stretch"
-        TextBlock.FontSize="16">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <Border
-            Margin="0,86,0,0"
-            HorizontalAlignment="Center"
-            Style="{StaticResource SettingsBorderStyle}"
-            Visibility="{Binding Path=Service.IsServiceConnected, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
-            <controls:ServiceRequiredMessageControl />
-        </Border>
-
-        <Grid 
-            Margin="0,70,0,0"
-            HorizontalAlignment="Center"
-            Visibility="{Binding Path=Service.IsServiceConnected, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <controls:EnterpriseModeContainer>
-                <controls:ServerAddressEditControl FontSize="14" HorizontalAlignment="Center" />
-            </controls:EnterpriseModeContainer>
-        </Grid>
-
-        <Separator 
-            Grid.Row="1"
-            Margin="40,46,45,45" 
-            HorizontalAlignment="Stretch" 
-            Style="{DynamicResource SeparatorStyle}"/>
-
-        <controls:StandaloneModeContainer 
-            Grid.Row="2"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
-            <Grid Width="390">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+    <Grid 
+        TextBlock.FontSize="16"
+        HorizontalAlignment="Stretch">
+        <controls:EnterpriseModeContainer>
+            <Grid 
+                HorizontalAlignment="Stretch"
+                DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="25" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="1."/>
+                <Border
+                    Margin="0,86,0,0"
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource SettingsBorderStyle}"
+                    Visibility="{Binding Path=Service.IsServiceConnected, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
+                    <controls:ServiceRequiredMessageControl />
+                </Border>
 
-                <TextBlock
-                    Grid.Column="2"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="{l:Localization HKP.Description1}"
-                    TextWrapping="Wrap" />
+                <Grid
+                    Margin="0,70,0,0"
+                    HorizontalAlignment="Center"
+                    Visibility="{Binding Path=Service.IsServiceConnected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <controls:ServerAddressEditControl FontSize="14" HorizontalAlignment="Center" />
+                </Grid>
 
-                <TextBlock
+                <Separator 
+                    Grid.Row="1"
+                    Margin="40,46,45,45" 
+                    HorizontalAlignment="Stretch" 
+                    Style="{DynamicResource SeparatorStyle}"/>
+
+                <Grid 
                     Grid.Row="2"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="2."/>
+                    Width="390"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <TextBlock
-                    Grid.Column="2"
-                    Grid.Row="2"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="{l:Localization HKP.Description2}"
-                    TextWrapping="Wrap"/>
-
-                <TextBlock
-                    Grid.Row="4"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="3."/>
-
-                <TextBlock
-                    Grid.Column="2"
-                    Grid.Row="4"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="{l:Localization HKP.Description3}"
-                    TextWrapping="Wrap" />
-
-                <TextBlock
-                    Grid.Row="6"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="4."/>
-
-                <TextBlock
-                    Grid.Column="2"
-                    Grid.Row="6"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="{l:Localization HKP.Description4}"
-                    TextWrapping="Wrap" />
-
-                <TextBlock
-                    Grid.Row="8"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="5."/>
-
-                <TextBlock
-                    Grid.Column="2"
-                    Grid.Row="8"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="{l:Localization HKP.Description5}"
-                    TextWrapping="Wrap" />
-
-                <TextBlock
-                    Grid.Row="10"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="6."/>
-
-                <TextBlock
-                    Grid.Column="2"
-                    Grid.Row="10"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="{l:Localization HKP.Description6}"
-                    TextWrapping="Wrap" />
-            </Grid>
-        </controls:StandaloneModeContainer>
-
-        <controls:EnterpriseModeContainer
-            Grid.Row="2"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
-            <Grid Width="390">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <TextBlock
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="1."/>
-
-                <TextBlock
-                    Grid.Column="2"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="{l:Localization HKP.Description1}"
-                    TextWrapping="Wrap" />
-
-                <TextBlock
-                    Grid.Row="2"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="2."/>
-
-                <controls:CsrModeContainer
-                    Grid.Column="2"
-                    Grid.Row="2">
                     <TextBlock
                         FontWeight="DemiBold"
                         Foreground="{DynamicResource DarkForeground}"
-                        Text="{l:Localization HKP.Description2.Csr}"
-                        TextWrapping="Wrap"/>
-                </controls:CsrModeContainer>
+                        Text="1."/>
 
-                <controls:WinBleModeContainer
-                    Grid.Column="2"
-                    Grid.Row="2">
                     <TextBlock
+                        Grid.Column="2"
                         FontWeight="DemiBold"
                         Foreground="{DynamicResource DarkForeground}"
-                        Text="{l:Localization HKP.Description2.WinBle}"
-                        TextWrapping="Wrap"/>
-                </controls:WinBleModeContainer>
+                        Text="{l:Localization HKP.Description1}"
+                        TextWrapping="Wrap" />
 
-                <TextBlock
-                    Grid.Row="4"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="3."/>
+                    <TextBlock
+                        Grid.Row="2"
+                        FontWeight="DemiBold"
+                        Foreground="{DynamicResource DarkForeground}"
+                        Text="2."/>
 
-                <TextBlock
-                    Grid.Column="2"
-                    Grid.Row="4"
-                    FontWeight="DemiBold"
-                    Foreground="{DynamicResource DarkForeground}"
-                    Text="{l:Localization HKP.Description3}"
-                    TextWrapping="Wrap" />
+                    <controls:CsrModeContainer
+                        Grid.Column="2"
+                        Grid.Row="2">
+                        <TextBlock
+                            FontWeight="DemiBold"
+                            Foreground="{DynamicResource DarkForeground}"
+                            Text="{l:Localization HKP.Description2.Csr}"
+                            TextWrapping="Wrap"/>
+                    </controls:CsrModeContainer>
+
+                    <controls:WinBleModeContainer
+                        Grid.Column="2"
+                        Grid.Row="2">
+                        <TextBlock
+                            FontWeight="DemiBold"
+                            Foreground="{DynamicResource DarkForeground}"
+                            Text="{l:Localization HKP.Description2.WinBle}"
+                            TextWrapping="Wrap"/>
+                    </controls:WinBleModeContainer>
+
+                    <TextBlock
+                        Grid.Row="4"
+                        FontWeight="DemiBold"
+                        Foreground="{DynamicResource DarkForeground}"
+                        Text="3."/>
+
+                    <TextBlock
+                        Grid.Column="2"
+                        Grid.Row="4"
+                        FontWeight="DemiBold"
+                        Foreground="{DynamicResource DarkForeground}"
+                        Text="{l:Localization HKP.Description3}"
+                        TextWrapping="Wrap" />
+                </Grid>
             </Grid>
         </controls:EnterpriseModeContainer>
 
+        <controls:StandaloneModeContainer>
+            <Grid 
+                Width="390"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
+            <TextBlock
+                FontWeight="DemiBold"
+                Foreground="{DynamicResource DarkForeground}"
+                Text="1."/>
+
+            <TextBlock
+                Grid.Column="2"
+                FontWeight="DemiBold"
+                Foreground="{DynamicResource DarkForeground}"
+                Text="{l:Localization HKP.Description1}"
+                TextWrapping="Wrap" />
+
+            <TextBlock
+                Grid.Row="2"
+                FontWeight="DemiBold"
+                Foreground="{DynamicResource DarkForeground}"
+                Text="2."/>
+
+            <controls:CsrModeContainer
+                Grid.Column="2"
+                Grid.Row="2">
+                <TextBlock
+                    FontWeight="DemiBold"
+                    Foreground="{DynamicResource DarkForeground}"
+                    Text="{l:Localization HKP.Description2.Csr}"
+                    TextWrapping="Wrap"/>
+            </controls:CsrModeContainer>
+
+            <controls:WinBleModeContainer
+                Grid.Column="2"
+                Grid.Row="2">
+                <TextBlock
+                    FontWeight="DemiBold"
+                    Foreground="{DynamicResource DarkForeground}"
+                    Text="{l:Localization HKP.Description2.WinBle}"
+                    TextWrapping="Wrap"/>
+            </controls:WinBleModeContainer>
+
+            <TextBlock
+                Grid.Row="4"
+                FontWeight="DemiBold"
+                Foreground="{DynamicResource DarkForeground}"
+                Text="3."/>
+
+            <TextBlock
+                Grid.Column="2"
+                Grid.Row="4"
+                FontWeight="DemiBold"
+                Foreground="{DynamicResource DarkForeground}"
+                Text="{l:Localization HKP.Description3}"
+                TextWrapping="Wrap" />
+            </Grid>
+        </controls:StandaloneModeContainer>
     </Grid>
 </Page>
