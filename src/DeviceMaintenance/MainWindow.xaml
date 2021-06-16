@@ -15,6 +15,44 @@
     Background="{DynamicResource NotificationLeftColumnBrush}"
     TitleCharacterCasing="Normal"
     WindowTitleBrush="{DynamicResource WindowTitleBrush}">
+    <Metro:MetroWindow.Resources>
+        <Style x:Key="ListViewContainerStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <StackPanel Orientation="Horizontal">
+                            <Border
+                                x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                SnapsToDevicePixels="true">
+                                <StackPanel>
+                                    <Separator
+                                        x:Name="Separator"
+                                        Background="Transparent"
+                                        Height="2"/>
+                                    <ContentPresenter
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                <Setter TargetName="Separator" Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Metro:MetroWindow.Resources>
     <Grid>
         <Grid Margin="10">
             <Grid.RowDefinitions>
@@ -32,6 +70,7 @@
                         Style="{DynamicResource WhiteButton}"
                         Margin="10,0,10,0"
                         FontSize="14"
+                        VerticalAlignment="Center"
                         IsEnabled="{Binding IsFirmwareUpdateInProgress, Converter={StaticResource InvertBooleanConverter}}"
                         Visibility="{Binding IsButtonsVisible, Converter={StaticResource InvertBooleanToVisibilityConverter}}"
                         Command="{Binding GoToStartPageCommand}">
@@ -39,23 +78,70 @@
                             <TextBlock Text="{l:Localization Button.StartPage}"/>
                         </Button.Content>
                     </Button>
-                    <controls:StateControl
-                        HasConnectionText="BLE"
-                        NoConnectionText="BLE"
-                        State="{Binding ConnectionManager.BleAdapterAvailable}"
-                        NoConnectionBackground="{DynamicResource DisconnectedBrush}"
-                        HasConnectionBackground="{DynamicResource ConnectedBrush}"/>
+                    
                     <RadioButton 
                         GroupName="Type"
+                        VerticalAlignment="Center"
                         Content="Hideez Dongle"
                         IsEnabled="{Binding IsFirmwareUpdateInProgress, Converter={StaticResource InvertBooleanConverter}}"
                         IsChecked="{Binding IsCsrEnabled, Mode=TwoWay}"
-                        Margin="10,0"/>
+                        Margin="0,0,10,0"/>
                     <RadioButton
                         GroupName="Type"
+                        VerticalAlignment="Center"
                         Content="Windows Bluetooth"
                         IsEnabled="{Binding IsFirmwareUpdateInProgress, Converter={StaticResource InvertBooleanConverter}}"
-                        IsChecked="{Binding IsWinBleEnabled, Mode=TwoWay}"/>
+                        IsChecked="{Binding IsWinBleEnabled, Mode=TwoWay}"
+                        Margin="0,0,10,0"/>
+
+                    <Border 
+                        BorderBrush="{DynamicResource DisconnectedBrush}" 
+                        CornerRadius="4"
+                        BorderThickness="2"
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Center"
+                        MaxWidth="300"
+                        Visibility="{Binding ConnectionManager.BleAdapterAvailable, Converter={StaticResource InvertBooleanToVisibilityConverter}}"
+                        Padding="10,5">
+                        <Grid>
+                            <TextBlock
+                            TextWrapping="Wrap"
+                            Text="{l:Localization Csr.Error}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsCsrEnabled}" Value="True"/>
+                                                    <Condition Binding="{Binding ConnectionManager.BleAdapterAvailable}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <TextBlock
+                                TextWrapping="Wrap"
+                                Text="{l:Localization WinBle.Error}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsWinBleEnabled}" Value="True"/>
+                                                    <Condition Binding="{Binding ConnectionManager.BleAdapterAvailable}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
                 </WrapPanel>
                 <Grid>
                     <WrapPanel
@@ -157,6 +243,39 @@
                                 VerticalAlignment="Center"/>
 
                         </WrapPanel>
+                        <TextBlock
+                            Margin="0,0,0,6"
+                            Text="{l:Localization QuickUpdate.Text.LatestVersion}"/>
+                        <ListView
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            OverridesDefaultStyle="True"
+                            ItemContainerStyle="{StaticResource ListViewContainerStyle}"
+                            Focusable="False"
+                            ItemsSource="{Binding DeviceModelLastVersions}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="25"/>
+                                            <ColumnDefinition Width="100"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Text="{Binding DeviceModelName}"
+                                            FontWeight="Bold"/>
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Text="-"/>
+                                        <TextBlock
+                                            Grid.Column="2"
+                                            Text="">
+                                            <Run Text="v"/><Run Text="{Binding FwUpdateInfo.Version}"/>
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </StackPanel>
                 </Grid>
                 <StackPanel Visibility="{Binding IsButtonsVisible, Converter={StaticResource InvertBooleanToVisibilityConverter}}">

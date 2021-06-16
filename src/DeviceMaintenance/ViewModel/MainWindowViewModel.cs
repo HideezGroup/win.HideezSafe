@@ -1,10 +1,12 @@
 ﻿using DeviceMaintenance.Messages;
+using DeviceMaintenance.Models;
 using DeviceMaintenance.Service;
 using Hideez.SDK.Communication;
 using Hideez.SDK.Communication.Connection;
 using Hideez.SDK.Communication.Log;
 using HideezMiddleware;
 using HideezMiddleware.ConnectionModeProvider;
+using HideezMiddleware.Localize;
 using HideezMiddleware.Modules.FwUpdateCheck;
 using HideezMiddleware.Modules.FwUpdateCheck.Messages;
 using HideezMiddleware.Threading;
@@ -15,12 +17,14 @@ using MvvmExtensions.PropertyChangedMonitoring;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DeviceMaintenance.ViewModel
@@ -339,6 +343,9 @@ namespace DeviceMaintenance.ViewModel
                 }
             }
         }
+
+        public ObservableCollection<DeviceModelLastVersion> DeviceModelLastVersions { get; } 
+            = new ObservableCollection<DeviceModelLastVersion>();
         #endregion
 
         #region Commands
@@ -466,9 +473,17 @@ namespace DeviceMaintenance.ViewModel
             foreach (var model in DeviceModels)
             {
                 var response = await _hub.Process<GetFwUpdatesCollectionResponse>(new GetFwUpdatesCollectionMessage(model.Code));
-                FwUpdateInfo[] fwUpdates = response.FwUpdatesInfo;
+                var fwUpdatesList = response.FwUpdatesInfo.ToList();
+                fwUpdatesList.Sort();
+                fwUpdatesList.Reverse();
 
-                _fwVersions.TryAdd(model, fwUpdates);
+                _fwVersions.TryAdd(model, fwUpdatesList.ToArray());
+
+                if (fwUpdatesList.Count > 0)
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        DeviceModelLastVersions.Add(new DeviceModelLastVersion(model, fwUpdatesList.FirstOrDefault()));
+                    });
             }
         }
 
@@ -481,8 +496,12 @@ namespace DeviceMaintenance.ViewModel
                 if (IsQuickUpdate)
                 {
                     var deviceModel = GetDeviceModelBySerialNo(arg.DeviceSerialNo);
-                    var response = await _hub.Process<GetFwUpdateByDeviceModelResponse>(new GetFwUpdateByDeviceModelMessage(deviceModel.Code));
-                    filePath = response.FilePath;
+                    var lastVersion = DeviceModelLastVersions.FirstOrDefault(d => d.DeviceModel.Code == deviceModel.Code);
+                    if (lastVersion != null)
+                    {
+                        var response = await _hub.Process<GetFwUpdateFilePathResponse>(new GetFwUpdateFilePathMessage(lastVersion.FwUpdateInfo));
+                        filePath = response.FilePath;
+                    }
                 }
                 else if (IsAdvancedUpdate)
                 {

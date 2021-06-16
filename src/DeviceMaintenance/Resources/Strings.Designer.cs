@@ -171,6 +171,15 @@ namespace DeviceMaintenance.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hideez Dongle is unavailable..
+        /// </summary>
+        internal static string Csr_Error {
+            get {
+                return ResourceManager.GetString("Csr.Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update.
         /// </summary>
         internal static string Device_Button_Update {
@@ -288,6 +297,24 @@ namespace DeviceMaintenance.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The latest firmware version for your device model:.
+        /// </summary>
+        internal static string QuickUpdate_Text_LatestVersion {
+            get {
+                return ResourceManager.GetString("QuickUpdate.Text.LatestVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hideez Key 2.
+        /// </summary>
+        internal static string ST102 {
+            get {
+                return ResourceManager.GetString("ST102", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pair device through Windows Bluetooth Settings to upload new firmware.
         /// </summary>
         internal static string Text_PairToStart {
@@ -302,6 +329,15 @@ namespace DeviceMaintenance.Resources {
         internal static string Text_TapToStart {
             get {
                 return ResourceManager.GetString("Text.TapToStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows Bluetooth is unavailable. Make sure that your Bluetooth is turned on in Windows Settings..
+        /// </summary>
+        internal static string WinBle_Error {
+            get {
+                return ResourceManager.GetString("WinBle.Error", resourceCulture);
             }
         }
         
