@@ -106,19 +106,19 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Dongle
 
                     // Unlocked Workstation and device haven't finished main workflow - break and dont add to ignore
                     if (!_workstationUnlocker.IsConnected 
-                        && device?.GetUserProperty<bool>(WorkflowProperties.HV_FINISHED_WF) != true)
+                        && device?.GetUserProperty<bool>(DeviceCustomProperties.HV_FINISHED_WF) != true)
                         return;
 
                     try
                     {
                         // Unlocked Workstation and device finished main workflow - break and add to ignore
                         if (!_workstationUnlocker.IsConnected 
-                            && device?.GetUserProperty<bool>(WorkflowProperties.HV_FINISHED_WF) == true)
+                            && device?.GetUserProperty<bool>(DeviceCustomProperties.HV_FINISHED_WF) == true)
                             return;
 
                         // Locked Workstation and haven't finished main workflow - connect add to ignore
                         if (_workstationUnlocker.IsConnected 
-                            && device?.GetUserProperty<bool>(WorkflowProperties.HV_FINISHED_WF) != true)
+                            && device?.GetUserProperty<bool>(DeviceCustomProperties.HV_FINISHED_WF) != true)
                         {
                             await ConnectAndUnlockByConnectionId(connectionId);
                         }

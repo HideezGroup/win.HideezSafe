@@ -238,7 +238,7 @@ namespace HideezMiddleware.Tests.VaultConnectionTests
             deviceMock.SetupGet(d => d.IsConnected).Returns(true);
             deviceMock.SetupGet(d => d.IsInitialized).Returns(true);
             deviceMock.SetupGet(d => d.ChannelNo).Returns((byte)DefaultDeviceChannel.Main);
-            deviceMock.Setup(d => d.GetUserProperty<bool>(WorkflowProperties.HV_FINISHED_WF)).Returns(true);
+            deviceMock.Setup(d => d.GetUserProperty<bool>(DeviceCustomProperties.HV_FINISHED_WF)).Returns(true);
 
             var devicesList = new List<IDevice>()
             {

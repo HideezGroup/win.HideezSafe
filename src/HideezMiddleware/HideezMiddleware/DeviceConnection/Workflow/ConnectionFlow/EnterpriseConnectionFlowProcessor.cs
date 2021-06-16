@@ -107,7 +107,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
             // Ignore MainFlow requests for devices that are already connected and finished mainworkflow
             var existingDevice = _deviceManager.Devices.FirstOrDefault(d => d.DeviceConnection.Connection.ConnectionId == connectionId
                 && d.ChannelNo == (int)DefaultDeviceChannel.Main);
-            if (existingDevice?.GetUserProperty<bool>(WorkflowProperties.HV_FINISHED_WF) == true)
+            if (existingDevice?.GetUserProperty<bool>(DeviceCustomProperties.HV_FINISHED_WF) == true)
                 return;
 
             WriteLine($"Started main workflow ({connectionId.Id}, {(DefaultConnectionIdProvider)connectionId.IdProvider})");
@@ -213,7 +213,7 @@ namespace HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow
                 await _subp.AccountsUpdateProcessor.UpdateAccounts(device, vaultInfo, false);
 
                 device.SetUserProperty(CustomProperties.HW_CONNECTION_STATE_PROP, HwVaultConnectionState.Online);
-                device.SetUserProperty(WorkflowProperties.HV_FINISHED_WF, true);
+                device.SetUserProperty(DeviceCustomProperties.HV_FINISHED_WF, true);
 
                 if (_hesConnection.State == HesConnectionState.Connected)
                     await _hesConnection.UpdateHwVaultProperties(new HwVaultInfoFromClientDto(device), false);

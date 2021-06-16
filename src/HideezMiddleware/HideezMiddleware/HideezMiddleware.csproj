@@ -170,8 +170,8 @@
     <Compile Include="DeviceConnection\Workflow\VaultConnectionProcessor.cs" />
     <Compile Include="DeviceConnection\Workflow\VaultFailedToAuthorizeException.cs" />
     <Compile Include="DeviceConnection\Workflow\WorkflowException.cs" />
-    <Compile Include="DeviceConnection\Workflow\WorkflowProperties.cs" />
     <Compile Include="DeviceConnection\Workflow\WorkstationUnlockFailedException.cs" />
+    <Compile Include="DeviceCustomProperties.cs" />
     <Compile Include="DeviceLogging\DeviceLogManager.cs" />
     <Compile Include="DeviceLogging\DeviceLogWriter.cs" />
     <Compile Include="DeviceLogging\IDeviceLogWriter.cs" />

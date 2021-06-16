@@ -42,8 +42,8 @@ namespace HideezMiddleware.IPC.DTO
             HwVaultConnectionState = device.GetUserProperty<HwVaultConnectionState>(CustomProperties.HW_CONNECTION_STATE_PROP);
             Proximity = device.Proximity;
             CanLockPyProximity = device.GetUserProperty<bool>(WorkstationLockProcessor.PROX_LOCK_ENABLED_PROP);
-            OwnerName = device.GetUserProperty<string>(CustomProperties.OWNER_NAME_PROP) ?? string.Empty;
-            OwnerEmail = device.GetUserProperty<string>(CustomProperties.OWNER_EMAIL_PROP) ?? string.Empty;
+            OwnerName = device.GetUserProperty<string>(DeviceCustomProperties.OWNER_NAME_PROP) ?? string.Empty;
+            OwnerEmail = device.GetUserProperty<string>(DeviceCustomProperties.OWNER_EMAIL_PROP) ?? string.Empty;
             ConnectionType = device.DeviceConnection.Connection.ConnectionId.IdProvider;
         }
 

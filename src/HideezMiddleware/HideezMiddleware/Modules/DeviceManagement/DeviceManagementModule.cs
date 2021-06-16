@@ -101,12 +101,6 @@ namespace HideezMiddleware.Modules.DeviceManagement
             {
                 if (sender is IDevice device)
                 {
-                    if (!device.IsConnected)
-                    {
-                        device.SetUserProperty(CustomProperties.HW_CONNECTION_STATE_PROP, HwVaultConnectionState.Offline);
-                        device.SetUserProperty(WorkflowProperties.HV_FINISHED_WF, false);
-                    }
-
                     await SafePublish(new DeviceConnectionStateChangedMessage(new DeviceDTO(device)));
                 }
             }
@@ -148,6 +142,9 @@ namespace HideezMiddleware.Modules.DeviceManagement
                 {
                     try
                     {
+                        device.SetUserProperty(CustomProperties.HW_CONNECTION_STATE_PROP, HwVaultConnectionState.Offline);
+                        device.SetUserProperty(DeviceCustomProperties.HV_FINISHED_WF, false);
+
                         await CheckIfWipedAndHandleDisconnect(device);
                         await SafePublish(new DeviceDisconnectedMessage(new DeviceDTO(device)));
                     }
@@ -190,7 +187,7 @@ namespace HideezMiddleware.Modules.DeviceManagement
                 if (device.ChannelNo == (byte)DefaultDeviceChannel.Main)
                 {
                     WriteLine($"({device.SerialNo}) Wipe start confirmed. Disabling automatic reconnect");
-                    device.SetUserProperty(CustomProperties.HW_WIPE_STATE_PROP, true);
+                    device.SetUserProperty(DeviceCustomProperties.HV_WIPE_STATE_PROP, true);
                     await _messenger.Publish(new DeviceManager_ExpectedDeviceRemovalMessage(device));
                 }
             }
@@ -327,7 +324,7 @@ namespace HideezMiddleware.Modules.DeviceManagement
         private async Task CheckIfWipedAndHandleDisconnect(IDevice device)
         {
             if (device.ChannelNo == (byte)DefaultDeviceChannel.Main 
-                && device.GetUserProperty<bool>(CustomProperties.HW_WIPE_STATE_PROP))
+                && device.GetUserProperty<bool>(DeviceCustomProperties.HV_WIPE_STATE_PROP))
             {
                 try
                 {

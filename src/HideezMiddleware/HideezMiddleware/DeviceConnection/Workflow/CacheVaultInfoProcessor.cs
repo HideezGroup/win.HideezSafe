@@ -70,10 +70,10 @@ namespace HideezMiddleware.DeviceConnection.Workflow
         void UpdateVaultOwner(ref IDevice device, string ownerName, string ownerEmail)
         {
             if (!string.IsNullOrWhiteSpace(ownerName))
-                device.SetUserProperty(CustomProperties.OWNER_NAME_PROP, ownerName);
+                device.SetUserProperty(DeviceCustomProperties.OWNER_NAME_PROP, ownerName);
 
             if (!string.IsNullOrWhiteSpace(ownerEmail))
-                device.SetUserProperty(CustomProperties.OWNER_EMAIL_PROP, ownerEmail);
+                device.SetUserProperty(DeviceCustomProperties.OWNER_EMAIL_PROP, ownerEmail);
         }
     }
 }

@@ -175,7 +175,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.WinBle
                     try
                     {
                         // If device from advertisement already exists and is connected, ignore advertisement
-                        if (device?.GetUserProperty<bool>(WorkflowProperties.HV_FINISHED_WF) == true)
+                        if (device?.GetUserProperty<bool>(DeviceCustomProperties.HV_FINISHED_WF) == true)
                             return;
 
                         await ConnectAndUnlockByConnectionId(connectionId);
