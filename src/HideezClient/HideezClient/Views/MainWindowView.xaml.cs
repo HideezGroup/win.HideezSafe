@@ -5,6 +5,10 @@ using System.Windows;
 using System.Windows.Input;
 using HideezClient.Mvvm;
 using System.ComponentModel;
+using System.Windows.Forms;
+using HideezClient.Utilities;
+using System;
+using HideezClient.Extension;
 
 namespace HideezClient.Views
 {
@@ -22,6 +26,30 @@ namespace HideezClient.Views
             // Calling InvalidateRequerySuggested performs recalculation of all dependencies immediatelly instead of waiting for input
             DataContextChanged += DeviceInfo_DataContextChanged;
             InitializeComponent();
+            StateChanged += MainWindowView_StateChanged;
+        }
+
+        private void MainWindowView_StateChanged(object sender, System.EventArgs e)
+        {
+            if(WindowState == WindowState.Normal)
+            {
+                Screen screen = GetCurrentScreen();
+                if (screen != null)
+                {
+                    var dpiTransform = this.GetDpiTransform();
+                    var workingAreaForWindowHeight = screen.WorkingArea.Height  / dpiTransform.Y - Top;
+                    if (workingAreaForWindowHeight < 770)
+                        Height = workingAreaForWindowHeight;
+                    else Height = 770;
+                }
+            }
+        }
+
+        Screen GetCurrentScreen()
+        {
+            IntPtr foregroundWindow = Win32Helper.GetForegroundWindow();
+            Screen screen = Screen.FromHandle(foregroundWindow);
+            return screen;
         }
 
         private void DeviceInfo_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -66,7 +94,7 @@ namespace HideezClient.Views
         {
             // if no device is active, software key menu item should be displayed in the upper menu
             // If active device is selected, software key menu item should be displayed in the bottom menu
-            Application.Current.Dispatcher.Invoke(() =>
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
                 if (device == null && SoftwareKeyMenuItem.Parent == BottomMenuStackPanel)
                 {
