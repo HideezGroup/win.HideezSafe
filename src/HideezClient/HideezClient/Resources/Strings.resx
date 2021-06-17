@@ -1381,6 +1381,6 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
     <value>Show activation code</value>
   </data>
   <data name="Settings.CheckBox.MaximizeWindow" xml:space="preserve">
-    <value>Maximize the window when opened</value>
+    <value>Always open window in maximized mode</value>
   </data>
 </root>

@@ -1072,7 +1072,7 @@
     <value>Вводити паролі лише для захищених полів</value>
   </data>
   <data name="Settings.CheckBox.MaximizeWindow" xml:space="preserve">
-    <value>При відкритті максимально розгорнути вікно</value>
+    <value>Завжди відкривати вікно у повноекранному режимі</value>
   </data>
   <data name="Settings.CheckBox.ShowBluetoothIndicator" xml:space="preserve">
     <value>Відображати індикатор Bluetooth</value>

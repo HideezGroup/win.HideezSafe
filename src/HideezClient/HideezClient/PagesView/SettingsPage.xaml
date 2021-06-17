@@ -86,26 +86,25 @@
                 <Border 
                     Style="{StaticResource SettingsBorderStyle}"
                     Visibility="{Binding Path=Service.IsServiceConnected, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <CheckBox 
-                        Style="{StaticResource CheckboxStyle}"
-                        Content="{l:Localization Settings.CheckBox.EnableSoftwareVaultUnlockModule}"
-                        IsChecked="{Binding Path=SoftwareUnlock.IsChecked}" />
-                </Border>
+                    <StackPanel
+                        Orientation="Vertical">
+                        <CheckBox 
+                            Style="{StaticResource CheckboxStyle}"
+                            Margin="0,0,0,36"
+                            Content="{l:Localization Settings.CheckBox.EnableSoftwareVaultUnlockModule}"
+                            IsChecked="{Binding Path=SoftwareUnlock.IsChecked}" />
 
-                <Border 
-                    Style="{StaticResource SettingsBorderStyle}">
-                    <CheckBox 
-                        Style="{StaticResource CheckboxStyle}"
-                        Content="{l:Localization Settings.CheckBox.LimitPasswordToProtectedFields}"
-                        IsChecked="{Binding Path=SecureFieldEntry.IsChecked}" />
-                </Border>
+                        <CheckBox 
+                            Style="{StaticResource CheckboxStyle}"
+                            Margin="0,0,0,36"
+                            Content="{l:Localization Settings.CheckBox.LimitPasswordToProtectedFields}"
+                            IsChecked="{Binding Path=SecureFieldEntry.IsChecked}" />
 
-                <Border 
-                    Style="{StaticResource SettingsBorderStyle}">
-                    <CheckBox 
-                        Style="{StaticResource CheckboxStyle}"
-                        Content="{l:Localization Settings.CheckBox.MaximizeWindow}"
-                        IsChecked="{Binding Path=MaximizeWindow.IsChecked}" />
+                        <CheckBox 
+                            Style="{StaticResource CheckboxStyle}"
+                            Content="{l:Localization Settings.CheckBox.MaximizeWindow}"
+                            IsChecked="{Binding Path=MaximizeWindow.IsChecked}" />
+                    </StackPanel>
                 </Border>
 
                 <!-- General Settings -->
