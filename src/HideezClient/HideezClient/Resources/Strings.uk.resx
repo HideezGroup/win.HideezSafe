@@ -1071,6 +1071,9 @@
   <data name="Settings.CheckBox.LimitPasswordToProtectedFields" xml:space="preserve">
     <value>Вводити паролі лише для захищених полів</value>
   </data>
+  <data name="Settings.CheckBox.MaximizeWindow" xml:space="preserve">
+    <value>При відкритті максимально розгорнути вікно</value>
+  </data>
   <data name="Settings.CheckBox.ShowBluetoothIndicator" xml:space="preserve">
     <value>Відображати індикатор Bluetooth</value>
   </data>

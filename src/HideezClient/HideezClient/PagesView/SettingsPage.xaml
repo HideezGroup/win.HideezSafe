@@ -98,6 +98,14 @@
                         IsChecked="{Binding Path=SecureFieldEntry.IsChecked}" />
                 </Border>
 
+                <Border 
+                    Style="{StaticResource SettingsBorderStyle}">
+                    <CheckBox 
+                        Style="{StaticResource CheckboxStyle}"
+                        Content="{l:Localization Settings.CheckBox.MaximizeWindow}"
+                        IsChecked="{Binding Path=MaximizeWindow.IsChecked}" />
+                </Border>
+
                 <!-- General Settings -->
                 <TextBlock
                         VerticalAlignment="Center"

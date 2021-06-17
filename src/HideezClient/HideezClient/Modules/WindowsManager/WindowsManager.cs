@@ -150,9 +150,13 @@ namespace HideezClient.Modules
                     SubscribeToMainWindowEvent();
 
                     MainWindow.Show();
-
-                    MainWindow.WindowState = WindowState.Maximized;
-                    MainWindow.WindowStyle = WindowStyle.None;
+                    if (_settingsManager.Settings.MaximizeWindowsOnOpening)
+                    {
+                        MainWindow.WindowState = WindowState.Maximized;
+                        MainWindow.WindowStyle = WindowStyle.None;
+                    }
+                    else
+                        MainWindow.WindowState = WindowState.Normal;
 
                     if (MainWindow.WindowState == WindowState.Minimized)
                     {

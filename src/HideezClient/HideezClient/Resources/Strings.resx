@@ -1380,4 +1380,7 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
   <data name="HMK.Button.ShowCode" xml:space="preserve">
     <value>Show activation code</value>
   </data>
+  <data name="Settings.CheckBox.MaximizeWindow" xml:space="preserve">
+    <value>Maximize the window when opened</value>
+  </data>
 </root>
