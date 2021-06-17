@@ -360,6 +360,7 @@
     </Compile>
     <Compile Include="Converters\BooleanToVisibilityCollapsedConverter.cs" />
     <Compile Include="Converters\FormatStringConverter.cs" />
+    <Compile Include="Converters\FullUserNameToOnlyNameConverter.cs" />
     <Compile Include="Converters\IntToVisibilityConverter.cs" />
     <Compile Include="Converters\IsNullOrWhiteSpaceConverter.cs" />
     <Compile Include="Converters\LowBatteryIndicatorVisibilityConverter.cs" />
@@ -593,6 +594,7 @@
     <Compile Include="ViewModels\HotkeySettingsViewModel.cs" />
     <Compile Include="ViewModels\HotkeyViewModel.cs" />
     <Compile Include="ViewModels\LanguageSettingViewModel.cs" />
+    <Compile Include="ViewModels\MaximizeWindowSettingViewModel.cs" />
     <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\NotificationsContainerViewModel.cs" />
     <Compile Include="PageViewModels\PasswordManagerViewModel.cs" />

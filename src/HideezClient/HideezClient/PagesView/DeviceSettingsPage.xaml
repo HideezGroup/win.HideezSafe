@@ -113,7 +113,8 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         Orientation="Horizontal">
-                        <TextBlock Text="{l:Localization DS.Label.DeviceName}" />
+                        <TextBlock 
+                            Text="{l:Localization DS.Label.DeviceName}" />
                         <TextBlock
                             FontWeight="DemiBold"
                             Foreground="{DynamicResource DarkForeground}"
@@ -359,15 +360,20 @@
                                     <StackPanel Grid.Column="0">
                                         <CheckBox 
                                             Style="{StaticResource CheckboxStyle}"
-                                            Content="{l:Localization ProximitySettings.CheckBox.EnableLockPC}"
                                             Margin="0,0,0,18"
-                                            IsChecked="{Binding EnabledLockByProximity}" />
+                                            IsChecked="{Binding EnabledLockByProximity}">
+                                            <TextBlock 
+                                                Text="{l:Localization ProximitySettings.CheckBox.EnableLockPC}"
+                                                TextWrapping="Wrap"/>
+                                        </CheckBox>
                                         <CheckBox 
                                             x:Name="EnableUnlockCheckBox"
                                             Style="{StaticResource CheckboxStyle}"
-                                            Content="{l:Localization ProximitySettings.CheckBox.EnableUnlockPC}"
                                             Margin="0,0,0,8"
                                             IsChecked="{Binding EnabledUnlock}" >
+                                            <TextBlock 
+                                                Text="{l:Localization ProximitySettings.CheckBox.EnableUnlockPC}"
+                                                TextWrapping="Wrap"/>
                                         </CheckBox>
                                         <StackPanel Visibility="{Binding EnabledUnlock, Converter={StaticResource BooleanToVisibilityConverter}}">
                                             <TextBlock
@@ -387,7 +393,9 @@
                                         </StackPanel>
 
                                     </StackPanel>
-                                    <StackPanel Grid.Column="1" >
+                                    <StackPanel
+                                        Margin="10,0,0,0"
+                                        Grid.Column="1" >
                                         <StackPanel.Style>
                                             <Style TargetType="StackPanel">
                                                 <Setter Property="Visibility" Value="Collapsed" />
@@ -421,13 +429,31 @@
                                                     <Run Text="{l:Localization ProximitySettings.Label.UserName}" />
                                                     <Run Text=":" />
                                                 </TextBlock>
+                                                <Grid Grid.Column="2">
+                                                    <ComboBox
+                                                        Style="{StaticResource ComboBoxStyle}"
+                                                        HorizontalAlignment="Stretch"
+                                                        IsTabStop="True"
+                                                        Visibility="{Binding HasWorkstationOneUser, Converter={StaticResource InvertBooleanToVisibilityConverter}}"
+                                                        ItemsSource="{Binding UserNames}"
+                                                        SelectedItem="{Binding UserName}" >
+                                                        <ComboBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock
+                                                                    Text="{Binding Converter={StaticResource FullUserNameToOnlyNameConverter}}"
+                                                                    TextTrimming="CharacterEllipsis"/>
+                                                            </DataTemplate>
+                                                        </ComboBox.ItemTemplate>
+                                                    </ComboBox>
 
-                                                <TextBlock
-                                                    Grid.Column="2"
-                                                    VerticalAlignment="Center"
-                                                    Style="{StaticResource LabelValuesStyle}"
-                                                    Text="{Binding UserName}">
-                                                </TextBlock>
+                                                    <TextBlock
+                                                        Style="{StaticResource LabelValuesStyle}"
+                                                        VerticalAlignment="Center"
+                                                        TextTrimming="CharacterEllipsis"
+                                                        Visibility="{Binding HasWorkstationOneUser, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                        Text="{Binding UserName, Converter={StaticResource FullUserNameToOnlyNameConverter}}">
+                                                    </TextBlock>
+                                                </Grid>
                                             </Grid>
                                         </ContentControl>
                                         <!--  Password  -->
@@ -456,6 +482,7 @@
                                                     HorizontalAlignment="Stretch"
                                                     ma:PasswordBoxHelper.CapsLockWarningToolTip="CapsLock is enabled"
                                                     ma:TextBoxHelper.Watermark="{l:Localization ProximitySettings.Watermark.Password}"
+                                                    ma:TextBoxHelper.WatermarkTrimming="CharacterEllipsis"
                                                     BorderThickness="0"
                                                     CaretBrush="{DynamicResource DarkForeground}"
                                                     FontSize="16"

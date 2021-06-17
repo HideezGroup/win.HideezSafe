@@ -11,7 +11,7 @@ namespace HideezClient.Models.Settings
         /// </summary>
         public ApplicationSettings()
         {
-            SettingsVersion = new Version(1, 3, 1);
+            SettingsVersion = new Version(1, 4, 0);
             IsFirstLaunch = true;
             LaunchApplicationOnStartup = false;
             SelectedUiLanguage = string.Empty;
@@ -20,6 +20,7 @@ namespace HideezClient.Models.Settings
             UseSimplifiedUI = false;
             AutoCreateAccountIfNotFound = false;
             AddMainDomain = true;
+            MaximizeWindowsOnOpening = false;
         }
 
         /// <summary>
@@ -41,6 +42,7 @@ namespace HideezClient.Models.Settings
             UseSimplifiedUI = copy.UseSimplifiedUI;
             AutoCreateAccountIfNotFound = copy.AutoCreateAccountIfNotFound;
             AddMainDomain = copy.AddMainDomain;
+            MaximizeWindowsOnOpening = copy.MaximizeWindowsOnOpening;
         }
 
         [Setting]
@@ -69,6 +71,9 @@ namespace HideezClient.Models.Settings
 
         [Setting]
         public bool AddMainDomain { get; set; }
+
+        [Setting]
+        public bool MaximizeWindowsOnOpening { get; set; }
 
         public override object Clone()
         {

@@ -6,6 +6,7 @@ using HideezClient.Messages;
 using HideezClient.Modules;
 using HideezClient.Modules.Log;
 using HideezClient.Modules.ServiceProxy;
+using HideezClient.Utilities;
 using HideezClient.ViewModels;
 using HideezClient.ViewModels.Controls;
 using HideezMiddleware.ApplicationModeProvider;
@@ -22,6 +23,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Management;
 using System.Reactive.Linq;
 using System.Security;
 using System.Security.Principal;
@@ -49,6 +51,8 @@ namespace HideezClient.PageViewModels
         readonly IMetaPubSub _metaMessenger;
         bool _proximityHasChanges;
         UserDeviceProximitySettings _oldSettings;
+        List<string> _fullUserNames = new List<string>();
+        bool _isInitialized = false;
 
         public DeviceSettingsPageViewModel(
             IServiceProxy serviceProxy,
@@ -139,23 +143,32 @@ namespace HideezClient.PageViewModels
                 .Where(t => t.Item1 != 0 && t.Item2 != 0)
                 .Subscribe(o => OnSettingsChanged());
 
+            this.WhenAnyValue(x => x.UserNames.Count).Subscribe(o => HasWorkstationOneUser = UserNames.Count == 1);
+
             this.ObservableForProperty(vm => vm.HasChanges).Subscribe(vm => OnHasChangesChanged());
-            
-            Initialize();
         }
 
         private async Task Initialize()
         {
             try
             {
-                IsLoading = true;
+                if (Device.IsStorageLoaded)
+                {
+                    IsLoading = true;
 
-                UserName = GetAccoutName().Split('\\')[1];
-                await TryLoadProximitySettings();
+                    UserNames = new ObservableCollection<string>(GetAllUserNames());
+                    var unlockAccount = Device.AccountsRecords.FirstOrDefault(a => a.Flags.IsUnlockAccount == true);
+                    if (unlockAccount != null)
+                        UserName = UserNames.FirstOrDefault(n=> n == unlockAccount.Login);
+                    else UserName = GetAccoutName();
 
-                IsLoading = false;
+                    await TryLoadProximitySettings();
+
+                    IsLoading = false;
+                    _isInitialized = true;
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.WriteLine(ex);
             }
@@ -182,6 +195,8 @@ namespace HideezClient.PageViewModels
         [Reactive] public List<UnlockModeOption> UnlockModeOptionsList { get; set; } = new List<UnlockModeOption>();
         [Reactive] public UnlockModeOption SelectedUnlockModeOption { get; set; }
 
+        [Reactive] public ObservableCollection<string> UserNames { get; set; }
+        [Reactive] public bool HasWorkstationOneUser { get; set; }
 
         public ObservableCollection<StateControlViewModel> Indicators { get; } = new ObservableCollection<StateControlViewModel>();
 
@@ -384,6 +399,9 @@ namespace HideezClient.PageViewModels
                 Authorized.State = StateControlViewModel.BoolToState(Device.IsAuthorized);
                 StorageLoaded.State = StateControlViewModel.BoolToState(Device.IsStorageLoaded);
 
+                if(!_isInitialized)
+                    Task.Run(Initialize);
+
                 UpdateIsEditableCredentials();
             }
             return true;
@@ -456,7 +474,7 @@ namespace HideezClient.PageViewModels
                         IsPrimary = true,
                     };
                 primaryAccount.Name = "Unlock account";
-                primaryAccount.Login = GetAccoutName();
+                primaryAccount.Login = UserName;
                 primaryAccount.Password = password.GetAsString();
                 await Device.SaveOrUpdateAccountAsync(primaryAccount, true);
             }
@@ -494,6 +512,35 @@ namespace HideezClient.PageViewModels
             }
             
             return accountName;
+        }
+
+        private List<string> GetAllUserNames()
+        {
+            List<string> result = new List<string>();
+
+            // Get all "real" local usernames
+            SelectQuery query = new SelectQuery("Select * from Win32_UserAccount Where LocalAccount = True");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
+
+            var localUsers = searcher.Get().Cast<ManagementObject>().Where(
+                u => (bool)u["LocalAccount"] == true &&
+                     (bool)u["Disabled"] == false &&
+                     (bool)u["Lockout"] == false &&
+                     int.Parse(u["SIDType"].ToString()) == 1 &&
+                     u["Name"].ToString() != "HomeGroupUser$");
+
+            // Try to get MS Account for each local username and if found use it instead of local username
+            foreach (ManagementObject user in localUsers)
+            {
+                string msName = LocalToMSAccountConverter.TryTransformToMS(user["Name"] as string);
+
+                if (!String.IsNullOrWhiteSpace(msName))
+                    result.Add(@"MicrosoftAccount\" + msName);
+                else
+                    result.Add(new SecurityIdentifier(user["SID"].ToString()).Translate(typeof(NTAccount)).ToString());
+            }
+
+            return result;
         }
         #endregion
     }

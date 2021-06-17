@@ -501,6 +501,9 @@
   <data name="HMK.ActivationCode.Header" xml:space="preserve">
     <value>Код Активації</value>
   </data>
+  <data name="HMK.Button.ShowCode" xml:space="preserve">
+    <value>Показати код активації</value>
+  </data>
   <data name="HMK.Login.Description" xml:space="preserve">
     <value>Перетворіть свій смартфон з біометричним сенсором у мобільний ключ безпеки.</value>
   </data>
@@ -859,7 +862,7 @@
     <value>Змінити PIN-код для {0}</value>
   </data>
   <data name="Pin.ChangePin.Label" xml:space="preserve">
-    <value>Змінити PIN-код ключа (мінімум {0})</value>
+    <value>Зміна PIN-коду ключа (мінімум {0})</value>
   </data>
   <data name="Pin.Confirm" xml:space="preserve">
     <value>Підтвердьте PIN-код</value>
@@ -1067,6 +1070,9 @@
   </data>
   <data name="Settings.CheckBox.LimitPasswordToProtectedFields" xml:space="preserve">
     <value>Вводити паролі лише для захищених полів</value>
+  </data>
+  <data name="Settings.CheckBox.MaximizeWindow" xml:space="preserve">
+    <value>При відкритті максимально розгорнути вікно</value>
   </data>
   <data name="Settings.CheckBox.ShowBluetoothIndicator" xml:space="preserve">
     <value>Відображати індикатор Bluetooth</value>

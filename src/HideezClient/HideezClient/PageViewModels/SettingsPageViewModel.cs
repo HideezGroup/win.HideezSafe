@@ -20,5 +20,8 @@ namespace HideezClient.PageViewModels
 
         [Dependency]
         public LanguageSettingViewModel Language { get; set; }
+
+        [Dependency]
+        public MaximizeWindowSettingViewModel MaximizeWindow { get; set; }
     }
 }
