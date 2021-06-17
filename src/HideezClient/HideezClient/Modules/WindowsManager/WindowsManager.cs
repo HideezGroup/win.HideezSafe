@@ -151,6 +151,9 @@ namespace HideezClient.Modules
 
                     MainWindow.Show();
 
+                    MainWindow.WindowState = WindowState.Maximized;
+                    MainWindow.WindowStyle = WindowStyle.None;
+
                     if (MainWindow.WindowState == WindowState.Minimized)
                     {
                         MainWindow.WindowState = WindowState.Normal;

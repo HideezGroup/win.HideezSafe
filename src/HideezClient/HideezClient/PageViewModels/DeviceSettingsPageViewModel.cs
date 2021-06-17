@@ -540,10 +540,6 @@ namespace HideezClient.PageViewModels
                     result.Add(new SecurityIdentifier(user["SID"].ToString()).Translate(typeof(NTAccount)).ToString());
             }
 
-            //removing default user
-            if (result.Count > 1)
-                result.RemoveAt(0);
-
             return result;
         }
         #endregion
