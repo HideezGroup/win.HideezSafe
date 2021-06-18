@@ -30,6 +30,7 @@ using HideezClient.Messages.Dialogs.Wipe;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
+using HideezClient.Extension;
 
 namespace HideezClient.Modules
 {
@@ -137,6 +138,8 @@ namespace HideezClient.Modules
 
         private Dispatcher UIDispatcher { get { return Application.Current.Dispatcher; } }
 
+
+        bool _isFirstActivation = true;
         private void OnActivateMainWindow()
         {
             if (Interlocked.CompareExchange(ref _mainWindowActivationInterlock, 1, 0) == 0)
@@ -156,7 +159,29 @@ namespace HideezClient.Modules
                         MainWindow.WindowStyle = WindowStyle.None;
                     }
                     else
-                        MainWindow.WindowState = WindowState.Normal;
+                    {
+                        if(MainWindow.WindowState != WindowState.Maximized)
+                            MainWindow.WindowState = WindowState.Normal;
+
+                        if (_isFirstActivation)
+                        {
+                            System.Windows.Forms.Screen screen = GetCurrentScreen();
+                            if (screen != null)
+                            {
+                                var dpiTransform = MainWindow.GetDpiTransform();
+                                var workingAreaForWindowHeight = screen.WorkingArea.Height / dpiTransform.Y - MainWindow.Top;
+                                if (workingAreaForWindowHeight < MainWindow.MinHeight)
+                                {
+                                    MainWindow.Top = 0;
+                                    workingAreaForWindowHeight = screen.WorkingArea.Height / dpiTransform.Y - MainWindow.Top;
+                                }
+
+                                if (workingAreaForWindowHeight > 0 && workingAreaForWindowHeight < 770)
+                                    MainWindow.Height = workingAreaForWindowHeight;
+                                else MainWindow.Height = 770;
+                            }
+                        }
+                    }
 
                     if (MainWindow.WindowState == WindowState.Minimized)
                     {
@@ -167,12 +192,21 @@ namespace HideezClient.Modules
                     MainWindow.Topmost = true;
                     MainWindow.Topmost = false;
                     MainWindow.Focus();
+
+                    _isFirstActivation = false;
                 }
                 finally
                 {
                     Interlocked.Exchange(ref _mainWindowActivationInterlock, 0);
                 }
             }
+        }
+
+        System.Windows.Forms.Screen GetCurrentScreen()
+        {
+            IntPtr foregroundWindow = Win32Helper.GetForegroundWindow();
+            System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.FromHandle(foregroundWindow);
+            return screen;
         }
 
         private void OnHideMainWindow()
