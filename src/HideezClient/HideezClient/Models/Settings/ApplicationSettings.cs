@@ -1,9 +1,11 @@
 ﻿using HideezMiddleware.Settings;
 using System;
+using System.Reflection;
 
 namespace HideezClient.Models.Settings
 {
     [Serializable]
+    [Obfuscation(Exclude = true)]
     public class ApplicationSettings : BaseSettings
     {
         /// <summary>

@@ -1,11 +1,14 @@
 ﻿using HideezMiddleware.Settings;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Xml.Serialization;
 using System.Linq;
 
 namespace HideezClient.Models.Settings
 {
     [Serializable]
+    [Obfuscation(Exclude = true)]
     public class HotkeySettings : BaseSettings
     {
         /// <summary>

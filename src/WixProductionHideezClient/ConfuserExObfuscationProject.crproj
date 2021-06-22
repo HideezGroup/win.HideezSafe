@@ -1,0 +1,67 @@
+<project outputDir=".\Obfuscator_Output" baseDir="." xmlns="http://confuser.codeplex.com">
+  <rule pattern="true" preset="none" />
+  
+  <module path="Hideez Device Maintenance Application.exe" >
+    <rule pattern="true" preset="none" inherit="false" />
+  </module>
+  <module path="TemplateFactory.exe" >
+    <rule pattern="true" preset="none" inherit="false" />
+  </module>
+  <module path="HideezServiceHost.exe" >
+    <rule pattern="true" preset="none" inherit="false" />
+  </module>
+  <module path="HideezMiddleware.dll">
+    <rule pattern="true" preset="none" inherit="false" />
+  </module>
+  <module path="ServiceLibrary.Implementation.dll">
+    <rule pattern="true" preset="none" inherit="false" />
+  </module>
+  
+  <module path="Communication.dll" >
+    <rule pattern="namespace('Hideez.SDK.Communication.PasswordManager*')" preset="normal" inherit="false">
+      <protection id="rename">
+        <argument name="renPublic" value="true" />
+      </protection>
+    </rule>
+    <rule pattern="namespace('Hideez.SDK.Communication.Device*')" preset="normal" inherit="false">
+      <protection id="rename">
+        <argument name="renPublic" value="true" />
+      </protection>
+    </rule>
+    <rule pattern="namespace('Hideez.SDK.Communication.Security*')" preset="normal" inherit="false">
+      <protection id="rename">
+        <argument name="renPublic" value="true" />
+      </protection>
+    </rule>
+  </module>
+
+  <module path="HideezClient.exe" >
+    <rule pattern="true" preset="normal">
+      <protection id="rename">
+        <argument name="renXaml" value="false" />
+        <argument name="mode" value="letters" />
+      </protection>
+    </rule>
+  </module>
+  <module path="WinBle.dll" >
+    <rule pattern="true" preset="normal" inherit="false">
+      <protection id="rename">
+        <argument name="renXaml" value="false" />
+      </protection>
+    </rule>
+  </module>
+  <module path="Hideez.ISM.dll">
+    <rule pattern="true" preset="maximum" inherit="false">
+      <protection id="rename">
+        <argument name="renPublic" value="true" />
+      </protection>
+    </rule>
+  </module>
+  <module path="Hideez.ARM.dll">
+    <rule pattern="true" preset="maximum" inherit="false">
+      <protection id="rename">
+        <argument name="renPublic" value="true" />
+      </protection>
+    </rule>
+  </module>
+</project>

@@ -62,49 +62,9 @@
     <Folder Include="Resources" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\win.sdk\Communication\Communication.csproj">
-      <Name>Communication</Name>
-      <Project>{1b723099-c753-40d0-b7b2-add49d9e6f8f}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DeviceMaintenance\DeviceMaintenance.csproj">
-      <Name>DeviceMaintenance</Name>
-      <Project>{e52ee391-1cd1-4203-a840-ef405ae81c44}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HideezClient\HideezClient\HideezClient.csproj">
-      <Name>HideezClient</Name>
-      <Project>{ea300b43-b917-49d1-9d84-a13f43398246}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HideezService\HideezServiceHost\HideezServiceHost.csproj">
-      <Name>HideezServiceHost</Name>
-      <Project>{62e8a93b-25ec-4927-8e38-6e166fb06f9e}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\RfidService\RfidService\RfidService.csproj">
-      <Name>RfidService</Name>
-      <Project>{7b206a4f-ed60-4181-9be6-a6a117378378}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\TemplateFactory\TemplateFactory\TemplateFactory.csproj">
-      <Name>TemplateFactory</Name>
-      <Project>{14aac171-432a-4ac2-b0b8-9c1ccc50ccca}</Project>
+    <ProjectReference Include="..\..\WixProductionHideezClient\WixProductionHideezClient.csproj">
+      <Name>WixProductionHideezClient</Name>
+      <Project>{204ebb00-ec2b-4678-bf89-e884f46ad580}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -128,9 +88,7 @@
     <PostBuildEvent>if $(SolutionName) == HideezClient.Setup call "$(SolutionDir)scripts\sign.bat" $(TargetPath) "Hideez Client Update"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>if $(SolutionName) == HideezClient.Setup call "$(SolutionDir)scripts\sign.bat" "$(SolutionDir)HideezClient\HideezClient\bin\$(PlatformName)\$(ConfigurationName)\HideezClient.exe" "Hideez Client"%3b
-if $(SolutionName) == HideezClient.Setup call "$(SolutionDir)scripts\sign.bat" "$(SolutionDir)HideezService\HideezServiceHost\bin\$(PlatformName)\$(ConfigurationName)\HideezServiceHost.exe" "Hideez Client"
-if $(SolutionName) == HideezClient.Setup call "$(SolutionDir)scripts\sign.bat" "$(SolutionDir)TemplateFactory\TemplateFactory\bin\$(PlatformName)\$(ConfigurationName)\TemplateFactory.exe" "Hideez Template Factory"</PreBuildEvent>
+    <PreBuildEvent />
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

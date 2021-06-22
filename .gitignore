@@ -261,3 +261,4 @@ __pycache__/
 HideezSafe.Setup/WiXSetup/DPInst/
 src/HideezClient.Setup/WixBootstrapper/redistr/vc_redist.x64.exe
 src/HideezClient.Setup/WixBootstrapper/redistr/vc_redist.x86.exe
+src/WixProductionHideezClient/ConfuserEx/

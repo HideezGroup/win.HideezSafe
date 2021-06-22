@@ -42,3 +42,16 @@ using System.Windows;
                                               //(used if a resource is not found in the page,
                                               // app, or any theme specific resource dictionaries)
 )]
+
+// Obfuscation rules
+[assembly: Obfuscation(Exclude = false, Feature = "namespace('HideezClient.Views*'):-rename")]
+[assembly: Obfuscation(Exclude = false, Feature = "namespace('HideezClient.ViewModels*'):-rename")]
+
+[assembly: Obfuscation(Exclude = false, Feature = "namespace('HideezClient.PagesView*'):-rename")]
+[assembly: Obfuscation(Exclude = false, Feature = "namespace('HideezClient.PageViewModels*'):-rename")]
+
+[assembly: Obfuscation(Exclude = false, Feature = "namespace('HideezClient.Models*'):-rename")]
+[assembly: Obfuscation(Exclude = false, Feature = "namespace('HideezClient.Messages*'):-rename")]
+
+[assembly: Obfuscation(Exclude = false, Feature = "namespace('HideezClient.Controls*'):-rename")]
+[assembly: Obfuscation(Exclude = false, Feature = "namespace('HideezClient.Resources*'):-rename")]

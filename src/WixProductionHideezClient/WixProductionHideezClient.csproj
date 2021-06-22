@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{204EBB00-EC2B-4678-BF89-E884F46AD580}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>WixProductionHideezClient</RootNamespace>
+    <AssemblyName>WixProductionHideezClient</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="ConfuserExObfuscationProject.crproj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfuserEx\ConfuserEx.exe.config" />
+    <None Include="ConfuserEx\This folder should contain Neo-ConfuserEx.CLI assembly" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ConfuserEx\Confuser.CLI.exe" />
+    <Content Include="ConfuserEx\Confuser.CLI.pdb" />
+    <Content Include="ConfuserEx\Confuser.Core.dll" />
+    <Content Include="ConfuserEx\Confuser.Core.pdb" />
+    <Content Include="ConfuserEx\Confuser.Core.xml" />
+    <Content Include="ConfuserEx\Confuser.DynCipher.dll" />
+    <Content Include="ConfuserEx\Confuser.DynCipher.pdb" />
+    <Content Include="ConfuserEx\Confuser.Protections.dll" />
+    <Content Include="ConfuserEx\Confuser.Protections.pdb" />
+    <Content Include="ConfuserEx\Confuser.Renamer.dll" />
+    <Content Include="ConfuserEx\Confuser.Renamer.pdb" />
+    <Content Include="ConfuserEx\Confuser.Runtime.dll" />
+    <Content Include="ConfuserEx\Confuser.Runtime.pdb" />
+    <Content Include="ConfuserEx\ConfuserEx.exe" />
+    <Content Include="ConfuserEx\ConfuserEx.pdb" />
+    <Content Include="ConfuserEx\dnlib.dll" />
+    <Content Include="ConfuserEx\dnlib.pdb" />
+    <Content Include="ConfuserEx\dnlib.xml" />
+    <Content Include="ConfuserEx\GalaSoft.MvvmLight.Extras.WPF4.dll" />
+    <Content Include="ConfuserEx\GalaSoft.MvvmLight.Extras.WPF4.pdb" />
+    <Content Include="ConfuserEx\GalaSoft.MvvmLight.Extras.WPF4.xml" />
+    <Content Include="ConfuserEx\GalaSoft.MvvmLight.WPF4.dll" />
+    <Content Include="ConfuserEx\GalaSoft.MvvmLight.WPF4.pdb" />
+    <Content Include="ConfuserEx\GalaSoft.MvvmLight.WPF4.xml" />
+    <Content Include="ConfuserEx\Microsoft.Practices.ServiceLocation.dll" />
+    <Content Include="ConfuserEx\Microsoft.Practices.ServiceLocation.pdb" />
+    <Content Include="ConfuserEx\Microsoft.Practices.ServiceLocation.xml" />
+    <Content Include="ConfuserEx\Ookii.Dialogs.Wpf.dll" />
+    <Content Include="ConfuserEx\System.Windows.Interactivity.dll" />
+    <Content Include="ConfuserEx\System.Windows.Interactivity.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+xcopy /Y /S "$(SolutionDir)TemplateFactory\TemplateFactory\$(OutDir)*" "$(TargetDir)"
+xcopy /Y /S "$(SolutionDir)DeviceMaintenance\$(OutDir)*" "$(TargetDir)"
+xcopy /Y /S "$(SolutionDir)HideezService\HideezServiceHost\$(OutDir)*" "$(TargetDir)"
+xcopy /Y /S "$(SolutionDir)HideezClient\HideezClient\$(OutDir)*" "$(TargetDir)"
+xcopy /Y "$(SolutionDir)HideezClient\HideezClient\NLog.config" "$(TargetDir)\Client\"
+xcopy /Y "$(SolutionDir)HideezMiddleware\HideezMiddleware\NLog.config" "$(TargetDir)\ServiceHost\"
+
+echo ==================== Starting obfuscation process
+
+$(ProjectDir)ConfuserEx\Confuser.CLI.exe  $(TargetDir)ConfuserExObfuscationProject.crproj
+move  /Y $(TargetDir)Obfuscator_Output\* $(TargetDir)
+rmdir /S /Q $(TargetDir)Obfuscator_Output
+
+del /F /Q $(TargetDir)*.pdb
+
+
+echo ==================== Starting assembly signing
+
+
+call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)Communication.dll" "Hideez Client"
+call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)WinBle.dll" "Hideez Client"
+call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)Crypto.dll" "Hideez Client"
+call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)HideezMiddleware.dll" "Hideez Client"
+call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)ServiceLibrary.Implementation.dll" "Hideez Client"
+call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)Hideez.ARM.dlll" "Hideez Client"
+call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)Hideez.ISM.dll" "Hideez Client"
+
+call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)HideezClient.exe" "Hideez Client"
+call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)HideezServiceHost.exe" "Hideez Service Host"
+call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)Hideez Device Maintenance Application.exe" "Hideez Device Maintenance Application"
+call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)TemplateFactory.exe" "Hideez Account Template Maker"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>del /F /Q /S $(TargetDir)*
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

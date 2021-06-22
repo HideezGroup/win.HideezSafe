@@ -1,80 +1,53 @@
-<Application
-    x:Class="HideezClient.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:HideezClient.Converters"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:local="clr-namespace:HideezClient"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    xmlns:vm="clr-namespace:HideezClient.ViewModels"
-    d1p1:Ignorable="d"
-    Startup="Application_Startup"
-    StartupUri="Views\SimpleMainView.xaml">
-    <Application.Resources>
-        <ResourceDictionary>
-
-            <SolidColorBrush
-                x:Key="BlackColorBrush"
-                Opacity="0.65"
-                Color="Black" />
-
-            <sys:Double x:Key="HorizontalThumbWidth">24</sys:Double>
-            <sys:Double x:Key="HorizontalThumbHeight">24</sys:Double>
-
-            <Style x:Key="MahApps.Metro.Styles.Slider.Thumb" TargetType="Thumb">
-                <Setter Property="OverridesDefaultStyle" Value="true" />
-                <Setter Property="SnapsToDevicePixels" Value="true" />
-                <Setter Property="Width" Value="24" />
-                <Setter Property="Height" Value="24" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Thumb">
-                            <Border
-                                BorderBrush="#FFFFFF"
-                                BorderThickness="1"
-                                CornerRadius="19"
-                                SnapsToDevicePixels="True">
-                                <Border.Background>
-                                    <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
-                                        <GradientStop Offset="0" Color="#FF43C7D9" />
-                                        <GradientStop Offset="1" Color="#FF0E5F93" />
-                                    </LinearGradientBrush>
-                                </Border.Background>
-                                <iconPacks:PackIconMaterial
-                                    Name="iconThumb"
-                                    Height="14"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center" />
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="Name" Value="PART_RightThumb">
-                                    <Setter TargetName="iconThumb" Property="Kind" Value="LockOpen" />
-                                </Trigger>
-                                <Trigger Property="Name" Value="PART_LeftThumb">
-                                    <Setter TargetName="iconThumb" Property="Kind" Value="Lock" />
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <vm:ViewModelLocator x:Key="Locator" />
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Dictionaries/Constants.xaml" />
-                <ResourceDictionary Source="Resources/Dictionaries/Converters.xaml" />
-                <ResourceDictionary Source="Resources/Dictionaries/SVG.xaml" />
-                <ResourceDictionary Source="Resources/Dictionaries/ResourceDictionary.xaml" />
-                <!--  MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive!  -->
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
-                <ResourceDictionary Source="Resources/Dictionaries/ComboBox.xaml" />
-                <ResourceDictionary Source="Controls/Notification/NotificationResource.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Application.Resources>
+<Application x:Class="HideezClient.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:HideezClient.Converters" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" xmlns:local="clr-namespace:HideezClient" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:vm="clr-namespace:HideezClient.ViewModels" d1p1:Ignorable="d" Startup="Application_Startup" StartupUri="Views\SimpleMainView.xaml">
+  <Application.Resources>
+    <ResourceDictionary>
+      <SolidColorBrush x:Key="BlackColorBrush" Opacity="0.65" Color="Black" />
+      <sys:Double x:Key="HorizontalThumbWidth">24</sys:Double>
+      <sys:Double x:Key="HorizontalThumbHeight">24</sys:Double>
+      <Style x:Key="MahApps.Metro.Styles.Slider.Thumb" TargetType="Thumb">
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="Width" Value="24" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="Thumb">
+              <Border BorderBrush="#FFFFFF" BorderThickness="1" CornerRadius="19" SnapsToDevicePixels="True">
+                <Border.Background>
+                  <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                    <GradientStop Offset="0" Color="#FF43C7D9" />
+                    <GradientStop Offset="1" Color="#FF0E5F93" />
+                  </LinearGradientBrush>
+                </Border.Background>
+                <iconPacks:PackIconMaterial Name="iconThumb" Height="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="Name" Value="PART_RightThumb">
+                  <Setter TargetName="iconThumb" Property="Kind" Value="LockOpen" />
+                </Trigger>
+                <Trigger Property="Name" Value="PART_LeftThumb">
+                  <Setter TargetName="iconThumb" Property="Kind" Value="Lock" />
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+      <vm:ViewModelLocator x:Key="Locator" />
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Resources/Dictionaries/Constants.xaml" />
+        <ResourceDictionary Source="Resources/Dictionaries/Converters.xaml" />
+        <ResourceDictionary Source="Resources/Dictionaries/SVG.xaml" />
+        <ResourceDictionary Source="Resources/Dictionaries/ResourceDictionary.xaml" />
+        <!--  MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive!  -->
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+        <ResourceDictionary Source="Resources/Dictionaries/ComboBox.xaml" />
+        <ResourceDictionary Source="Controls/Notification/NotificationResource.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
 </Application>
