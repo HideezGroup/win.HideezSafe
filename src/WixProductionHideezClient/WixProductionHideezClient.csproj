@@ -122,6 +122,7 @@
     <PostBuildEvent>
 xcopy /Y /S "$(SolutionDir)TemplateFactory\TemplateFactory\$(OutDir)*" "$(TargetDir)"
 xcopy /Y /S "$(SolutionDir)DeviceMaintenance\$(OutDir)*" "$(TargetDir)"
+xcopy /Y /S "$(SolutionDir)RfidService\RfidService\$(OutDir)*" "$(TargetDir)"
 xcopy /Y /S "$(SolutionDir)HideezService\HideezServiceHost\$(OutDir)*" "$(TargetDir)"
 xcopy /Y /S "$(SolutionDir)HideezClient\HideezClient\$(OutDir)*" "$(TargetDir)"
 xcopy /Y "$(SolutionDir)HideezClient\HideezClient\NLog.config" "$(TargetDir)\Client\"

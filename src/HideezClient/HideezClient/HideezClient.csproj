@@ -603,6 +603,7 @@
     <Compile Include="ViewModels\ServiceViewModel.cs" />
     <Compile Include="ViewModels\SoftwareUnlockSettingViewModel.cs" />
     <Compile Include="ViewModels\ReconnectPairedVaultsControlViewModel.cs" />
+    <Compile Include="ViewModels\VaultAccessSettingsControlViewModel.cs" />
     <Compile Include="Views\NotificationsContainerWindow.xaml.cs">
       <DependentUpon>NotificationsContainerWindow.xaml</DependentUpon>
     </Compile>

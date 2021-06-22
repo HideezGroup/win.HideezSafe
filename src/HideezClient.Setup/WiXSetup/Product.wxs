@@ -8,10 +8,9 @@
   <?define 32bit_Binaries_Dir=$(var.ProjectDir)..\..\..\Binaries\32rel\?>
   <?define 64bit_Binaries_Dir=$(var.ProjectDir)..\..\..\Binaries\64rel\?>
   <?define Setup_Resources_Dir=$(var.ProjectDir)Resources\?>
-  
-  <!-- Solve issue with RFID service having dependency upon x86 communication.dll-->
-  <!--<?define Communication_x86_TargetDir=$(var.Communication.ProjectDir)bin\x86\$(var.Communication.Configuration)\netstandard2.0\?>-->
-  
+
+  <?define ProductionBuild_x86_TargetDir=$(var.WixProductionHideezClient.TargetDir)..\..\x86\Release\?>
+  <?define ProductionBuild_x64_TargetDir=$(var.WixProductionHideezClient.TargetDir)..\..\x64\Release\?>
   <?define ProductionBuild_TargetDir=$(var.WixProductionHideezClient.TargetDir)?>
 
   <?define DPInst_SourceDir=$(var.Setup_ProjectDir)DPInst\?>
@@ -68,8 +67,7 @@
     <Feature Id="ProductFeature" Title="Hideez Client" Level="1">
       <ComponentGroupRef Id="HideezService" />
 
-      <!-- Todo: -->
-      <!--<ComponentGroupRef Id="RfidService" />-->
+      <ComponentGroupRef Id="RfidService" />
 
       <ComponentGroupRef Id="CredentialProvider" />
       
@@ -482,33 +480,33 @@
       </Component>
       
       <Component Id="HideezService.Unity.Abstractions.dll" Guid="{CA4FB601-DD81-4A42-9040-5F8569F107C8}" Win64="$(var.Win64)">
-        <File Id="HideezService.Unity.Abstractions.dll" Name="Unity.Abstractions.dll" Source="$(var.HideezServiceHost_TargetDir)Unity.Abstractions.dll" />
+        <File Id="HideezService.Unity.Abstractions.dll" Name="Unity.Abstractions.dll" Source="$(var.ProductionBuild_TargetDir)Unity.Abstractions.dll" />
       </Component>
 
       <Component Id="HideezService.Unity.Container.dll" Guid="{FE35F902-226F-45E6-BEE7-F6D1D7A812E4}" Win64="$(var.Win64)">
-        <File Id="HideezService.Unity.Container.dll" Name="Unity.Container.dll" Source="$(var.HideezServiceHost_TargetDir)Unity.Container.dll" />
+        <File Id="HideezService.Unity.Container.dll" Name="Unity.Container.dll" Source="$(var.ProductionBuild_TargetDir)Unity.Container.dll" />
       </Component>
     
       <Component Id="HideezService.System.ValueTuple.dll" Guid="{6E67F395-06C3-420C-844F-E041B76F9A07}" Win64="$(var.Win64)">
-        <File Id="HideezService.System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.HideezServiceHost_TargetDir)System.ValueTuple.dll" />
+        <File Id="HideezService.System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.ProductionBuild_TargetDir)System.ValueTuple.dll" />
       </Component>
       
       <Component Id="HideezService.System.Text.Encodings.Web.dll" Guid="{CAB7C674-515F-4290-8576-6903310A3186}" Win64="$(var.Win64)">
-        <File Id="HideezService.System.Text.Encodings.Web.dll" Name="System.Text.Encodings.Web.dll" Source="$(var.HideezServiceHost_TargetDir)System.Text.Encodings.Web.dll" />
+        <File Id="HideezService.System.Text.Encodings.Web.dll" Name="System.Text.Encodings.Web.dll" Source="$(var.ProductionBuild_TargetDir)System.Text.Encodings.Web.dll" />
       </Component>
   
       <Component Id="HideezService.System.Text.Json.dll" Guid="{649CD5DF-78B8-49D8-A446-39A9BF0D87C4}" Win64="$(var.Win64)">
-        <File Id="HideezService.System.Text.Json.dll" Name="System.Text.Json.dll" Source="$(var.HideezServiceHost_TargetDir)System.Text.Json.dll" />
+        <File Id="HideezService.System.Text.Json.dll" Name="System.Text.Json.dll" Source="$(var.ProductionBuild_TargetDir)System.Text.Json.dll" />
       </Component>  
     
     </ComponentGroup>
   </Fragment>
   
   <!-- Rfid Service -->
-  <!--<Fragment>
+  <Fragment>
     <ComponentGroup Id="RfidService" Directory="rfid">
       <Component Id="RfidService.exe" Guid="{91C5AEC8-1A43-482F-B18F-AAE44830D8B4}">
-        <File Id="RfidService.exe" Name="RfidService.exe" KeyPath="yes" Source="$(var.RfidService_TargetDir)RfidService.exe" />
+        <File Id="RfidService.exe" Name="RfidService.exe" KeyPath="yes" Source="$(var.ProductionBuild_x86_TargetDir)RfidService.exe" />
         <ServiceInstall
           Id="si_RfidService"
           Name="Hideez RFID Service"
@@ -516,7 +514,7 @@
           Start="auto"
           ErrorControl="normal"
           Type="ownProcess"
-          Description="Communicates information received from RFID reader">
+          Description="Communicates information received from RFID reader to Hideez Service">
           <ServiceConfig DelayedAutoStart="no" OnInstall="yes" />
           <util:ServiceConfig
             FirstFailureActionType="restart"
@@ -534,22 +532,22 @@
           Wait="yes" />
       </Component>
   
-      --><!-- Rfid Service dependencies --><!--    
-      --><!-- Even though all components may be specified as Win64=true, all of them are actually 32-bit --><!--
+      <!-- Rfid Service dependencies -->
+      <!-- Even though all components may be specified as Win64=true, all of them are actually 32-bit -->
       <Component Id="RfidService.exe.config" Guid="{C44BC368-C707-4296-AA03-A862688BA53F}">
-        <File Id="RfidService.exe.config" Name="RfidService.exe.config" Source="$(var.RfidService_TargetDir)RfidService.exe.config" />
+        <File Id="RfidService.exe.config" Name="RfidService.exe.config" Source="$(var.ProductionBuild_x86_TargetDir)RfidService.exe.config" />
       </Component>
 
       <Component Id="Rfid.Communication.dll" Guid="{DD0C2FAE-5DDB-4B5F-AEFD-6AE74B9E58E4}">
-        <File Id="Rfid.Communication.dll" Name="Communication.dll" Source="$(var.Communication_x86_TargetDir)Communication.dll" />
+        <File Id="Rfid.Communication.dll" Name="Communication.dll" Source="$(var.ProductionBuild_x86_TargetDir)Communication.dll" />
       </Component>
   
       <Component Id="SRF32.dll" Guid="{34E50D90-5B84-476C-922D-B05C91F55B5D}">
-        <File Id="SRF32.dll" Name="SRF32.dll" Source="$(var.32bit_Binaries_Dir)SRF32.dll" />
+        <File Id="SRF32.dll" Name="SRF32.dll" Source="$(var.ProductionBuild_x86_TargetDir)SRF32.dll" />
       </Component>
   
     </ComponentGroup>
-  </Fragment>-->
+  </Fragment>
     
     <!--Credential Provider-->
   <Fragment>
@@ -604,7 +602,7 @@
       </Component>
 
       <Component Id="zxing.presentation.dll" Guid="{152F1A9E-0272-43B1-A529-49774455FD4E}" Win64="$(var.Win64)">
-        <File Id="zxing.presentation.dll" Name="zxing.presentation.dll" Source="$(var.HideezClient_TargetDir)zxing.presentation.dll" />
+        <File Id="zxing.presentation.dll" Name="zxing.presentation.dll" Source="$(var.ProductionBuild_TargetDir)zxing.presentation.dll" />
       </Component>
 
       <Component Id="Splat.dll" Guid="{5DE552CB-BB0D-43B8-8F49-694FEF9813EA}" Win64="$(var.Win64)">
@@ -840,76 +838,44 @@
         <File Id="System.Collections.Immutable.dll" Name="System.Collections.Immutable.dll" Source="$(var.ProductionBuild_TargetDir)System.Collections.Immutable.dll" />
       </Component>
 
-      <Component Id="Microsoft.Bcl.AsyncInterfaces.dll" Guid="{134C158C-9215-4FE8-87F7-F3EFB829615D}" Win64="$(var.Win64)">
-        <File Id="Microsoft.Bcl.AsyncInterfaces.dll" Name="Microsoft.Bcl.AsyncInterfaces.dll" Source="$(var.ProductionBuild_TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" />
-      </Component>
-
-      <Component Id="Polly.Contrib.DuplicateRequestCollapser.dll" Guid="{70BD6175-D844-4BE6-AF60-B6D38D3497E3}" Win64="$(var.Win64)">
-        <File Id="Polly.Contrib.DuplicateRequestCollapser.dll" Name="Polly.Contrib.DuplicateRequestCollapser.dll" Source="$(var.ProductionBuild_TargetDir)Polly.Contrib.DuplicateRequestCollapser.dll" />
-      </Component>
-
-      <Component Id="Polly.dll" Guid="{74F4EC54-4834-4689-8626-7CB7E080065E}" Win64="$(var.Win64)">
-        <File Id="Polly.dll" Name="Polly.dll" Source="$(var.ProductionBuild_TargetDir)Polly.dll" />
-      </Component>
-
-      <Component Id="ReactiveUI.WPF.dll" Guid="{EA7C4727-8283-49CF-AC67-D7D98BF2BC37}" Win64="$(var.Win64)">
-        <File Id="ReactiveUI.WPF.dll" Name="ReactiveUI.WPF.dll" Source="$(var.ProductionBuild_TargetDir)ReactiveUI.WPF.dll" />
-      </Component>
-
-      <Component Id="Splat.Drawing.dll" Guid="{9C037F23-2709-4FAF-982D-52F4AC3C7D4E}" Win64="$(var.Win64)">
-        <File Id="Splat.Drawing.dll" Name="Splat.Drawing.dll" Source="$(var.ProductionBuild_TargetDir)Splat.Drawing.dll" />
-      </Component>
-
-      <Component Id="System.Runtime.WindowsRuntime.dll" Guid="{FA64CC5F-3EA2-4E5F-9DBC-DC78DDB1B279}" Win64="$(var.Win64)">
-        <File Id="System.Runtime.WindowsRuntime.dll" Name="System.Runtime.WindowsRuntime.dll" Source="$(var.ProductionBuild_TargetDir)System.Runtime.WindowsRuntime.dll" />
-      </Component>
-
-      <Component Id="System.ValueTuble.dll" Guid="{736D502C-A01B-41E3-9BEF-2BD5B8D04F20}" Win64="$(var.Win64)">
-        <File Id="System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.ProductionBuild_TargetDir)System.ValueTuple.dll" />
-      </Component>
-
-      <Component Id="zxing.presentation.dll" Guid="{15A9F29C-0F2D-4A34-B803-1CF623A59C17}" Win64="$(var.Win64)">
-        <File Id="zxing.presentation.dll" Name="zxing.presentation.dll" Source="$(var.ProductionBuild_TargetDir)zxing.presentation.dll" />
-      </Component>
-
       <Component Id="ReactiveUI.WPF.dll" Guid="{029E5AD1-745F-4A4C-B99E-FC4B3132CBFC}" Win64="$(var.Win64)">
-        <File Id="ReactiveUI.WPF.dll" Name="ReactiveUI.WPF.dll" Source="$(var.HideezClient_TargetDir)ReactiveUI.WPF.dll" />
+        <File Id="ReactiveUI.WPF.dll" Name="ReactiveUI.WPF.dll" Source="$(var.ProductionBuild_TargetDir)ReactiveUI.WPF.dll" />
       </Component>
       
       <Component Id="Splat.Drawing.dll" Guid="{7D333BF7-B947-408F-832D-41A8890327FF}" Win64="$(var.Win64)">
-        <File Id="Splat.Drawing.dll" Name="Splat.Drawing.dll" Source="$(var.HideezClient_TargetDir)Splat.Drawing.dll" />
+        <File Id="Splat.Drawing.dll" Name="Splat.Drawing.dll" Source="$(var.ProductionBuild_TargetDir)Splat.Drawing.dll" />
       </Component>
 
       <Component Id="System.Runtime.WindowsRuntime.dll" Guid="{C91C32DF-11B2-4A9B-AB39-9C0DEE0140FD}" Win64="$(var.Win64)">
-        <File Id="System.Runtime.WindowsRuntime.dll" Name="System.Runtime.WindowsRuntime.dll" Source="$(var.HideezClient_TargetDir)System.Runtime.WindowsRuntime.dll" />
+        <File Id="System.Runtime.WindowsRuntime.dll" Name="System.Runtime.WindowsRuntime.dll" Source="$(var.ProductionBuild_TargetDir)System.Runtime.WindowsRuntime.dll" />
       </Component>
       
       <Component Id="System.ValueTuple.dll" Guid="{3B605A6A-2FAA-4A0C-86BF-220A4460AF64}" Win64="$(var.Win64)">
-        <File Id="System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.HideezClient_TargetDir)System.ValueTuple.dll" />
+        <File Id="System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.ProductionBuild_TargetDir)System.ValueTuple.dll" />
       </Component>
       
       <Component Id="CommandLine.dll" Guid="{8881D481-5CF2-4E4C-84F4-8BD794093B9B}" Win64="$(var.Win64)">
-        <File Id="CommandLine.dll" Name="CommandLine.dll" Source="$(var.HideezClient_TargetDir)CommandLine.dll" />
+        <File Id="CommandLine.dll" Name="CommandLine.dll" Source="$(var.ProductionBuild_TargetDir)CommandLine.dll" />
       </Component>
     
       <Component Id="Polly.dll" Guid="{50F092AE-68A2-4399-9A89-F24B31D389B6}" Win64="$(var.Win64)">
-        <File Id="Polly.dll" Name="Polly.dll" Source="$(var.HideezClient_TargetDir)Polly.dll" />
+        <File Id="Polly.dll" Name="Polly.dll" Source="$(var.ProductionBuild_TargetDir)Polly.dll" />
       </Component>
     
       <Component Id="Polly.Contrib.DuplicateRequestCollapser.dll" Guid="{FAF88FE1-A171-485C-B13C-E7C77A3DC71C}" Win64="$(var.Win64)">
-        <File Id="Polly.Contrib.DuplicateRequestCollapser.dll" Name="Polly.Contrib.DuplicateRequestCollapser.dll" Source="$(var.HideezClient_TargetDir)Polly.Contrib.DuplicateRequestCollapser.dll" />
+        <File Id="Polly.Contrib.DuplicateRequestCollapser.dll" Name="Polly.Contrib.DuplicateRequestCollapser.dll" Source="$(var.ProductionBuild_TargetDir)Polly.Contrib.DuplicateRequestCollapser.dll" />
       </Component>
 
       <Component Id="System.Text.Encodings.Web.dll" Guid="{95DE7D77-D8FE-4CFC-B2B1-4A404DE9ED43}" Win64="$(var.Win64)">
-        <File Id="System.Text.Encodings.Web.dll" Name="System.Text.Encodings.Web.dll" Source="$(var.HideezClient_TargetDir)System.Text.Encodings.Web.dll" />
+        <File Id="System.Text.Encodings.Web.dll" Name="System.Text.Encodings.Web.dll" Source="$(var.ProductionBuild_TargetDir)System.Text.Encodings.Web.dll" />
       </Component>
   
       <Component Id="System.Text.Json.dll" Guid="{93BD0A8B-7B40-4BF2-9BCB-440AC4117FFF}" Win64="$(var.Win64)">
-        <File Id="System.Text.Json.dll" Name="System.Text.Json.dll" Source="$(var.HideezClient_TargetDir)System.Text.Json.dll" />
+        <File Id="System.Text.Json.dll" Name="System.Text.Json.dll" Source="$(var.ProductionBuild_TargetDir)System.Text.Json.dll" />
       </Component>  
   
       <Component Id="Microsoft.Bcl.AsyncInterfaces.dll" Guid="{2F684EDB-26E5-4817-846E-8CBA188F45CB}" Win64="$(var.Win64)">
-        <File Id="Microsoft.Bcl.AsyncInterfaces.dll" Name="Microsoft.Bcl.AsyncInterfaces.dll" Source="$(var.HideezClient_TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" />
+        <File Id="Microsoft.Bcl.AsyncInterfaces.dll" Name="Microsoft.Bcl.AsyncInterfaces.dll" Source="$(var.ProductionBuild_TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" />
       </Component>    
   
     </ComponentGroup>
