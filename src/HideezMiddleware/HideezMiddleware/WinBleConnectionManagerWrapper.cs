@@ -30,7 +30,6 @@ namespace HideezMiddleware
         public event EventHandler<AdvertismentReceivedEventArgs> AdvertismentReceived;
         public event EventHandler<DiscoveredDeviceAddedEventArgs> DiscoveredDeviceAdded;
         public event EventHandler<DiscoveredDeviceRemovedEventArgs> DiscoveredDeviceRemoved;
-        public event EventHandler DiscoveryStopped;
         public event EventHandler AdapterStateChanged;
         public event EventHandler<ControllerAddedEventArgs> ControllerAdded;
         public event EventHandler<ControllerRemovedEventArgs> ControllerRemoved;
@@ -43,7 +42,6 @@ namespace HideezMiddleware
             _winBleConnectionManager.AdvertismentReceived += WinBleConnectionManager_AdvertismentReceived;
             _winBleConnectionManager.DiscoveredDeviceAdded += WinBleConnectionManager_DiscoveredDeviceAdded;
             _winBleConnectionManager.DiscoveredDeviceRemoved += WinBleConnectionManager_DiscoveredDeviceRemoved;
-            _winBleConnectionManager.DiscoveryStopped += WinBleConnectionManager_DiscoveryStopped;
             _winBleConnectionManager.AdapterStateChanged += WinBleConnectionManager_AdapterStateChanged;
             _winBleConnectionManager.ControllerAdded += WinBleConnectionManager_ControllerAdded;
             _winBleConnectionManager.ControllerRemoved += WinBleConnectionManager_ControllerRemoved;
@@ -62,17 +60,6 @@ namespace HideezMiddleware
         private void WinBleConnectionManager_DiscoveredDeviceRemoved(object sender, DiscoveredDeviceRemovedEventArgs e)
         {
             SafeInvoke(DiscoveredDeviceRemoved, e);
-        }
-
-        private void WinBleConnectionManager_DiscoveryStopped(object sender, EventArgs e)
-        {
-            try
-            {
-                DiscoveryStopped?.Invoke(this, e);
-            }
-            catch (Exception)
-            {
-            }
         }
 
         private void WinBleConnectionManager_AdapterStateChanged(object sender, EventArgs e)

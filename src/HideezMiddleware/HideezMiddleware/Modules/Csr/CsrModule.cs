@@ -44,7 +44,6 @@ namespace HideezMiddleware.Modules.Csr
 
             SessionSwitchMonitor.SessionSwitch += SessionSwitchMonitor_SessionSwitch;
             _csrBleConnectionManager.AdapterStateChanged += CsrBleConnectionManager_AdapterStateChanged;
-            _csrBleConnectionManager.DiscoveryStopped += (s, e) => { }; // Event requires to have at least one handler
             _csrBleConnectionManager.DiscoveredDeviceAdded += (s, e) => { }; // Event requires intended to have at least one handler
             _csrBleConnectionManager.DiscoveredDeviceRemoved += (s, e) => { }; // Event requires intended to have at least one handler
 

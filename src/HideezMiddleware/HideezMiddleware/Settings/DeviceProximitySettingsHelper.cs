@@ -1,11 +1,6 @@
 ﻿using Hideez.SDK.Communication.HES.Client;
-using Hideez.SDK.Communication.HES.DTO;
-using Hideez.SDK.Communication.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HideezMiddleware.Settings
 {
@@ -44,8 +39,6 @@ namespace HideezMiddleware.Settings
             var deviceProximity = settings.DevicesProximity.FirstOrDefault(s => s.Mac == mac);
             if (deviceProximity != null)
             {
-                deviceProximity.LockProximity = lockProximity;
-                deviceProximity.UnlockProximity = unlockProximity;
                 proximitySettingsManager.SaveSettings(settings);
             }
         }
@@ -57,11 +50,8 @@ namespace HideezMiddleware.Settings
             if (deviceProximity == null)
             {
                 deviceProximity = DeviceProximitySettings.DefaultSettings;
-                deviceProximity.LockProximity = newSettings.LockProximity;
-                deviceProximity.UnlockProximity = newSettings.UnlockProximity;
                 deviceProximity.Mac = newSettings.Mac;
                 deviceProximity.SerialNo = newSettings.SerialNo;
-                deviceProximity.LockTimeout = newSettings.LockTimeout;
                 settings.Add(deviceProximity);
             }
         }

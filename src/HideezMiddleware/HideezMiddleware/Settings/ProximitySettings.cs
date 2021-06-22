@@ -41,9 +41,6 @@ namespace HideezMiddleware.Settings
                 {
                     SerialNo = settings.SerialNo,
                     Mac = settings.Mac,
-                    LockProximity = settings.LockProximity,
-                    UnlockProximity = settings.UnlockProximity,
-                    LockTimeout = settings.LockTimeout,
                 });
             }
 
