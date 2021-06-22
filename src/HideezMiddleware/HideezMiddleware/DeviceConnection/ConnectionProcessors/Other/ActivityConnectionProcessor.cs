@@ -9,12 +9,10 @@ using Hideez.SDK.Communication.Device;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Log;
 using Hideez.SDK.Communication.Proximity.Interfaces;
-using HideezMiddleware.CredentialProvider;
 using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
 using HideezMiddleware.Localize;
 using HideezMiddleware.Tasks;
 using Meta.Lib.Modules.PubSub;
-using Microsoft.Win32;
 
 namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
 {
@@ -92,7 +90,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
                 {
                     await _ui.SendError("", notifId);
                     await _ui.SendNotification(TranslationSource.Instance["ConnectionProcessor.SearchingForVault"], notifId);
-                    var adv = await new WaitAdvertisementProc(_bleConnectionManager).Run(10_000);
+                    var adv = await new WaitAdvertisementWithUserActivityProc(_bleConnectionManager, _proximitySettingsProvider).Run(10_000);
                     if (adv != null)
                     {
                         await ConnectByActivity(adv);
@@ -131,9 +129,6 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
                 return;
 
             var connectionId = new ConnectionId(adv.Id, _bleConnectionManager.Id);
-            if (!_proximitySettingsProvider.IsEnabledUnlockByActivity(connectionId))
-                return;
-
             var proximity = BleUtils.RssiToProximity(adv.Rssi);
             if (proximity < _proximitySettingsProvider.GetUnlockProximity(connectionId))
             {
