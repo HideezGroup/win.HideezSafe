@@ -118,6 +118,7 @@
     <Compile Include="AdvertisementIgnoreListTests.cs" />
     <Compile Include="BaseSettingsTests.cs" />
     <Compile Include="MockFactory.cs" />
+    <Compile Include="Tasks\WaitAdvertisementProcTests.cs" />
     <Compile Include="VaultConnectionTests\AccountsUpdateProcessorTests.cs" />
     <Compile Include="VaultConnectionTests\ConnectionFlowProcessorTests.cs" />
     <Compile Include="VaultConnectionTests\LicensingProcessorTests.cs" />

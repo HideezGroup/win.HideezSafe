@@ -335,7 +335,6 @@
     <Compile Include="Settings\Manager\WatchingSettingsManager.cs" />
     <Compile Include="Settings\WorkstationSettings.cs" />
     <Compile Include="Tasks\WaitAdvertisementProc.cs" />
-    <Compile Include="Tasks\WaitAdvertisementWithUserActivityProc.cs" />
     <Compile Include="UnpairProvider.cs" />
     <Compile Include="Utils\MasterPasswordConverter.cs" />
     <Compile Include="Utils\SafeMessengerBase.cs" />

@@ -1,4 +1,6 @@
-﻿using Hideez.SDK.Communication.Interfaces;
+﻿using Hideez.SDK.Communication.Connection;
+using Hideez.SDK.Communication.Interfaces;
+using Hideez.SDK.Communication.Proximity.Interfaces;
 using Hideez.SDK.Communication.Utils;
 using System;
 using System.Linq;
@@ -7,14 +9,21 @@ using WinBle;
 
 namespace HideezMiddleware.Tasks
 {
-    class WaitAdvertisementProc
+    public sealed class WaitAdvertisementProc
     {
         readonly TaskCompletionSource<AdvertismentReceivedEventArgs> _tcs = new TaskCompletionSource<AdvertismentReceivedEventArgs>();
         readonly IBleConnectionManager _bleConnectionManager;
+        private readonly IDeviceProximitySettingsProvider _proximitySettingsProvider;
 
         public WaitAdvertisementProc(IBleConnectionManager connectionManager)
         {
             _bleConnectionManager = connectionManager;
+        }
+
+        public WaitAdvertisementProc(IBleConnectionManager connectionManager, IDeviceProximitySettingsProvider proximitySettingsProvider)
+        {
+            _bleConnectionManager = connectionManager;
+            _proximitySettingsProvider = proximitySettingsProvider;
         }
 
         public async Task<AdvertismentReceivedEventArgs> Run(int timeout)
@@ -39,7 +48,14 @@ namespace HideezMiddleware.Tasks
 
         private void WinBleConnectionManager_AdvertismentReceived(object sender, AdvertismentReceivedEventArgs e)
         {
-            _tcs.TrySetResult(e);
+            if (_proximitySettingsProvider != null)
+            {
+                var connectionId = new ConnectionId(e.Id, _bleConnectionManager.Id);
+                if (_proximitySettingsProvider.IsEnabledUnlockByActivity(connectionId))
+                    _tcs.TrySetResult(e);
+            }
+            else
+                _tcs.TrySetResult(e);
         }
     }
 }
