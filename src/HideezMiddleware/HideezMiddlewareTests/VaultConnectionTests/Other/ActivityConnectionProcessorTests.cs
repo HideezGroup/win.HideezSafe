@@ -132,5 +132,45 @@ namespace HideezMiddleware.Tests.VaultConnectionTests.Other
                 It.IsAny<Action<WorkstationUnlockResult>>()),
                 Times.Never);
         }
+
+        [Test]
+        public void WaitAdv_NoDeviceWithEnabledUnlockByActivity_UnlockNotCalled()
+        {
+            // Arrange
+            var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
+
+            var advEventArgs = new AdvertismentReceivedEventArgs(fixture.Create<string>(),
+                fixture.Create<string>(),
+                fixture.Create<sbyte>());
+
+            var bleConnectionManagerMock = new Mock<IBleConnectionManager>();
+            fixture.Inject(bleConnectionManagerMock.Object);
+
+            var connectionFlowProcessorMock = new Mock<IConnectionFlowProcessor>();
+            fixture.Inject(connectionFlowProcessorMock.Object);
+
+            var proximitySettingsProviderMock = new Mock<IDeviceProximitySettingsProvider>();
+            proximitySettingsProviderMock.Setup(mock => mock.GetUnlockProximity(It.IsAny<ConnectionId>())).Returns(SdkConfig.DefaultUnlockProximity);
+            proximitySettingsProviderMock.Setup(mock => mock.IsEnabledUnlockByActivity(It.IsAny<ConnectionId>())).Returns(false);
+            fixture.Inject(proximitySettingsProviderMock.Object);
+
+            var workstationUnlockMock = new Mock<IWorkstationUnlocker>();
+            workstationUnlockMock.Setup(mock => mock.IsConnected).Returns(true);
+            fixture.Inject(workstationUnlockMock.Object);
+
+            var activityConnectionProcessor = fixture.Create<ActivityConnectionProcessor>();
+
+            activityConnectionProcessor.Start();
+
+            // Act
+            workstationUnlockMock.Raise(mock => mock.ProviderActivated += null, EventArgs.Empty);
+            bleConnectionManagerMock.Raise(mock => mock.AdvertismentReceived += null, advEventArgs);
+
+            // Assert
+            connectionFlowProcessorMock.Verify(mock => mock.ConnectAndUnlock(
+                It.IsAny<ConnectionId>(),
+                It.IsAny<Action<WorkstationUnlockResult>>()),
+                Times.Never);
+        }
     }
 }

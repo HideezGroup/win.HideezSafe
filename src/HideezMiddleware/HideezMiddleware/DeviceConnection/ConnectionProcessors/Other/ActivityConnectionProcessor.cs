@@ -15,7 +15,6 @@ using HideezMiddleware.DeviceConnection.Workflow.ConnectionFlow;
 using HideezMiddleware.Localize;
 using HideezMiddleware.Tasks;
 using Meta.Lib.Modules.PubSub;
-using Microsoft.Win32;
 
 namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
 {
@@ -93,7 +92,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
                 {
                     await _ui.SendError("", notifId);
                     await _ui.SendNotification(TranslationSource.Instance["ConnectionProcessor.SearchingForVault"], notifId);
-                    var adv = await new WaitAdvertisementProc(_bleConnectionManager).Run(10_000);
+                    var adv = await new WaitAdvertisementProc(_bleConnectionManager, _proximitySettingsProvider).Run(10_000);
                     if (adv != null)
                     {
                         await ConnectByActivity(adv);
