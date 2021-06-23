@@ -92,7 +92,7 @@ namespace HideezClient.Modules
         #region MainWindow
         public Task ActivateMainWindow()
         {
-            UIDispatcher.Invoke(OnActivateMainWindow);
+            UIDispatcher.Invoke(() => OnActivateMainWindow(true));
             return Task.CompletedTask;
         }
 
@@ -108,7 +108,7 @@ namespace HideezClient.Modules
 
         public async Task ActivateMainWindowAsync()
         {
-            await UIDispatcher.InvokeAsync(OnActivateMainWindow);
+            await UIDispatcher.InvokeAsync(() => OnActivateMainWindow(true));
         }
 
         public async Task HideMainWindowAsync()
@@ -140,7 +140,7 @@ namespace HideezClient.Modules
 
 
         bool _isFirstActivation = true;
-        private void OnActivateMainWindow()
+        private void OnActivateMainWindow(bool isNeedResize)
         {
             if (Interlocked.CompareExchange(ref _mainWindowActivationInterlock, 1, 0) == 0)
             {
@@ -153,32 +153,35 @@ namespace HideezClient.Modules
                     SubscribeToMainWindowEvent();
 
                     MainWindow.Show();
-                    if (_settingsManager.Settings.MaximizeWindowsOnOpening)
+                    if (isNeedResize)
                     {
-                        MainWindow.WindowState = WindowState.Maximized;
-                        MainWindow.WindowStyle = WindowStyle.None;
-                    }
-                    else
-                    {
-                        if(MainWindow.WindowState != WindowState.Maximized)
-                            MainWindow.WindowState = WindowState.Normal;
-
-                        if (_isFirstActivation)
+                        if (_settingsManager.Settings.MaximizeWindowsOnOpening)
                         {
-                            System.Windows.Forms.Screen screen = GetCurrentScreen();
-                            if (screen != null)
-                            {
-                                var dpiTransform = MainWindow.GetDpiTransform();
-                                var workingAreaForWindowHeight = screen.WorkingArea.Height / dpiTransform.Y - MainWindow.Top;
-                                if (workingAreaForWindowHeight < MainWindow.MinHeight)
-                                {
-                                    MainWindow.Top = 0;
-                                    workingAreaForWindowHeight = screen.WorkingArea.Height / dpiTransform.Y - MainWindow.Top;
-                                }
+                            MainWindow.WindowState = WindowState.Maximized;
+                            MainWindow.WindowStyle = WindowStyle.None;
+                        }
+                        else
+                        {
+                            if (MainWindow.WindowState != WindowState.Maximized)
+                                MainWindow.WindowState = WindowState.Normal;
 
-                                if (workingAreaForWindowHeight > 0 && workingAreaForWindowHeight < 770)
-                                    MainWindow.Height = workingAreaForWindowHeight;
-                                else MainWindow.Height = 770;
+                            if (_isFirstActivation)
+                            {
+                                System.Windows.Forms.Screen screen = GetCurrentScreen();
+                                if (screen != null)
+                                {
+                                    var dpiTransform = MainWindow.GetDpiTransform();
+                                    var workingAreaForWindowHeight = screen.WorkingArea.Height / dpiTransform.Y - MainWindow.Top;
+                                    if (workingAreaForWindowHeight < MainWindow.MinHeight)
+                                    {
+                                        MainWindow.Top = 0;
+                                        workingAreaForWindowHeight = screen.WorkingArea.Height / dpiTransform.Y - MainWindow.Top;
+                                    }
+
+                                    if (workingAreaForWindowHeight > 0 && workingAreaForWindowHeight < 770)
+                                        MainWindow.Height = workingAreaForWindowHeight;
+                                    else MainWindow.Height = 770;
+                                }
                             }
                         }
                     }
@@ -410,7 +413,7 @@ namespace HideezClient.Modules
             if (MainWindow is MetroWindow metroWindow)
             {
                 baseDialog.Closed += DialogClosed;
-                OnActivateMainWindow();
+                OnActivateMainWindow(false);
                 metroWindow.ShowMetroDialogAsync(baseDialog);
                 _dialogs.Add(baseDialog);
             }
