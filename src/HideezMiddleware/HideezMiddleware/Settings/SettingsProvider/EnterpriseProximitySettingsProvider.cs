@@ -20,7 +20,7 @@ namespace HideezMiddleware.Settings.SettingsProvider
         public EnterpriseProximitySettingsProvider(
             ISettingsManager<ProximitySettings> unlockProximitySettingsManager,
             ILog log) :
-            base(nameof(UserProximitySettingsProvider), log)
+            base(nameof(EnterpriseProximitySettingsProvider), log)
         {
             _unlockProximitySettingsManager = unlockProximitySettingsManager;
 
