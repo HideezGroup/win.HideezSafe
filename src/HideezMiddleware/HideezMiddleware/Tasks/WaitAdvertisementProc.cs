@@ -1,4 +1,5 @@
-﻿using Hideez.SDK.Communication.Connection;
+﻿using Hideez.SDK.Communication.BLE;
+using Hideez.SDK.Communication.Connection;
 using Hideez.SDK.Communication.Interfaces;
 using Hideez.SDK.Communication.Proximity.Interfaces;
 using Hideez.SDK.Communication.Utils;
@@ -51,7 +52,7 @@ namespace HideezMiddleware.Tasks
             if (_proximitySettingsProvider != null)
             {
                 var connectionId = new ConnectionId(e.Id, _bleConnectionManager.Id);
-                if (_proximitySettingsProvider.IsEnabledUnlockByActivity(connectionId))
+                if (_proximitySettingsProvider.GetUnlockProximity(connectionId) >= BleUtils.RssiToProximity(e.Rssi))
                     _tcs.TrySetResult(e);
             }
             else
