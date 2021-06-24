@@ -358,6 +358,9 @@ namespace HideezClient.PageViewModels
         {
             if (_oldSettings != null)
             {
+                if (!EnabledUnlock && !EnabledLockByProximity && !_oldSettings.EnabledLockByProximity && !_oldSettings.EnabledUnlock)
+                    _proximityHasChanges = false;
+                else 
                 if (LockProximity != _oldSettings.LockProximity 
                     || UnlockProximity != _oldSettings.UnlockProximity
                     || EnabledLockByProximity != _oldSettings.EnabledLockByProximity 
@@ -445,16 +448,21 @@ namespace HideezClient.PageViewModels
             try
             {
                 var newSettings = UserDeviceProximitySettings.DefaultSettings;
-                newSettings.Id = BleUtils.MacToConnectionId(Device.Mac);
-                newSettings.EnabledLockByProximity = EnabledLockByProximity;
-                newSettings.EnabledUnlock = EnabledUnlock;
-                newSettings.EnabledUnlockByActivation = SelectedUnlockModeOption.EnabledUnlockByActivation;
-                newSettings.EnabledUnlockByProximity = SelectedUnlockModeOption.EnabledUnlockByProximity;
-                newSettings.LockProximity = LockProximity;
-                newSettings.UnlockProximity = UnlockProximity;
+                //if 2 checkboxes were unchecked - remove proximity settings
+                if (!EnabledLockByProximity && !EnabledUnlock && _oldSettings != null && (_oldSettings.EnabledUnlock || _oldSettings.EnabledLockByProximity))
+                    await _metaMessenger.PublishOnServer(new RemoveUserProximitySettingsMessage(BleUtils.MacToConnectionId(Device.Mac)));
+                else
+                {
+                    newSettings.Id = BleUtils.MacToConnectionId(Device.Mac);
+                    newSettings.EnabledLockByProximity = EnabledLockByProximity;
+                    newSettings.EnabledUnlock = EnabledUnlock;
+                    newSettings.EnabledUnlockByActivation = SelectedUnlockModeOption.EnabledUnlockByActivation;
+                    newSettings.EnabledUnlockByProximity = SelectedUnlockModeOption.EnabledUnlockByProximity;
+                    newSettings.LockProximity = LockProximity;
+                    newSettings.UnlockProximity = UnlockProximity;
 
-                await _metaMessenger.PublishOnServer(new SaveUserProximitySettingsMessage(newSettings));
-
+                    await _metaMessenger.PublishOnServer(new SaveUserProximitySettingsMessage(newSettings));
+                }
                 _oldSettings = newSettings;
             }
             catch (Exception ex)

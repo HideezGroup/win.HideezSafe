@@ -563,118 +563,134 @@
                                         </StackPanel>
                                     </Grid>
                                 </Grid>
-                                <Border
-                                    Style="{StaticResource ContainerStyle}"
-                                    Margin="0,10">
-                                    <TextBlock
-                                        Text="{l:Localization ProximitySettings.TextBlock.SignalLevel}"
-                                        TextWrapping="Wrap" />
-                                </Border>
-                                <Grid>
-                                    <ProgressBar
-                                        Height="3"
-                                        MinHeight="1"
-                                        Margin="0,8,0,0"
-                                        Padding="0"
-                                        VerticalAlignment="Center"
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        Foreground="#1BA2DC"
-                                        Opacity="0.8"
-                                        SnapsToDevicePixels="True"
-                                        Value="{Binding Device.Proximity, Mode=OneWay}" />
-                                    <ma:RangeSlider
-                                        x:Name="ProximitySlider"
-                                        Margin="0,24,0,16"
-                                        ExtendedMode="True"
-                                        Focusable="False"
-                                        IsMoveToPointEnabled="True"
-                                        IsSnapToTickEnabled="True"
-                                        IsTabStop="False"
-                                        LowerValue="{Binding LockProximity, Mode=TwoWay}"
-                                        Maximum="100"
-                                        MinRange="20"
-                                        MinRangeWidth="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth, Converter={StaticResource SliderWidthToMinRangeWidthConverter}, ConverterParameter=20}"
-                                        Minimum="0"
-                                        MoveWholeRange="True"
-                                        Style="{DynamicResource RangeSliderStyle}"
-                                        UpperValue="{Binding UnlockProximity, Mode=TwoWay}" />
-                                </Grid>
+                                <StackPanel>
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding EnabledLockByProximity}" Value="False"/>
+                                                        <Condition Binding="{Binding EnabledUnlock}" Value="False"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <Border
+                                        Style="{StaticResource ContainerStyle}"
+                                        Margin="0,10">
+                                        <TextBlock
+                                            Text="{l:Localization ProximitySettings.TextBlock.SignalLevel}"
+                                            TextWrapping="Wrap" />
+                                    </Border>
+                                    <Grid>
+                                        <ProgressBar
+                                            Height="3"
+                                            MinHeight="1"
+                                            Margin="0,8,0,0"
+                                            Padding="0"
+                                            VerticalAlignment="Center"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Foreground="#1BA2DC"
+                                            Opacity="0.8"
+                                            SnapsToDevicePixels="True"
+                                            Value="{Binding Device.Proximity, Mode=OneWay}" />
+                                        <ma:RangeSlider
+                                            x:Name="ProximitySlider"
+                                            Margin="0,24,0,16"
+                                            ExtendedMode="True"
+                                            Focusable="False"
+                                            IsMoveToPointEnabled="True"
+                                            IsSnapToTickEnabled="True"
+                                            IsTabStop="False"
+                                            LowerValue="{Binding LockProximity, Mode=TwoWay}"
+                                            Maximum="100"
+                                            MinRange="20"
+                                            MinRangeWidth="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth, Converter={StaticResource SliderWidthToMinRangeWidthConverter}, ConverterParameter=20}"
+                                            Minimum="0"
+                                            MoveWholeRange="True"
+                                            Style="{DynamicResource RangeSliderStyle}"
+                                            UpperValue="{Binding UnlockProximity, Mode=TwoWay}" />
+                                    </Grid>
 
-                                <Grid
-                                    TextBlock.FontSize="16"
-                                    TextBlock.FontWeight="DemiBold"
-                                    TextBlock.Foreground="{DynamicResource DarkForeground}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Border
-                                        Grid.Column="0"
-                                        Padding="12,5"
-                                        Style="{StaticResource ContainerStyle}">
-                                        <Grid>
-                                            <TextBox
-                                                x:Name="LockProximityTextBox"
-                                                HorizontalAlignment="Center"
-                                                Text="{Binding LockProximity, UpdateSourceTrigger=PropertyChanged}"
-                                                Background="Transparent"
-                                                FontSize="16"
-                                                BorderThickness="0"
-                                                CaretBrush ="{DynamicResource DarkForeground}"
-                                                Foreground="{DynamicResource DarkForeground}"
-                                                LostFocus="LockProximityTextBox_LostFocus"/>
-                                            <TextBlock
-                                                Text="100"
-                                                Visibility="Hidden" />
-                                        </Grid>
-                                    </Border>
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Margin="8,0,0,0"
-                                        VerticalAlignment="Center"
-                                        Text="{l:Localization ProximitySettings.TextBlock.Lock}" />
-                                    <TextBlock
-                                        Grid.Column="3"
-                                        HorizontalAlignment="Left"
-                                        FontWeight="Normal"
-                                        Foreground="{DynamicResource Foreground}">
-                                        <TextBlock.Text>
-                                            <MultiBinding Converter="{StaticResource FormatStringConverter}">
-                                                <Binding Path="[DeviceInfo.CurrentProximityLevel]" Source="{x:Static localization:TranslationSource.Instance}" />
-                                                <Binding Path="Device.Proximity" />
-                                            </MultiBinding>
-                                        </TextBlock.Text>
-                                    </TextBlock>
-                                    <TextBlock
-                                        Grid.Column="5"
-                                        Margin="0,0,8,0"
-                                        VerticalAlignment="Center"
-                                        Text="{l:Localization ProximitySettings.TextBlock.Unlock}" />
-                                    <Border
-                                        Grid.Column="6"
-                                        Padding="12,5"
-                                        Style="{StaticResource ContainerStyle}">
-                                        <Grid>
-                                            <TextBox
-                                                x:Name="UnlockProximityTextBox"
-                                                HorizontalAlignment="Center"
-                                                Text="{Binding UnlockProximity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Background="Transparent"
-                                                FontSize="16"
-                                                BorderThickness="0"
-                                                Foreground="{DynamicResource DarkForeground}"
-                                                CaretBrush ="{DynamicResource DarkForeground}"
-                                                LostFocus="UnlockProximityTextBox_LostFocus"/>
-                                            <TextBlock Text="100" Visibility="Hidden" />
-                                        </Grid>
-                                    </Border>
-                                </Grid>
+                                    <Grid
+                                        TextBlock.FontSize="16"
+                                        TextBlock.FontWeight="DemiBold"
+                                        TextBlock.Foreground="{DynamicResource DarkForeground}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            Grid.Column="0"
+                                            Padding="12,5"
+                                            Style="{StaticResource ContainerStyle}">
+                                            <Grid>
+                                                <TextBox
+                                                    x:Name="LockProximityTextBox"
+                                                    HorizontalAlignment="Center"
+                                                    Text="{Binding LockProximity, UpdateSourceTrigger=PropertyChanged}"
+                                                    Background="Transparent"
+                                                    FontSize="16"
+                                                    BorderThickness="0"
+                                                    CaretBrush ="{DynamicResource DarkForeground}"
+                                                    Foreground="{DynamicResource DarkForeground}"
+                                                    LostFocus="LockProximityTextBox_LostFocus"/>
+                                                <TextBlock
+                                                    Text="100"
+                                                    Visibility="Hidden" />
+                                            </Grid>
+                                        </Border>
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="8,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Text="{l:Localization ProximitySettings.TextBlock.Lock}" />
+                                        <TextBlock
+                                            Grid.Column="3"
+                                            HorizontalAlignment="Left"
+                                            FontWeight="Normal"
+                                            Foreground="{DynamicResource Foreground}">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource FormatStringConverter}">
+                                                    <Binding Path="[DeviceInfo.CurrentProximityLevel]" Source="{x:Static localization:TranslationSource.Instance}" />
+                                                    <Binding Path="Device.Proximity" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock
+                                            Grid.Column="5"
+                                            Margin="0,0,8,0"
+                                            VerticalAlignment="Center"
+                                            Text="{l:Localization ProximitySettings.TextBlock.Unlock}" />
+                                        <Border
+                                            Grid.Column="6"
+                                            Padding="12,5"
+                                            Style="{StaticResource ContainerStyle}">
+                                            <Grid>
+                                                <TextBox
+                                                    x:Name="UnlockProximityTextBox"
+                                                    HorizontalAlignment="Center"
+                                                    Text="{Binding UnlockProximity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Background="Transparent"
+                                                    FontSize="16"
+                                                    BorderThickness="0"
+                                                    Foreground="{DynamicResource DarkForeground}"
+                                                    CaretBrush ="{DynamicResource DarkForeground}"
+                                                    LostFocus="UnlockProximityTextBox_LostFocus"/>
+                                                <TextBlock Text="100" Visibility="Hidden" />
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </StackPanel>
 
                                 <Grid>
                                     <StackPanel
