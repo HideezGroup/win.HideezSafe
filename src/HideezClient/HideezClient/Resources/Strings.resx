@@ -257,7 +257,7 @@ Vault is not connected</value>
     <value>Video tutorial</value>
   </data>
   <data name="Status.Dongle" xml:space="preserve">
-    <value>Dongle</value>
+    <value>Hideez Bluetooth Dongle</value>
   </data>
   <data name="Status.Server" xml:space="preserve">
     <value>Server</value>
@@ -269,7 +269,7 @@ Vault is not connected</value>
     <value>Service</value>
   </data>
   <data name="Status.Tooltip.ConectedDongle" xml:space="preserve">
-    <value>Hideez Dongle connected</value>
+    <value>Hideez Bluetooth Dongle connected</value>
   </data>
   <data name="Status.Tooltip.ConectedServer" xml:space="preserve">
     <value>Connected to the server</value>
@@ -281,7 +281,7 @@ Vault is not connected</value>
     <value>Connected to the service</value>
   </data>
   <data name="Status.Tooltip.DisconectedDongle" xml:space="preserve">
-    <value>Hideez Dongle disconnected</value>
+    <value>Hideez Bluetooth Dongle disconnected</value>
   </data>
   <data name="Status.Tooltip.DisconectedServer" xml:space="preserve">
     <value>No connection to the server</value>
@@ -366,7 +366,7 @@ Vault is not connected</value>
   </data>
   <data name="Pin.EnterPin" xml:space="preserve">
     <value>Enter PIN code for {0} 
-to access stored credentials</value>
+to access stored accounts</value>
   </data>
   <data name="Pin.InvalidPin" xml:space="preserve">
     <value>Invalid PIN!
@@ -379,16 +379,16 @@ to access stored credentials</value>
     <value>Verifying PIN code</value>
   </data>
   <data name="CredentialsLoad.Loaded" xml:space="preserve">
-    <value>Credentials loading completed {0}</value>
+    <value>Accounts loading completed {0}</value>
   </data>
   <data name="CredentialsLoad.Loading" xml:space="preserve">
-    <value>Loading credentials {0}</value>
+    <value>Loading Accounts {0}</value>
   </data>
   <data name="DeviceLocked.Body.Head" xml:space="preserve">
     <value>This vault is locked</value>
   </data>
   <data name="PinNotVerified.Description" xml:space="preserve">
-    <value>Pin for {0} was not verified. You cannot use the credentials from this vault until you verify the PIN code</value>
+    <value>Pin for {0} was not verified. You cannot use the accounts from this vault until you verify the PIN code</value>
   </data>
   <data name="PinNotVerified.LinkText" xml:space="preserve">
     <value>Click to enter PIN now</value>
@@ -577,7 +577,7 @@ to access stored credentials</value>
     <value>Are you sure you want to disconnect {0}?</value>
   </data>
   <data name="CredentialsLoad.Failed" xml:space="preserve">
-    <value>Credentials loading failed {0}</value>
+    <value>Accounts loading failed {0}</value>
   </data>
   <data name="UserAction.DeviceIsNotActive" xml:space="preserve">
     <value>Action cancelled. Vault ({0}) is not selected as active vault.</value>
@@ -634,7 +634,7 @@ to access stored credentials</value>
     <value>Authorize vault access</value>
   </data>
   <data name="Menu.Authorize.Tooltip" xml:space="preserve">
-    <value>Launch authorization to access saved credentials</value>
+    <value>Launch authorization to access saved accounts</value>
   </data>
   <data name="Menu.DisconnectDevice.Tooltip" xml:space="preserve">
     <value>Disconnect vault</value>
@@ -691,10 +691,10 @@ to access stored credentials</value>
     <value>Hideez Key</value>
   </data>
   <data name="DP.MobileKey.Description" xml:space="preserve">
-    <value>Software Vault that can be installed on your smartphone from Apple App Store or Google Play Market</value>
+    <value>Software Security Key that can be installed on your smartphone from Apple App Store or Google Play Market</value>
   </data>
   <data name="DP.MobileKey.Header" xml:space="preserve">
-    <value>Hideez Mobile Authenticator</value>
+    <value>Hideez Authenticator</value>
   </data>
   <data name="HMK.ActivationCode.Header" xml:space="preserve">
     <value>Activation Code</value>
@@ -715,10 +715,10 @@ to access stored credentials</value>
     <value>Hideez Key</value>
   </data>
   <data name="Menu.SoftwareKeyPage.Header" xml:space="preserve">
-    <value>Hideez Mobile Authenticator</value>
+    <value>Hideez Authenticator</value>
   </data>
   <data name="Settings.CheckBox.EnableSoftwareVaultUnlockModule" xml:space="preserve">
-    <value>Allow unlock with Hideez Mobile Authenticator</value>
+    <value>Allow unlock with Hideez Authenticator</value>
   </data>
   <data name="Status.Network" xml:space="preserve">
     <value>Network</value>
@@ -730,10 +730,10 @@ to access stored credentials</value>
     <value>Please check your internet connection</value>
   </data>
   <data name="Menu.HardwareKeyPage.Description" xml:space="preserve">
-    <value>Hardware Vault</value>
+    <value>Hardware Security Key</value>
   </data>
   <data name="Menu.SoftwareKeyPage.Description" xml:space="preserve">
-    <value>Software Vault</value>
+    <value>Software Security Key</value>
   </data>
   <data name="HKP.Description1" xml:space="preserve">
     <value>Make sure that all the indicators in the bottom left corner are green.</value>
@@ -929,22 +929,22 @@ Only 1 attempt left.</value>
     <value>Wrong PIN ({0} attempts left)</value>
   </data>
   <data name="Vault.Notification.EnterCurrentPin" xml:space="preserve">
-    <value>Please enter the PIN code for your Hardware Vault</value>
+    <value>Please enter the PIN code for your Hardware Security Key</value>
   </data>
   <data name="Vault.Notification.NewPin" xml:space="preserve">
-    <value>Please create new PIN code for your Hardware Vault</value>
+    <value>Please create new PIN code for your Hardware Security Key</value>
   </data>
   <data name="Vault.Notification.PreparingForAuth" xml:space="preserve">
     <value>Starting vault {0} authorization</value>
   </data>
   <data name="Vault.Notification.Auth.UserActionRequired" xml:space="preserve">
-    <value>Vault initialized. Authorize to access saved credentials.</value>
+    <value>Vault initialized. Authorize to access saved accounts.</value>
   </data>
   <data name="Vault.Notification.PressButton" xml:space="preserve">
-    <value>Please press the Button on your Hardware Vault</value>
+    <value>Please press the Button on your Hardware Security Key</value>
   </data>
   <data name="Vault.Notification.Synchronizing" xml:space="preserve">
-    <value>Synchronizing credentials in {0} with your other vault, please wait{1}Password manager is temporarily unavailable</value>
+    <value>Synchronizing accounts in {0} with your other vault, please wait{1}Password manager is temporarily unavailable</value>
   </data>
   <data name="Vault.Error.Pin.LockedByInvalidAttempts" xml:space="preserve">
     <value>Vault got locked due to too many incorrect pin attempts. Contact your system administrator.</value>
@@ -965,7 +965,7 @@ Only 1 attempt left.</value>
     <value>Display Bluetooth indicator</value>
   </data>
   <data name="Settings.CheckBox.ShowDongleIndicator" xml:space="preserve">
-    <value>Display Dongle indicator</value>
+    <value>Display Hideez Bluetooth Dongle indicator</value>
   </data>
   <data name="Settings.Indicators.Tooltip" xml:space="preserve">
     <value>Indicators are displayed in the lower-left corner of application window</value>
@@ -1035,10 +1035,10 @@ Would you like to perform application update now?</value>
     <value>Master password is too short</value>
   </data>
   <data name="Vault.Notification.EnterCurrentMasterPassword" xml:space="preserve">
-    <value>Please enter the master password for your Hardware Vault</value>
+    <value>Please enter the master password for your Hardware Security Key</value>
   </data>
   <data name="Vault.Notification.NewMasterPassword" xml:space="preserve">
-    <value>Please create new master password for your Hardware Vault</value>
+    <value>Please create new master password for your Hardware Security Key</value>
   </data>
   <data name="ButtonWindow.CancelTooltip" xml:space="preserve">
     <value>Hold vault button to cancel</value>
@@ -1116,16 +1116,16 @@ Would you like to perform application update now?</value>
     <value>Please create new password to protect your backup file</value>
   </data>
   <data name="BackupPassword.CreatePassword.Successful" xml:space="preserve">
-    <value>Successful! Your credentials backup saved to '{0}'</value>
+    <value>Successful! Your accounts backup saved to '{0}'</value>
   </data>
   <data name="BackupPassword.Failed" xml:space="preserve">
     <value>Failed!</value>
   </data>
   <data name="BackupPassword.EnterPassword.Successful" xml:space="preserve">
-    <value>Successful! Your credentials restored from '{0}'</value>
+    <value>Successful! Your accounts restored from '{0}'</value>
   </data>
   <data name="BackupPassword.EnterPassword.Warning" xml:space="preserve">
-    <value>Warning! All your credentials will be overwritten!</value>
+    <value>Warning! All your accounts will be overwritten!</value>
   </data>
   <data name="Vault.Error.MasterPass.InvalidMasterPass" xml:space="preserve">
     <value>The entered master password is incorrect</value>
@@ -1155,7 +1155,7 @@ Would you like to perform application update now?</value>
     <value>Backup</value>
   </data>
   <data name="BackupCredentials.Button.Backup" xml:space="preserve">
-    <value>Backup credentials</value>
+    <value>Backup accounts</value>
   </data>
   <data name="BackupCredentials.Button.SelectFile" xml:space="preserve">
     <value>Select a file</value>
@@ -1167,7 +1167,7 @@ Would you like to perform application update now?</value>
     <value>Restore from Backup</value>
   </data>
   <data name="BackupCredentials.Title" xml:space="preserve">
-    <value>Backup / Restore credentials</value>
+    <value>Backup / Restore accounts</value>
   </data>
   <data name="BackupPassword.Error.WrongPassword" xml:space="preserve">
     <value>Failed! The password is incorrect or the file is corrupt</value>
@@ -1212,7 +1212,7 @@ Would you like to perform application update now?</value>
     <value>Writing data - 45 %</value>
   </data>
   <data name="WipeDialog.Description" xml:space="preserve">
-    <value>- All your credentials will be erased from your vault
+    <value>- All your accounts will be erased from your vault
  - Your vault will be disconnected and unpaired from all devices
  - If proximity lock is enabled, this workstation will be locked</value>
   </data>
@@ -1241,7 +1241,7 @@ Would you like to perform application update now?</value>
     <value>Use this option if your vault is nearby and paired to this computer through default Bluetooth interface but failed to connect or its not visible in Hideez Client</value>
   </data>
   <data name="Settings.ReconnectPairedVaults.Reconnect" xml:space="preserve">
-    <value>Reconnect paired vaults</value>
+    <value>Reconnect Security Keys</value>
   </data>
   <data name="WaterMark.SearchPasswords" xml:space="preserve">
     <value>Search passwords</value>
@@ -1342,7 +1342,7 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
     <value>Disabled PC Unlock</value>
   </data>
   <data name="MessageBox.DisablingUnlock.Message" xml:space="preserve">
-    <value>Disabling PC Unlock will remove unlock credentials from your Hideez Vault storage. Disable anyway?</value>
+    <value>Disabling PC Unlock will remove unlock account from your Hideez Vault storage. Disable anyway?</value>
   </data>
   <data name="LanguageSettings.Title" xml:space="preserve">
     <value>Language</value>
@@ -1366,7 +1366,7 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
     <value>{0}% free</value>
   </data>
   <data name="ProximitySettings.Title" xml:space="preserve">
-    <value>Proximity Settings</value>
+    <value>Lock and Unlock</value>
   </data>
   <data name="ProximitySettings.UnlockMode" xml:space="preserve">
     <value>Unlock mode</value>

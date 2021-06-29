@@ -193,16 +193,16 @@
     <value>Створити резервну копію</value>
   </data>
   <data name="BackupCredentials.Button.Restore" xml:space="preserve">
-    <value>Відновити</value>
+    <value>Відновити з Резервної Копії</value>
   </data>
   <data name="BackupCredentials.Button.SelectFile" xml:space="preserve">
     <value>Виберіть файл</value>
   </data>
   <data name="BackupCredentials.Restore.Title" xml:space="preserve">
-    <value>Відновлення</value>
+    <value>Відновлення з резервної копії</value>
   </data>
   <data name="BackupCredentials.RestoreFromFile" xml:space="preserve">
-    <value>Відновлення із файлу</value>
+    <value>Відновлення із Резервної Копії</value>
   </data>
   <data name="BackupCredentials.Title" xml:space="preserve">
     <value>Резервне копіювання / Відновлення облікових записів</value>
@@ -211,7 +211,7 @@
     <value>Підтвердіть пароль</value>
   </data>
   <data name="BackupPassword.CreatePassword.Successful" xml:space="preserve">
-    <value>Успішно! Ваші копію ваших облікових записів збережено у '{0}'</value>
+    <value>Успішно! Резервнку копію ваших облікових записів збережено у '{0}'</value>
   </data>
   <data name="BackupPassword.CurrentBP.Label" xml:space="preserve">
     <value>Введіть пароль</value>
@@ -337,16 +337,16 @@
     <value>Hideez Key</value>
   </data>
   <data name="DP.MobileKey.Description" xml:space="preserve">
-    <value>Програмний Ключ, який можна встановити на ваш смартфон з Apple App Store або Google Play Market</value>
+    <value>Програмний Ключ Безпеки, який можна встановити на ваш смартфон з Apple App Store або Google Play Market</value>
   </data>
   <data name="DP.MobileKey.Header" xml:space="preserve">
-    <value>Hideez Mobile Authenticator</value>
+    <value>Автентифікатор Hideez</value>
   </data>
   <data name="DS.Button.Wipe" xml:space="preserve">
     <value>Очистити ключ</value>
   </data>
   <data name="DS.Button.Wipe.Tooltip" xml:space="preserve">
-    <value>Очищення, також відоме як відновлення заводських налаштувань, стирає всі ваші дані із ключа</value>
+    <value>Очищення даних, також відоме як відновлення заводських налаштувань, стирає всі ваші дані із ключа</value>
   </data>
   <data name="DS.Label.BootloaderVersion" xml:space="preserve">
     <value>Bootloader Version: </value>
@@ -433,7 +433,7 @@
     <value>Ключ у реєстрі не знайдено. Будь ласка, зверніться до свого системного адміністратора, щоб виконати Відновлення інсталяції програми.</value>
   </data>
   <data name="Error.Clarification.SecurityError" xml:space="preserve">
-    <value>Hideez Service не дозволяється вносити зміни до реєстру. Зверніться до системного адміністратора.</value>
+    <value>Службі Hideez Service не дозволяється вносити зміни до реєстру. Зверніться до системного адміністратора.</value>
   </data>
   <data name="Error.Clarification.ServerUnavailable" xml:space="preserve">
     <value>Hideez Enterprise Server недоступний або неправильна адреса.</value>
@@ -571,7 +571,7 @@
     <value>Не вдається підключитися до служби Hideez Service</value>
   </data>
   <data name="Icon.LockByProximityDisabled" xml:space="preserve">
-    <value>Блокування на відстані відключено</value>
+    <value>Блокування за рівнем сигналу відключено</value>
   </data>
   <data name="Icon.NewNotificationsAvailable" xml:space="preserve">
     <value>Доступні нові сповіщення</value>
@@ -677,7 +677,7 @@
     <value>Вихід</value>
   </data>
   <data name="Menu.HardwareKeyPage.Description" xml:space="preserve">
-    <value>Фізичний Ключ</value>
+    <value>Апаратний Ключ Безпеки</value>
   </data>
   <data name="Menu.HardwareKeyPage.Header" xml:space="preserve">
     <value>Hideez Key</value>
@@ -740,10 +740,10 @@
     <value>Відкрити Hideez Client</value>
   </data>
   <data name="Menu.SoftwareKeyPage.Description" xml:space="preserve">
-    <value>Програмний Ключ</value>
+    <value>Програмний Ключ Безпеки</value>
   </data>
   <data name="Menu.SoftwareKeyPage.Header" xml:space="preserve">
-    <value>Hideez Mobile Authenticator</value>
+    <value>Автентифікатор Hideez</value>
   </data>
   <data name="Menu.TechnicalSupport" xml:space="preserve">
     <value>Технічна підтримка</value>
@@ -758,10 +758,10 @@
     <value>Відеоурок</value>
   </data>
   <data name="MessageBox.DeleteCredentials.Caption" xml:space="preserve">
-    <value>Видалити аккаунт</value>
+    <value>Видалити обліковий запис</value>
   </data>
   <data name="MessageBox.DeleteCredentials.Message" xml:space="preserve">
-    <value>Ви впевнені, що хочете видалити цей акаунт?</value>
+    <value>Ви впевнені, що хочете видалити цей обліковий запис?</value>
   </data>
   <data name="MessageBox.DeleteDevice.Caption" xml:space="preserve">
     <value>Видалення {0}</value>
@@ -773,7 +773,7 @@
     <value>Вимкнення Розблокування ПК</value>
   </data>
   <data name="MessageBox.DisablingUnlock.Message" xml:space="preserve">
-    <value>Якщо вимкнути розблокування за допомогою ПК, облікові дані розблокування буде видалено з вашого сховища Hideez Vault. Вимкнути все-таки?</value>
+    <value>Якщо вимкнути розблокування за допомогою ПК, облікові запис для розблокування ПК буде видалено з вашого сховища Hideez Vault. Вимкнути все-таки?</value>
   </data>
   <data name="MessageBox.DisconectDevice.Caption" xml:space="preserve">
     <value>Від'єднати {0}</value>
@@ -791,7 +791,7 @@
     <value>Закрити</value>
   </data>
   <data name="NoAccountNotification.NewAccountButton" xml:space="preserve">
-    <value>Створити новий акаунт</value>
+    <value>Створити новий обліковий запис</value>
   </data>
   <data name="NoConnectedDevices" xml:space="preserve">
     <value>Немає підключеного ключа</value>
@@ -814,7 +814,7 @@
 Ви можете знову відкрити його, клацнувши лівою кнопкою миші по іконці.</value>
   </data>
   <data name="Notification.ProximityLockDisabled" xml:space="preserve">
-    <value>Блокування на відстані відключено</value>
+    <value>Блокування за рівнем сигналу відключено</value>
   </data>
   <data name="Notify.NotScanQr" xml:space="preserve">
     <value>Не вдалося відсканувати QR-код.</value>
@@ -970,7 +970,7 @@
     <value>ОБЛІКОВИЙ ЗАПИС</value>
   </data>
   <data name="PM.Label.AccountName" xml:space="preserve">
-    <value>Назва акаунту</value>
+    <value>Назва облікового запису</value>
   </data>
   <data name="PM.Label.AddTOTP" xml:space="preserve">
     <value>Додати TOTP</value>
@@ -1024,7 +1024,7 @@
     <value>Розпочинати розблокування на екрані блокування ПК</value>
   </data>
   <data name="ProximitySettings.UnlockMode.Tap" xml:space="preserve">
-    <value>Tap &amp; Go</value>
+    <value>По Дотику</value>
   </data>
   <data name="ProximitySettings.UnlockMode.WaitForInput" xml:space="preserve">
     <value>Чекати дій користувача</value>
@@ -1066,7 +1066,7 @@
     <value>Пошук паролів</value>
   </data>
   <data name="Settings.CheckBox.EnableSoftwareVaultUnlockModule" xml:space="preserve">
-    <value>Розблоковувати з допомогою Hideez Mobile Authenticator</value>
+    <value>Розблоковувати з допомогою Автентифікатора Hideez</value>
   </data>
   <data name="Settings.CheckBox.LimitPasswordToProtectedFields" xml:space="preserve">
     <value>Вводити паролі лише для захищених полів</value>
@@ -1078,7 +1078,7 @@
     <value>Відображати індикатор Bluetooth</value>
   </data>
   <data name="Settings.CheckBox.ShowDongleIndicator" xml:space="preserve">
-    <value>Відображати індикатор Dongle</value>
+    <value>Відображати індикатор Hideez Bluetooth Адаптер</value>
   </data>
   <data name="Settings.Indicators.Tooltip" xml:space="preserve">
     <value>Індикатори відображаються в нижньому лівому куті вікна програми</value>
@@ -1096,13 +1096,13 @@
     <value>Hideez Enterprise Server недоступний або адреса неправильна.</value>
   </data>
   <data name="Settings.Label.ServiceOfflineTip" xml:space="preserve">
-    <value>Деякі налаштування не можна змінювати, поки Hideez Service вимкнений</value>
+    <value>Деякі налаштування не можна змінювати, поки Служба Hideez Service вимкнена</value>
   </data>
   <data name="Settings.ReconnectPairedVaults.Description" xml:space="preserve">
-    <value>Використовуйте цю опцію, якщо ваш ключ знаходиться поруч і спарений з цим комп'ютером через Налаштування Bluetooth, але не вдалося підключитися або його не видно в Hideez Client</value>
+    <value>Використовуйте цю опцію, якщо ваш ключ знаходиться поруч і створено пару із цим комп'ютером через Налаштування Bluetooth, але не вдалося підключитися або його не видно в Hideez Client</value>
   </data>
   <data name="Settings.ReconnectPairedVaults.Reconnect" xml:space="preserve">
-    <value>Перепідключення спарених ключів</value>
+    <value>Перепідключити Ключі Безпеки</value>
   </data>
   <data name="Settings.Watermark.ServerAddress" xml:space="preserve">
     <value>Введіть сюди URL</value>
@@ -1123,7 +1123,7 @@
     <value>Під'єднано</value>
   </data>
   <data name="Status.Dongle" xml:space="preserve">
-    <value>Dongle</value>
+    <value>Hideez Bluetooth Адаптер</value>
   </data>
   <data name="Status.Network" xml:space="preserve">
     <value>Мережа</value>
@@ -1144,7 +1144,7 @@
     <value>Bluetooth вимкнено або недоступний</value>
   </data>
   <data name="Status.Tooltip.ConectedDongle" xml:space="preserve">
-    <value>Hideez Dongle під'єднано</value>
+    <value>Hideez Bluetooth Адаптер під'єднано</value>
   </data>
   <data name="Status.Tooltip.ConectedRFID" xml:space="preserve">
     <value>Підключено зчитувач RFID</value>
@@ -1156,7 +1156,7 @@
     <value>Підключено до служби</value>
   </data>
   <data name="Status.Tooltip.DisconectedDongle" xml:space="preserve">
-    <value>Hideez Dongle відключено</value>
+    <value>Hideez Bluetooth Адаптер відключено</value>
   </data>
   <data name="Status.Tooltip.DisconectedRFID" xml:space="preserve">
     <value>Зчитувач RFID відключено</value>
@@ -1298,16 +1298,16 @@
     <value>Введіть пароль для файлу із резервною копією</value>
   </data>
   <data name="Vault.Notification.EnterCurrentMasterPassword" xml:space="preserve">
-    <value>Введіть майстерпароль для вашого Фізичного Ключа</value>
+    <value>Введіть майстерпароль для вашого Апаратного Ключа Безпеки</value>
   </data>
   <data name="Vault.Notification.EnterCurrentPin" xml:space="preserve">
-    <value>Введіть PIN-код для вашого Фізичного Ключа</value>
+    <value>Введіть PIN-код для вашого Апаратного Ключа Безпеки</value>
   </data>
   <data name="Vault.Notification.NewBackupPassword" xml:space="preserve">
     <value>Будь ласка, створіть новий пароль, щоб захистити файл із резервною копією</value>
   </data>
   <data name="Vault.Notification.NewMasterPassword" xml:space="preserve">
-    <value>Будь ласка, створіть новий майстер-пароль для вашого Фізичного Ключа</value>
+    <value>Будь ласка, створіть новий майстер-пароль для вашого Апаратного Ключа Безпеки</value>
   </data>
   <data name="Vault.Notification.NewPin" xml:space="preserve">
     <value>Будь ласка, створіть новий PIN-код для вашого Фізичного Ключа</value>
@@ -1316,7 +1316,7 @@
     <value>Запуск авторизації ключа {0}</value>
   </data>
   <data name="Vault.Notification.PressButton" xml:space="preserve">
-    <value>Будь ласка, натисніть кнопку на своєму ключі</value>
+    <value>Будь ласка, натисніть кнопку на своєму Апаратному Ключі Безпеки</value>
   </data>
   <data name="Vault.Notification.Synchronizing" xml:space="preserve">
     <value>Синхронізація облікових записів в {0} з іншим сховищем, зачекайте{1}Менеджер паролів тимчасово недоступний</value>
@@ -1358,10 +1358,10 @@
     <value>Почати очищення</value>
   </data>
   <data name="WipeDialog.CancelTooltip" xml:space="preserve">
-    <value>Натисніть кнопку на ключі один раз, щоб скасувати очищення</value>
+    <value>Натисніть кнопку на ключі один раз, щоб скасувати очищення даних</value>
   </data>
   <data name="WipeDialog.ConfirmTooltip" xml:space="preserve">
-    <value>Натисніть і утримуйте кнопку на ключі протягом 10 секунд, щоб підтвердити {0} очищення</value>
+    <value>Натисніть і утримуйте кнопку на ключі протягом 10 секунд, щоб підтвердити {0} очищення даних</value>
   </data>
   <data name="WipeDialog.Description" xml:space="preserve">
     <value>- Усі ваші облікові записи буде видалено з вашого ключа
@@ -1375,9 +1375,12 @@
     <value>  (ці дані неможливо відновити!)</value>
   </data>
   <data name="WipeDialog.Description.Title" xml:space="preserve">
-    <value>Після очищення:</value>
+    <value>Після очищення даних:</value>
   </data>
   <data name="WipeDialog.Title" xml:space="preserve">
-    <value>Ви впевненні, що хочете очистити {0}?</value>
+    <value>Ви впевненні, що хочете очистити дані із {0}?</value>
+  </data>
+  <data name="ProximitySettings.Title" xml:space="preserve">
+    <value>Блокування та Розблокування</value>
   </data>
 </root>

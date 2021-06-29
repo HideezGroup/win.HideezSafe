@@ -265,7 +265,7 @@
     <value>Ключ не має збереженого основного облікового запису.</value>
   </data>
   <data name="ConnectionFlow.Unlock.ReadingCredentials" xml:space="preserve">
-    <value>Читання облікових даних зі сховища...</value>
+    <value>Читання облікових записів зі сховища...</value>
   </data>
   <data name="ConnectionFlow.Unlock.Unlocking" xml:space="preserve">
     <value>Розблокування ПК...</value>
@@ -289,7 +289,7 @@
     <value>Ключ занадто далеко. Піднесіть його ближче і спробуйте ще раз.</value>
   </data>
   <data name="ConnectionProcessor.SearchingForVault" xml:space="preserve">
-    <value>Пошук спареного ключа...</value>
+    <value>Пошук ключа...</value>
   </data>
   <data name="ConnectionProcessor.VaultNotFound" xml:space="preserve">
     <value>Ключ вимкнено або занадто далеко</value>

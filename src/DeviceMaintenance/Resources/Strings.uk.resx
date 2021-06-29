@@ -145,7 +145,7 @@
     <value>Оновити</value>
   </data>
   <data name="Device.Button.Wipe" xml:space="preserve">
-    <value>Очистити</value>
+    <value>Очистити дані</value>
   </data>
   <data name="Device.Icon.Finished.Tooltip" xml:space="preserve">
     <value>Оновлення завершено</value>
@@ -187,7 +187,7 @@
     <value>Торкніться пристроєм до адаптера Bluetooth, щоб завантажити нову прошивку</value>
   </data>
   <data name="Wipe.Text" xml:space="preserve">
-    <value>Після очищення:
+    <value>Після очищення даних:
 - Усі ваші дані FIDO будуть видалені з вашого ключа(ці дані неможливо відновити!)
 - Усі ваші облікові записи буде видалено з вашого ключа
 - Ваш ключ буде від’єднано з усіма пристроями
@@ -195,7 +195,7 @@
 Щоб очистити пристрій, натисніть OK, дочекайтеся, поки кнопка на пристрої загориться зеленим, а потім натисніть і утримуйте її протягом 15 секунд.</value>
   </data>
   <data name="Wipe.Title" xml:space="preserve">
-    <value>Очищення пристрою</value>
+    <value>Очищення даних пристрою</value>
   </data>
   <data name="AdvancedUpdate.Text.Model" xml:space="preserve">
     <value>Модель</value>

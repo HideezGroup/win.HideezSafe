@@ -215,7 +215,7 @@ Are you sure you want to exit?</value>
   <data name="Wipe.Text" xml:space="preserve">
     <value>After performing wipe:
 - All your FIDO data will be erased from your vault(this data cannot be restored!)
-- All your credentials will be erased from your vault
+- All your accounts will be erased from your vault
 - Your vault will be disconnected and unpaired from all devices
 
 To wipe the device, press OK, wait for the green light on the device then press and hold the button for 15 seconds.</value>
