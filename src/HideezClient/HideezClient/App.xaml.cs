@@ -56,7 +56,6 @@ using HideezClient.Resources;
 using HideezClient.Modules.HideDialogsAdapter;
 using HideezClient.Messages.Hotkeys;
 using HideezClient.Modules.Subroutines;
-using CommandLine;
 using System.Linq;
 
 namespace HideezClient
@@ -66,13 +65,10 @@ namespace HideezClient
     /// </summary>
     public partial class App : Application, ISingleInstance
     {
-        public readonly static string ImmediateShutdownParam = "--imsh";
-
-        public class StartupOptions
-        {
-            [Option("nowindow", Default = false, Required = false, HelpText = "Don't show application window on start.")]
-            public bool NoWindow { get; set; }
-        }
+        // Command line parameters
+        public readonly static string ImmediateShutdownParam = "-imsh";
+        public readonly static string DelayLaunchParam = "-delay";
+        public readonly static string NoWindowParam = "-nowindow";
 
         public static Logger _log = LogManager.GetCurrentClassLogger(nameof(App));
         private SubroutineContainer _subroutineContainer;
@@ -162,12 +158,8 @@ namespace HideezClient
 
         void HandleStartupArguments(string[] args)
         {
-            var cmdOptions = Parser.Default.ParseArguments<StartupOptions>(args);
-            cmdOptions.WithParsed(o =>
-            {
-                if (!o.NoWindow)
-                    Container.Resolve<ShowMainWindowAfterStartupSubroutine>();                    
-            });
+            if (!args.Contains(NoWindowParam))
+                Container.Resolve<ShowMainWindowAfterStartupSubroutine>();                    
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -302,8 +294,11 @@ namespace HideezClient
         [STAThread()]
         private static void Main(string[] args)
         {
-            if (args.Contains("--imsh")) // Immediate Shutdown
+            if (args.Contains(ImmediateShutdownParam)) // Immediate Shutdown
                 return;
+
+            if (args.Contains(DelayLaunchParam)) // Delay application launch
+                Thread.Sleep(1000);
 
             if (SingleInstance<App>.InitializeAsFirstInstance("{EB9E0C35-8DC5-459D-80C2-93DCE0036C91}"))
             {

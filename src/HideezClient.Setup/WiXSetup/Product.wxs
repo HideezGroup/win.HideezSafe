@@ -142,7 +142,7 @@
             Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run"                                         
             Type="string"
             Name="Hideez Client"
-            Value="[INSTALLFOLDER]HideezClient.exe --nowindow=true"/>
+            Value="[INSTALLFOLDER]HideezClient.exe -nowindow"/>
     </Component>
   </DirectoryRef>
       

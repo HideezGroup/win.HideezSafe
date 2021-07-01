@@ -309,8 +309,13 @@ namespace HideezClient.Modules
         public void RestartApplication()
         {
             log.WriteLine("Hideez Client restart");
-            Process.Start(Process.GetCurrentProcess().MainModule.FileName);
-            UIDispatcher.Invoke(Application.Current.Shutdown);
+            var proc = new Process();
+            proc.StartInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
+            proc.StartInfo.Arguments = App.DelayLaunchParam;
+            var secondInstanceStarted = proc.Start();
+
+            if (secondInstanceStarted)
+                UIDispatcher.Invoke(Application.Current.Shutdown);
         }
 
         private void SetStartupLocation(Window window, bool mainWindowWasOpen, bool hideMainWindow = false)
