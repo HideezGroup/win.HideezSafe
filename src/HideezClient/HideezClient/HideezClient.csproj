@@ -912,9 +912,6 @@
     <EmbeddedResource Include="Resources\Strings.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Strings.ru.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Strings.uk.resx" />
     <None Include="app.manifest" />
     <Content Include="Browsers.txt">

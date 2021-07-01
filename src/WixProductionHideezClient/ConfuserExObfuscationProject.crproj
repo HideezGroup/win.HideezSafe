@@ -1,4 +1,9 @@
-<project outputDir=".\Obfuscator_Output" baseDir="." xmlns="http://confuser.codeplex.com">
+<project xmlns="http://confuser.codeplex.com">
+  <baseDir>.</baseDir>
+  <outputDir>.\Obfuscator_Output</outputDir>
+  <seed>jdgfsg843hsrdfeza22470s32qfads</seed>
+  <probePath>uk</probePath>
+  
   <rule pattern="true" preset="none" />
   
   <module path="Hideez Device Maintenance Application.exe" >

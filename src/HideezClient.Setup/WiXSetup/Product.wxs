@@ -73,8 +73,8 @@
       
       <ComponentGroupRef Id="ProductComponents" />
 
-      <ComponentGroupRef Id="ru_files" />
-      <ComponentGroupRef Id="uk_files" />
+      <ComponentGroupRef Id="loc_client_uk" />
+      <ComponentGroupRef Id="loc_service_uk"/>
 
       <ComponentGroupRef Id="CsrDriverShared" />
       <ComponentGroupRef Id="CsrDriverWin7x64" />
@@ -95,13 +95,14 @@
       <Directory Id="$(var.PlatformProgramFilesFolder)">
         <Directory Id="HideezFolder" Name="Hideez">
           <Directory Id="INSTALLFOLDER" Name="Client">
-            <Directory Id="ru" Name="ru" />
             <Directory Id="uk" Name="uk" />
             <Directory Id="x64_" Name="x64" />
             <Directory Id="x86_" Name="x86" />
             <Directory Id="csr" Name="driver" />
             <Directory Id="rfid" Name="rfid" />
-            <Directory Id="service" Name="service" />
+            <Directory Id="service" Name="service" >
+              <Directory Id="service_uk" Name="uk"/>
+            </Directory>
           </Directory>
         </Directory>
       </Directory>
@@ -968,23 +969,42 @@
   <!-- End of CSR Driver -->
 
   <!--ru-->
-  <Fragment>
-    <ComponentGroup Id="ru_files" Directory="ru">
-      <Component Id="ru_HideezClient.resources.dll" Guid="{5F0066D8-DFA9-4196-A047-8C66A5357586}">
-        <File Id="ru_HideezClient.resources.dll"
-              Name="HideezClient.resources.dll"
-              Source="$(var.ProductionBuild_TargetDir)ru\HideezClient.resources.dll" />
-      </Component>
-    </ComponentGroup>
-  </Fragment>
 
   <!--uk-->
   <Fragment>
-    <ComponentGroup Id="uk_files" Directory="uk">
+    <ComponentGroup Id="loc_client_uk" Directory="uk">
       <Component Id="uk_HideezClient.resources.dll" Guid="{6C626C6F-D6A6-4106-B700-620EA4954D25}">
+      
         <File Id="uk_HideezClient.resources.dll"
               Name="HideezClient.resources.dll"
               Source="$(var.ProductionBuild_TargetDir)uk\HideezClient.resources.dll" />
+        
+        <File Id="uk_Maintenance.resources.dll"
+              Name="Hideez Device Maintenance Application.resources.dll"
+              Source="$(var.ProductionBuild_TargetDir)uk\Hideez Device Maintenance Application.resources.dll" />
+        
+        <File Id="uk_Middleware.resources.dll"
+              Name="HideezMiddleware.resources.dll"
+              Source="$(var.ProductionBuild_TargetDir)uk\HideezMiddleware.resources.dll" />
+      
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="loc_service_uk" Directory="service_uk">
+      <Component Id="uk_HideezMiddleware.resources.dll" Guid="{4248C011-ABEB-4A23-8282-492555337B54}">
+
+        <File Id="service_uk_HideezClient.resources.dll"
+              Name="HideezClient.resources.dll"
+              Source="$(var.ProductionBuild_TargetDir)uk\HideezClient.resources.dll" />
+
+        <File Id="service_uk_Maintenance.resources.dll"
+              Name="Hideez Device Maintenance Application.resources.dll"
+              Source="$(var.ProductionBuild_TargetDir)uk\Hideez Device Maintenance Application.resources.dll" />
+
+        <File Id="service_uk_Middleware.resources.dll"
+              Name="HideezMiddleware.resources.dll"
+              Source="$(var.ProductionBuild_TargetDir)uk\HideezMiddleware.resources.dll" />
+
       </Component>
     </ComponentGroup>
   </Fragment>
