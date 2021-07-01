@@ -854,10 +854,6 @@
       <Component Id="System.ValueTuple.dll" Guid="{3B605A6A-2FAA-4A0C-86BF-220A4460AF64}" Win64="$(var.Win64)">
         <File Id="System.ValueTuple.dll" Name="System.ValueTuple.dll" Source="$(var.ProductionBuild_TargetDir)System.ValueTuple.dll" />
       </Component>
-      
-      <Component Id="CommandLine.dll" Guid="{8881D481-5CF2-4E4C-84F4-8BD794093B9B}" Win64="$(var.Win64)">
-        <File Id="CommandLine.dll" Name="CommandLine.dll" Source="$(var.ProductionBuild_TargetDir)CommandLine.dll" />
-      </Component>
     
       <Component Id="Polly.dll" Guid="{50F092AE-68A2-4399-9A89-F24B31D389B6}" Win64="$(var.Win64)">
         <File Id="Polly.dll" Name="Polly.dll" Source="$(var.ProductionBuild_TargetDir)Polly.dll" />
@@ -974,37 +970,36 @@
   <Fragment>
     <ComponentGroup Id="loc_client_uk" Directory="uk">
       <Component Id="uk_HideezClient.resources.dll" Guid="{6C626C6F-D6A6-4106-B700-620EA4954D25}">
-      
         <File Id="uk_HideezClient.resources.dll"
               Name="HideezClient.resources.dll"
               Source="$(var.ProductionBuild_TargetDir)uk\HideezClient.resources.dll" />
-        
+      </Component>
+      <Component Id="uk_Maintenance.resources.dll" Guid="{FF748889-D89C-4343-BEB7-391F41521E9F}">
         <File Id="uk_Maintenance.resources.dll"
               Name="Hideez Device Maintenance Application.resources.dll"
               Source="$(var.ProductionBuild_TargetDir)uk\Hideez Device Maintenance Application.resources.dll" />
-        
+      </Component>
+      <Component Id="uk_Middleware.resources.dll" Guid="{04BCBC03-27B0-427B-8118-F88664E3A508}">
         <File Id="uk_Middleware.resources.dll"
               Name="HideezMiddleware.resources.dll"
               Source="$(var.ProductionBuild_TargetDir)uk\HideezMiddleware.resources.dll" />
-      
       </Component>
     </ComponentGroup>
-
     <ComponentGroup Id="loc_service_uk" Directory="service_uk">
-      <Component Id="uk_HideezMiddleware.resources.dll" Guid="{4248C011-ABEB-4A23-8282-492555337B54}">
-
+      <Component Id="service_uk_HideezClient.resources.dll" Guid="{31A43157-B324-42D0-ACD7-009094F18E73}">
         <File Id="service_uk_HideezClient.resources.dll"
               Name="HideezClient.resources.dll"
               Source="$(var.ProductionBuild_TargetDir)uk\HideezClient.resources.dll" />
-
+      </Component>
+      <Component Id="service_uk_Maintenance.resources.dll" Guid="{32623F28-A6B6-4B62-91B2-C3B3E11C5D8B}">
         <File Id="service_uk_Maintenance.resources.dll"
               Name="Hideez Device Maintenance Application.resources.dll"
               Source="$(var.ProductionBuild_TargetDir)uk\Hideez Device Maintenance Application.resources.dll" />
-
+      </Component>
+      <Component Id="service_uk_Middleware.resources.dll" Guid="{5256096E-231F-4593-825C-F36A023F1E33}">
         <File Id="service_uk_Middleware.resources.dll"
               Name="HideezMiddleware.resources.dll"
               Source="$(var.ProductionBuild_TargetDir)uk\HideezMiddleware.resources.dll" />
-
       </Component>
     </ComponentGroup>
   </Fragment>
