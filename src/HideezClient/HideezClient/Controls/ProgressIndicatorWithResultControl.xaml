@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ma="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:l="clr-namespace:HideezClient.Modules.Localize"
              xmlns:local="clr-namespace:HideezClient.Controls"
              mc:Ignorable="d" 
              VerticalAlignment="Center"
@@ -45,7 +46,7 @@
             <TextBlock 
                 Style="{StaticResource DialogTitleTextBlockStyle}" 
                 Margin="0,4,0,0" 
-                Text="Saving" />
+                Text="{l:Localization ProgressResult.InProcess}" />
             <ma:ProgressRing
                 Width="32"
                 Height="32"
@@ -61,7 +62,7 @@
             Orientation="Horizontal">
             <TextBlock
                 Margin="0,4,0,0"
-                Text="Saved"
+                Text="{l:Localization ProgressResult.Saved}"
                 Style="{StaticResource DialogTitleTextBlockStyle}"/>
             <iconPacks:PackIconMaterial
                 x:Name="succcessfulResultIcon"
@@ -80,7 +81,7 @@
             Orientation="Horizontal">
             <TextBlock
                 Margin="0,4,0,0"
-                Text="Error"
+                Text="{l:Localization ProgressResult.Error}"
                 Style="{StaticResource DialogTitleTextBlockStyle}"/>
             <iconPacks:PackIconMaterial
                 x:Name="failedResultIcon"

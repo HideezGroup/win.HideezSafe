@@ -1173,7 +1173,7 @@ Would you like to perform application update now?</value>
     <value>Failed! The password is incorrect or the file is corrupt</value>
   </data>
   <data name="Vault.Notification.UnlockDevice" xml:space="preserve">
-    <value>To many incorrect PIN entries. To unlock the vault, enter master password.</value>
+    <value>The vault is locked. To unlock the vault, enter master password.</value>
   </data>
   <data name="BackupProgress.WritingData" xml:space="preserve">
     <value>Writing data - {0} %</value>
@@ -1382,5 +1382,14 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
   </data>
   <data name="Settings.CheckBox.MaximizeWindow" xml:space="preserve">
     <value>Always open window in maximized mode</value>
+  </data>
+  <data name="ProgressResult.Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ProgressResult.Saved" xml:space="preserve">
+    <value>Saved</value>
+  </data>
+  <data name="ProgressResult.InProcess" xml:space="preserve">
+    <value>Saving</value>
   </data>
 </root>

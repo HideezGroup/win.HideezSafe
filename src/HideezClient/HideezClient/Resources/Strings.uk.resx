@@ -832,7 +832,7 @@
     <value>Під час збереження облікового запису сталася помилка</value>
   </data>
   <data name="PasswordManager.Error.NameEmpty" xml:space="preserve">
-    <value>Ім'я облікового запису не може бути порожнім</value>
+    <value>Назва облікового запису не може бути пуста</value>
   </data>
   <data name="PasswordManager.Error.NameTaken" xml:space="preserve">
     <value>Обліковий запис з тим самим іменем та логіном уже існує</value>
@@ -943,7 +943,7 @@
     <value>Встановіть PIN-код для {0}</value>
   </data>
   <data name="Pin.Title" xml:space="preserve">
-    <value>Встановлення нового PIN-коду для  ключа (мінімум {0})</value>
+    <value>Встановлення нового PIN-коду для ключа (мінімум {0})</value>
   </data>
   <data name="Pin.VerifyingPIN" xml:space="preserve">
     <value>Перевірка PIN-коду</value>
@@ -1298,7 +1298,7 @@
     <value>Введіть пароль для файлу із резервною копією</value>
   </data>
   <data name="Vault.Notification.EnterCurrentMasterPassword" xml:space="preserve">
-    <value>Введіть майстерпароль для вашого Апаратного Ключа Безпеки</value>
+    <value>Введіть майстер-пароль для вашого Апаратного Ключа Безпеки</value>
   </data>
   <data name="Vault.Notification.EnterCurrentPin" xml:space="preserve">
     <value>Введіть PIN-код для вашого Апаратного Ключа Безпеки</value>
@@ -1322,7 +1322,7 @@
     <value>Синхронізація облікових записів в {0} з іншим сховищем, зачекайте{1}Менеджер паролів тимчасово недоступний</value>
   </data>
   <data name="Vault.Notification.UnlockDevice" xml:space="preserve">
-    <value>Надто багато неуспішних введень PIN. Щоб розблокувати ключ, введіть майстер-пароль.</value>
+    <value>Ключ заблоковано. Щоб розблокувати ключ, введіть майстер-пароль.</value>
   </data>
   <data name="VaultControl.BatteryIcon.ToolTip" xml:space="preserve">
     <value>Низький заряд батареї</value>
@@ -1382,5 +1382,14 @@
   </data>
   <data name="ProximitySettings.Title" xml:space="preserve">
     <value>Блокування та Розблокування</value>
+  </data>
+  <data name="ProgressResult.Error" xml:space="preserve">
+    <value>Помилка</value>
+  </data>
+  <data name="ProgressResult.Saved" xml:space="preserve">
+    <value>Збережено</value>
+  </data>
+  <data name="ProgressResult.InProcess" xml:space="preserve">
+    <value>Збереження</value>
   </data>
 </root>

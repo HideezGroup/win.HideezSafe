@@ -114,9 +114,9 @@
                             <ContentControl Style="{StaticResource UnderLine}" Visibility="{Binding AskCurrentPin, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <Grid Margin="0,0,0,24">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="90" />
-                                        <ColumnDefinition Width="24" />
                                         <ColumnDefinition />
+                                        <ColumnDefinition Width="24" />
+                                        <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock
                                         Grid.Column="0"
@@ -149,7 +149,7 @@
                             <ContentControl Style="{StaticResource UnderLine}" Visibility="{Binding AskNewPin, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <Grid Margin="0,0,0,24">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="90" />
+                                        <ColumnDefinition />
                                         <ColumnDefinition Width="24" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
@@ -182,9 +182,9 @@
                             <ContentControl Style="{StaticResource UnderLine}" Visibility="{Binding AskConfirmPin, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <Grid Margin="0,0,0,24">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="90" />
-                                        <ColumnDefinition Width="24" />
                                         <ColumnDefinition />
+                                        <ColumnDefinition Width="24" />
+                                        <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Style="{StaticResource DialogLabelTextBlockStyle}"
                                                Text="{l:Localization Pin.ConfirmPin.Label}" 

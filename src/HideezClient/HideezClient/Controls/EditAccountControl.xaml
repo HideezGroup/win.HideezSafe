@@ -66,6 +66,8 @@
                     <TextBlock
                         VerticalAlignment="Center"
                         Style="{DynamicResource LabelStyle}"
+                        TextWrapping="Wrap"
+                        TextAlignment="Right"
                         Text="{l:Localization PM.Label.AccountName}" />
 
                     <TextBox
