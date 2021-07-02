@@ -701,7 +701,7 @@ namespace HideezClient.Models
                                     await AuthorizeRemoteDevice(authCts.Token);
 
                                 // Automatically load vault storage after authorization
-                                if (!authCts.IsCancellationRequested && !IsStorageLoaded)
+                                if (!authCts.IsCancellationRequested && !IsStorageLoaded && !_remoteDevice.IsLocked)
                                     await LoadStorage();
                             }
                             catch (HideezException ex) when (ex.ErrorCode == HideezErrorCode.DeviceDisconnected)
@@ -710,7 +710,7 @@ namespace HideezClient.Models
                             }
                             catch (HideezException ex) when (ex.ErrorCode == HideezErrorCode.DeviceIsLocked)
                             {
-                                if (_remoteDevice.IsLockedByCode)
+                                if (_remoteDevice.IsLockedByCode && _applicationMode == ApplicationMode.Enterprise)
                                 {
                                     await _metaMessenger.Publish(new ShowLockNotificationMessage(TranslationSource.Instance["Notification.DeviceLockedByCode.Message"],
                                         TranslationSource.Instance["Notification.DeviceLockedByCode.Caption"],
@@ -721,13 +721,19 @@ namespace HideezClient.Models
                                 {
                                     await _metaMessenger.Publish(new ShowLockNotificationMessage(TranslationSource.Instance["Notification.DeviceLockedByPin.Message"],
                                         TranslationSource.Instance["Notification.DeviceLockedByPin.Caption"],
-                                        new NotificationOptions() { CloseTimeout = NotificationOptions.LongTimeout },
+                                        new NotificationOptions() 
+                                        { 
+                                            CloseTimeout = _applicationMode == ApplicationMode.Enterprise ? NotificationOptions.LongTimeout: NotificationOptions.DefaultTimeout 
+                                        },
                                         NotificationsId));
                                 }
                                 else
                                 {
                                     _log.WriteLine(ex);
                                 }
+
+                                if(_applicationMode == ApplicationMode.Standalone)
+                                    await UnlockDevice(authCts.Token);
                             }
                             catch (HideezException ex) when (ex.ErrorCode == HideezErrorCode.DeviceIsLockedByPin)
                             {
@@ -747,6 +753,7 @@ namespace HideezClient.Models
                             finally
                             {
                                 RemoteDeviceShutdown -= authCtsCancel;
+                                await _metaMessenger.Publish(new HideDialogMessage(typeof(MasterPasswordDialog)));
                             }
                         }
                     }
@@ -928,7 +935,9 @@ namespace HideezClient.Models
                 await _metaMessenger.Publish(new ShowLockNotificationMessage(TranslationSource.Instance["Notification.DeviceLockedByPin.Message"],
                                     TranslationSource.Instance["Notification.DeviceLockedByPin.Caption"],
                                     new NotificationOptions() { CloseTimeout = NotificationOptions.LongTimeout },
-                                    Id));
+                                    NotificationsId));
+
+                await _remoteDevice.RefreshDeviceInfo();
             }
             catch (HideezException ex)
             {
@@ -947,7 +956,6 @@ namespace HideezClient.Models
             finally
             {
                 await _metaMessenger.Publish(new HideDialogMessage(typeof(PinDialog)));
-                await _metaMessenger.Publish(new HideDialogMessage(typeof(MasterPasswordDialog)));
 
                 IsAuthorizingRemoteDevice = false;
             }
@@ -1173,6 +1181,14 @@ namespace HideezClient.Models
                             }
                         }
                     }
+                    catch (HideezException ex) when (ex.ErrorCode == HideezErrorCode.DeviceIsLocked)
+                    {
+                        _log.WriteLine(ex);
+                        await _metaMessenger.Publish(new ShowLockNotificationMessage(TranslationSource.Instance["Notification.DeviceLockedByPin.Message"],
+                                        TranslationSource.Instance["Notification.DeviceLockedByPin.Caption"],
+                                        new NotificationOptions() { CloseTimeout = NotificationOptions.LongTimeout },
+                                        NotificationsId));
+                    }
                     catch (HideezException ex)
                     {
                         _log.WriteLine(ex);
@@ -1338,7 +1354,9 @@ namespace HideezClient.Models
         async Task<bool> UnlockDevice(CancellationToken ct)
         {
             bool passwordOk = false;
-            ShowInfo(TranslationSource.Instance["Vault.Notification.UnlockDevice"]);
+            ShowInfo(TranslationSource.Instance["Vault.Notification.UnlockDevice"],
+                new NotificationOptions() { IsReplace = false});
+
             while (AccessLevel.IsLocked)
             {
                 var mpProc = new GetMasterPasswordProc(_metaMessenger, Id);
@@ -1613,9 +1631,9 @@ namespace HideezClient.Models
         }
 
         #region Notifications display
-        void ShowInfo(string message)
+        void ShowInfo(string message, NotificationOptions notificationOptions = null)
         {
-            _metaMessenger?.Publish(new ShowInfoNotificationMessage(message, notificationId: NotificationsId));
+            _metaMessenger?.Publish(new ShowInfoNotificationMessage(message,options: notificationOptions, notificationId: NotificationsId));
         }
 
         void ShowError(string message)
