@@ -92,7 +92,19 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
                 {
                     await _ui.SendError("", notifId);
                     await _ui.SendNotification(TranslationSource.Instance["ConnectionProcessor.SearchingForVault"], notifId);
-                    var adv = await new WaitAdvertisementProc(_bleConnectionManager, _proximitySettingsProvider).Run(10_000);
+
+                    var waitAdvProc = new WaitAdvertisementProc(_bleConnectionManager,
+                        (e) =>
+                        {
+                            var connectionId = new ConnectionId(e.Id, _bleConnectionManager.Id);
+                            if (BleUtils.RssiToProximity(e.Rssi) >= _proximitySettingsProvider.GetUnlockProximity(connectionId)
+                            && _proximitySettingsProvider.IsEnabledUnlockByActivity(connectionId))
+                                return true;
+
+                            return false;
+                        });
+                    var adv = await waitAdvProc.Run(10000);
+
                     if (adv != null)
                     {
                         await ConnectByActivity(adv);

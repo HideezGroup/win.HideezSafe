@@ -16,7 +16,7 @@ namespace HideezMiddleware.Tests.Tasks
     class WaitAdvertisementProcTests
     {
         [Test]
-        public async Task RunProcWithFilter_DeviceNotNearby_NullReturned()
+        public async Task RunProcWithFilter_NoFilteredDevices_NullReturned()
         {
             // Arrange
             var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
@@ -28,7 +28,7 @@ namespace HideezMiddleware.Tests.Tasks
             var proximitySettingsProviderMock = new Mock<IDeviceProximitySettingsProvider>();
             proximitySettingsProviderMock.Setup(mock => mock.GetUnlockProximity(It.IsAny<ConnectionId>())).Returns(SdkConfig.DefaultUnlockProximity);
 
-            var waitAdvProc = new WaitAdvertisementProc(bleConnectionManagerMock.Object, proximitySettingsProviderMock.Object);
+            var waitAdvProc = new WaitAdvertisementProc(bleConnectionManagerMock.Object, (e) => false);
 
             // Act
             _ = Task.Run(async () =>
@@ -43,7 +43,7 @@ namespace HideezMiddleware.Tests.Tasks
         }
 
         [Test]
-        public async Task RunProcWithFilter_FoundNearbyDevice_AdvReturned()
+        public async Task RunProcWithFilter_FoundDevice_AdvReturned()
         {
             // Arrange
             var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
@@ -57,7 +57,7 @@ namespace HideezMiddleware.Tests.Tasks
             var proximitySettingsProviderMock = new Mock<IDeviceProximitySettingsProvider>();
             proximitySettingsProviderMock.Setup(mock => mock.GetUnlockProximity(It.IsAny<ConnectionId>())).Returns(SdkConfig.DefaultUnlockProximity);
 
-            var waitAdvProc = new WaitAdvertisementProc(bleConnectionManagerMock.Object, proximitySettingsProviderMock.Object);
+            var waitAdvProc = new WaitAdvertisementProc(bleConnectionManagerMock.Object, (e) => true);
 
             // Act
             _ = Task.Run(async () =>
@@ -72,39 +72,37 @@ namespace HideezMiddleware.Tests.Tasks
         }
 
         [Test]
-        public async Task RunProcWithFilter_TwoDevicesAdvertise_AdvReturnedForNearbyDevice()
+        public async Task RunProcWithFilter_TwoDevicesAdvertise_LastAdvReturned()
         {
             // Arrange
             var fixture = new Fixture().Customize(new AutoMoqCustomization() { ConfigureMembers = true });
             
-            var farAdvEventArgs = fixture.Create<AdvertismentReceivedEventArgs>();
-            var nearbyAdvEventArgs = new AdvertismentReceivedEventArgs(fixture.Create<string>(),
-                fixture.Create<string>(),
-                (sbyte)BleUtils.ProximityToRssi(SdkConfig.DefaultUnlockProximity));
+            var lastAdvEventArgs = fixture.Create<AdvertismentReceivedEventArgs>();
+            var firstAdvEventArgs = fixture.Create<AdvertismentReceivedEventArgs>();
 
             var bleConnectionManagerMock = new Mock<IBleConnectionManager>();
 
             var proximitySettingsProviderMock = new Mock<IDeviceProximitySettingsProvider>();
-            proximitySettingsProviderMock.Setup(mock => mock.GetUnlockProximity(It.Is<ConnectionId>(x => x.Id == nearbyAdvEventArgs.Id)))
+            proximitySettingsProviderMock.Setup(mock => mock.GetUnlockProximity(It.Is<ConnectionId>(x => x.Id == firstAdvEventArgs.Id)))
                 .Returns(SdkConfig.DefaultUnlockProximity);
 
-            var waitAdvProc = new WaitAdvertisementProc(bleConnectionManagerMock.Object, proximitySettingsProviderMock.Object);
+            var waitAdvProc = new WaitAdvertisementProc(bleConnectionManagerMock.Object, (e) => true);
 
             // Act
             _ = Task.Run(async () =>
             {
                 await Task.Delay(500);
-                bleConnectionManagerMock.Raise(mock => mock.AdvertismentReceived += null, nearbyAdvEventArgs);
+                bleConnectionManagerMock.Raise(mock => mock.AdvertismentReceived += null, firstAdvEventArgs);
             });
             _ = Task.Run(async () =>
             {
                 await Task.Delay(100);
-                bleConnectionManagerMock.Raise(mock => mock.AdvertismentReceived += null, farAdvEventArgs);
+                bleConnectionManagerMock.Raise(mock => mock.AdvertismentReceived += null, lastAdvEventArgs);
             });
             var res = await waitAdvProc.Run(2_000);
 
             // Assert
-            Assert.AreEqual(nearbyAdvEventArgs, res);
+            Assert.AreEqual(lastAdvEventArgs, res);
         }
 
         [Test]

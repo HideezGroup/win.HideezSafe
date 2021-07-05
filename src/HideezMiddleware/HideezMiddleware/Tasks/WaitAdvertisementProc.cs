@@ -14,17 +14,17 @@ namespace HideezMiddleware.Tasks
     {
         readonly TaskCompletionSource<AdvertismentReceivedEventArgs> _tcs = new TaskCompletionSource<AdvertismentReceivedEventArgs>();
         readonly IBleConnectionManager _bleConnectionManager;
-        private readonly IDeviceProximitySettingsProvider _proximitySettingsProvider;
+        readonly Func<AdvertismentReceivedEventArgs, bool> _func;
 
         public WaitAdvertisementProc(IBleConnectionManager connectionManager)
         {
             _bleConnectionManager = connectionManager;
         }
 
-        public WaitAdvertisementProc(IBleConnectionManager connectionManager, IDeviceProximitySettingsProvider proximitySettingsProvider)
+        public WaitAdvertisementProc(IBleConnectionManager connectionManager, Func<AdvertismentReceivedEventArgs, bool> func)
         {
             _bleConnectionManager = connectionManager;
-            _proximitySettingsProvider = proximitySettingsProvider;
+            _func = func;
         }
 
         public async Task<AdvertismentReceivedEventArgs> Run(int timeout)
@@ -49,10 +49,9 @@ namespace HideezMiddleware.Tasks
 
         private void WinBleConnectionManager_AdvertismentReceived(object sender, AdvertismentReceivedEventArgs e)
         {
-            if (_proximitySettingsProvider != null)
+            if (_func != null)
             {
-                var connectionId = new ConnectionId(e.Id, _bleConnectionManager.Id);
-                if (_proximitySettingsProvider.GetUnlockProximity(connectionId) >= BleUtils.RssiToProximity(e.Rssi))
+                if (_func.Invoke(e))
                     _tcs.TrySetResult(e);
             }
             else
