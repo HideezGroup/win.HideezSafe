@@ -8,6 +8,7 @@ using Hideez.ARM;
 using HideezMiddleware.Settings;
 using Hideez.SDK.Communication;
 using System;
+using System.Linq;
 using HideezMiddleware.IPC.DTO;
 
 namespace HideezClient.Modules.ActionHandler
@@ -17,14 +18,17 @@ namespace HideezClient.Modules.ActionHandler
     /// </summary>
     class InputPassword : InputBase
     {
+        private readonly ISettingsManager<IgnoredApplicationsSettings> _ignoredApplicationsSettingsManager;
         readonly IEventPublisher _eventPublisher;
 
         public InputPassword(IInputHandler inputHandler, ITemporaryCacheAccount temporaryCacheAccount
                         , IInputCache inputCache, ISettingsManager<ApplicationSettings> settingsManager
+                        , ISettingsManager<IgnoredApplicationsSettings> ignoredApplicationsSettingsManager
                         , IWindowsManager windowsManager, IDeviceManager deviceManager
                         , IEventPublisher eventPublisher)
                         : base(inputHandler, temporaryCacheAccount, inputCache, settingsManager, windowsManager, deviceManager)
         {
+            _ignoredApplicationsSettingsManager = ignoredApplicationsSettingsManager;
             _eventPublisher = eventPublisher;
         }
 
@@ -67,7 +71,9 @@ namespace HideezClient.Modules.ActionHandler
         /// </summary>
         protected async override Task<bool> BeforeCondition(string[] devicesId)
         {
-            if (settingsManager.Settings.LimitPasswordEntry && !inputCache.IsProtectedPasswordField)
+            if (settingsManager.Settings.LimitPasswordEntry 
+                && !_ignoredApplicationsSettingsManager.Settings.IgnoredProccesses.Any(p=>p.Process == currentAppInfo.ProcessName) 
+                && !inputCache.IsProtectedPasswordField)
             { 
                 throw new FieldNotSecureException();
             }

@@ -1392,4 +1392,10 @@ You can open it again by clicking with left mouse button on its tray icon.</valu
   <data name="ProgressResult.InProcess" xml:space="preserve">
     <value>Saving</value>
   </data>
+  <data name="MessageBox.IgnoredApplicationsList.Caption" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="MessageBox.IgnoredApplicationsList.Message" xml:space="preserve">
+    <value>To prevent compatibility issues, this option is ignored when interacting with the following applications: {0}</value>
+  </data>
 </root>

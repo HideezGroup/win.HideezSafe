@@ -186,6 +186,7 @@ namespace HideezClient
             ISettingsManager<HotkeySettings> hotkeySettingsManager = Container.Resolve<ISettingsManager<HotkeySettings>>();
             ApplicationSettings settings = null;
             ISettingsManager<ApplicationSettings> appSettingsManager = Container.Resolve<ISettingsManager<ApplicationSettings>>();
+            ISettingsManager<IgnoredApplicationsSettings> ignoredAppSettingsManager = Container.Resolve<ISettingsManager<IgnoredApplicationsSettings>>();
             _subroutineContainer = Container.Resolve<SubroutineContainer>();
             Container.Resolve<DefineInstalledCultureSubroutine>();
 
@@ -194,6 +195,10 @@ namespace HideezClient
                 var appSettingsDirectory = Path.GetDirectoryName(appSettingsManager.SettingsFilePath);
                 if (!Directory.Exists(appSettingsDirectory))
                     Directory.CreateDirectory(appSettingsDirectory);
+
+                var ignoredApplicationsSettings = await ignoredAppSettingsManager.LoadSettingsAsync().ConfigureAwait(true);
+                if(!File.Exists(Path.Combine(appSettingsDirectory, Constants.IgnoredApplicationSettingsFileName)))
+                    ignoredAppSettingsManager.SaveSettings(ignoredApplicationsSettings);
 
                 settings = await appSettingsManager.LoadSettingsAsync().ConfigureAwait(true);
 
@@ -394,6 +399,8 @@ namespace HideezClient
             // Settings
             Container.RegisterType<ISettingsManager<ApplicationSettings>, HSSettingsManager<ApplicationSettings>>(new ContainerControlledLifetimeManager()
                 , new InjectionConstructor(Path.Combine(Constants.DefaultSettingsFolderPath, Constants.ApplicationSettingsFileName), typeof(IFileSerializer), typeof(IMetaPubSub)));
+            Container.RegisterType<ISettingsManager<IgnoredApplicationsSettings>, HSSettingsManager<IgnoredApplicationsSettings>>(new ContainerControlledLifetimeManager()
+                , new InjectionConstructor(Path.Combine(Constants.DefaultSettingsFolderPath, Constants.IgnoredApplicationSettingsFileName), typeof(IFileSerializer), typeof(IMetaPubSub)));
             Container.RegisterType<ISettingsManager<HotkeySettings>, HSSettingsManager<HotkeySettings>>(new ContainerControlledLifetimeManager()
                 , new InjectionConstructor(Path.Combine(Constants.DefaultSettingsFolderPath, Constants.HotkeySettingsFileName), typeof(IFileSerializer), typeof(IMetaPubSub)));
 

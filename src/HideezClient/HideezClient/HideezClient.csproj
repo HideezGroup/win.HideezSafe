@@ -460,6 +460,8 @@
     <Compile Include="Models\DeviceModel.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Hotkey.cs" />
+    <Compile Include="Models\IgnoredProcess.cs" />
+    <Compile Include="Models\Settings\IgnoredApplicationsSettings.cs" />
     <Compile Include="Modules\AccountManager\AccountExtensions.cs" />
     <Compile Include="Modules\ActionHandler\Exception\AccountException.cs" />
     <Compile Include="Modules\ActionHandler\Exception\ActionNotSupportedException.cs" />

@@ -1,4 +1,5 @@
 ﻿using HideezClient.Models.Settings;
+using HideezClient.Modules;
 using HideezClient.Mvvm;
 using HideezMiddleware.Settings;
 using System;
@@ -10,6 +11,8 @@ namespace HideezClient.ViewModels
     class SecureFieldEntrySettingViewModel : LocalizedObject
     {
         readonly ISettingsManager<ApplicationSettings> _appSettingsManager;
+        readonly ISettingsManager<IgnoredApplicationsSettings> _ignoredAppSettingsManager;
+        readonly IWindowsManager _windowsManager;
         bool _isChecked;
 
         public bool IsChecked
@@ -23,16 +26,21 @@ namespace HideezClient.ViewModels
                     _isChecked = value;
 
                     if (_isChecked != _appSettingsManager.Settings.LimitPasswordEntry)
-                        TrySaveChanges(oldValue, value);
+                        Task.Run(()=>TrySaveChanges(oldValue, value));
 
                     NotifyPropertyChanged();
                 }
             }
         }
 
-        public SecureFieldEntrySettingViewModel(ISettingsManager<ApplicationSettings> appSettingsManager)
+        public SecureFieldEntrySettingViewModel(
+            ISettingsManager<ApplicationSettings> appSettingsManager,
+            ISettingsManager<IgnoredApplicationsSettings> ignoredAppSettingsManager,
+            IWindowsManager windowsManager)
         {
             _appSettingsManager = appSettingsManager;
+            _ignoredAppSettingsManager = ignoredAppSettingsManager;
+            _windowsManager = windowsManager;
 
             _appSettingsManager.SettingsChanged += AppSettingsManager_SettingsChanged;
             LoadSetting();
@@ -48,8 +56,11 @@ namespace HideezClient.ViewModels
             IsChecked = _appSettingsManager.Settings.LimitPasswordEntry;
         }
 
-        void TrySaveChanges(bool oldValue, bool newValue)
+        async Task TrySaveChanges(bool oldValue, bool newValue)
         {
+            if (!oldValue && newValue)
+                await _windowsManager.ShowIgnoredApplicationsWarningAsync(_ignoredAppSettingsManager.Settings.IgnoredProccesses);
+
             bool uacSuccess = false;
             try
             {
@@ -69,6 +80,7 @@ namespace HideezClient.ViewModels
                     var settings = _appSettingsManager.Settings;
                     settings.LimitPasswordEntry = newValue;
                     _appSettingsManager.SaveSettings(settings);
+                    
                 }
                 catch (Exception) { }
             }

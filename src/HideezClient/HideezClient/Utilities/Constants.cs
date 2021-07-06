@@ -17,5 +17,6 @@ namespace HideezClient.Utilities
 
         public static string ApplicationSettingsFileName { get; } = "applicationsettings.xml";
         public static string HotkeySettingsFileName { get; } = "hotkeysettings.xml";
+        public static string IgnoredApplicationSettingsFileName { get; } = "ignoredapplicationsettings.xml";
     }
 }

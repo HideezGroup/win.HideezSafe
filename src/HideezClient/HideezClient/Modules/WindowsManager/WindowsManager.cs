@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using HideezClient.Extension;
+using HideezMiddleware.Localize;
 
 namespace HideezClient.Modules
 {
@@ -653,6 +654,22 @@ namespace HideezClient.Modules
             vm.SetCaptionFormat("MessageBox.DisablingUnlock.Caption");
             vm.SetMessageFormat("MessageBox.DisablingUnlock.Message");
             return ShowMessageViewAsync(vm, "WarnIco", "Button.Yes", "Button.No");
+        }
+
+        public async Task ShowIgnoredApplicationsWarningAsync(IgnoredProcess[] ignoredProcesses)
+        {
+            if (ignoredProcesses.Length > 0)
+            {
+                var vm = new MessageViewModel();
+                vm.SetCaptionFormat("MessageBox.IgnoredApplicationsList.Caption");
+                string messageArgs = string.Empty;
+                foreach (var ignoredProcess in ignoredProcesses)
+                {
+                    messageArgs += Environment.NewLine + "- " + ignoredProcess.ProcessName;
+                }
+                vm.SetMessageFormat("MessageBox.IgnoredApplicationsList.Message", messageArgs);
+                await ShowMessageViewAsync(vm, "WarnIco", "Button.Ok");
+            }
         }
 
         private Task<bool> ShowMessageViewAsync(MessageViewModel viewModel, string icoKey, string confirmButtonTextKey = "Button.Ok", string cancelButtonTextKey = "")

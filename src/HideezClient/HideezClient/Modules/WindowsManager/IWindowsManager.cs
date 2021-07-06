@@ -33,5 +33,6 @@ namespace HideezClient.Modules
         Task<bool> ShowRemoveDevicePromptAsync(string deviceName);
         Task<bool> ShowResetToDefaultHotkeysAsync();
         Task<bool> ShowDisabledUnlockPromptAsync();
+        Task ShowIgnoredApplicationsWarningAsync(IgnoredProcess[] ignoredProcesses);
     }
 }
