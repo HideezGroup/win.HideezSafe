@@ -11,6 +11,7 @@ using HideezMiddleware.Modules.DeviceManagement.Messages;
 using HideezMiddleware.Modules.Hes.Messages;
 using HideezMiddleware.Modules.ServiceEvents.Messages;
 using HideezMiddleware.Threading;
+using HideezMiddleware.Utils;
 using Meta.Lib.Modules.PubSub;
 using Microsoft.Win32;
 using System;
@@ -59,6 +60,7 @@ namespace HideezMiddleware.Modules.DeviceManagement
                     e.Device.BatteryChanged += Device_BatteryChanged;
                     e.Device.WipeFinished += Device_WipeFinished;
                     e.Device.AccessLevelChanged += Device_AccessLevelChanged;
+                    e.Device.DeviceStateChanged += Device_DeviceStateChanged;
                 }
 
                 await SafePublish(new DeviceManager_DeviceAddedMessage(_deviceManager, e.Device));
@@ -85,6 +87,7 @@ namespace HideezMiddleware.Modules.DeviceManagement
                     e.Device.BatteryChanged -= Device_BatteryChanged;
                     e.Device.WipeFinished -= Device_WipeFinished;
                     e.Device.AccessLevelChanged -= Device_AccessLevelChanged;
+                    e.Device.DeviceStateChanged -= Device_DeviceStateChanged;
                 }
 
                 await SafePublish(new DeviceManager_DeviceRemovedMessage(_deviceManager, e.Device));
@@ -102,6 +105,8 @@ namespace HideezMiddleware.Modules.DeviceManagement
                 if (sender is IDevice device)
                 {
                     await SafePublish(new DeviceConnectionStateChangedMessage(new DeviceDTO(device)));
+                    await SafePublish(new Hideez.Integration.Lite.Messages.DeviceConnectionStateChangedMessage(
+                        new Hideez.Integration.Lite.DTO.DeviceDTO().Initialize(device)));
                 }
             }
             catch (Exception ex)
@@ -176,6 +181,14 @@ namespace HideezMiddleware.Modules.DeviceManagement
         {
             if (sender is IDevice device)
                 await SafePublish(new DeviceBatteryChangedMessage(device.Id, device.Mac, e));
+        }
+
+        private async void Device_DeviceStateChanged(object sender, DeviceStateEventArgs e)
+        {
+            if (sender is IDevice device)
+                await SafePublish(new Hideez.Integration.Lite.Messages.DeviceStateChangedMessage(device.Id, e.State.Battery,
+                    e.State.Rssi, IntegrationUtils.ConvertButtonPressCodeFromSdk(e.State.Button),
+                    e.State.RawButton, e.State.OtherConnections));
         }
 
         // Todo: Fix documentation error. That event is triggered when wipe start is confirmed.

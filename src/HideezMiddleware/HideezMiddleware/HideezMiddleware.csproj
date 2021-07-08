@@ -339,6 +339,7 @@
     <Compile Include="UnpairProvider.cs" />
     <Compile Include="Utils\MasterPasswordConverter.cs" />
     <Compile Include="Utils\SafeMessengerBase.cs" />
+    <Compile Include="Utils\IntegrationUtils.cs" />
     <Compile Include="Utils\WorkstationHelper\IWorkstationHelper.cs" />
     <Compile Include="Utils\WorkstationHelper\WorkstationHelper.cs" />
     <Compile Include="Modules\ReconnectAndWorkstationLock\UniversalWorkstationLocker.cs" />
@@ -436,6 +437,10 @@
     <ProjectReference Include="..\..\..\win.SDK\WinBle\WinBle.csproj">
       <Project>{af08ed4d-6977-4dcb-a49d-0c0a547698ba}</Project>
       <Name>WinBle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hideez.Integration.Lite\Hideez.Integration.Lite.csproj">
+      <Project>{63cdab93-442e-47c9-b4db-501858af49f9}</Project>
+      <Name>Hideez.Integration.Lite</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

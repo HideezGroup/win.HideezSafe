@@ -13,6 +13,7 @@ using HideezMiddleware.Modules.DeviceManagement.Messages;
 using HideezMiddleware.Modules.Hes.Messages;
 using HideezMiddleware.Modules.ServiceEvents.Messages;
 using HideezMiddleware.Settings;
+using HideezMiddleware.Utils;
 using Meta.Lib.Modules.PubSub;
 using Meta.Lib.Modules.PubSub.Messages;
 using Microsoft.Win32;
@@ -94,6 +95,7 @@ namespace HideezMiddleware.Modules.ClientPipe
 
             _messenger.Subscribe(GetSafeHandler<LoginClientRequestMessage>(OnClientLogin));
             _messenger.Subscribe(GetSafeHandler<RefreshServiceInfoMessage>(OnRefreshServiceInfo));
+            _messenger.Subscribe(GetSafeHandler<Hideez.Integration.Lite.Messages.RefreshServiceInfoMessage>(OnIntegrationRefreshServiceInfo));
 
             _messenger.Subscribe(GetSafeHandler<HesAppConnection_LockHwVaultStorageMessage>(OnLockHwVaultStorage));
             _messenger.Subscribe(GetSafeHandler<HesAppConnection_LiftHwVaultStorageLockMessage>(OnLiftHwVaultStorageLock));
@@ -130,11 +132,25 @@ namespace HideezMiddleware.Modules.ClientPipe
             }
         }
 
+        private Hideez.Integration.Lite.DTO.DeviceDTO[] GetDevicesForIntegration()
+        {
+            try
+            {
+                return _deviceManager.Devices.Select(d => new Hideez.Integration.Lite.DTO.DeviceDTO().Initialize(d)).ToArray();
+            }
+            catch (Exception ex)
+            {
+                Error(ex);
+                throw;
+            }
+        }
+
         async Task RefreshServiceInfo()
         {
             await _statusManager.SendStatusToUI();
 
             await SafePublish(new DevicesCollectionChangedMessage(GetDevices()));
+            await SafePublish(new Hideez.Integration.Lite.Messages.DevicesCollectionChangedMessage(GetDevicesForIntegration()));
 
             await SafePublish(new ServiceSettingsChangedMessage(_serviceSettingsManager.Settings.EnableSoftwareVaultUnlock, RegistrySettings.GetHesAddress(this)));
 
@@ -154,11 +170,13 @@ namespace HideezMiddleware.Modules.ClientPipe
         private async Task OnDeviceAdded(DeviceManager_DeviceAddedMessage msg)
         {
             await SafePublish(new DevicesCollectionChangedMessage(GetDevices()));
+            await SafePublish(new Hideez.Integration.Lite.Messages.DevicesCollectionChangedMessage(GetDevicesForIntegration()));
         }
 
         private async Task OnDeviceRemoved(DeviceManager_DeviceRemovedMessage msg)
         {
             await SafePublish(new DevicesCollectionChangedMessage(GetDevices()));
+            await SafePublish(new Hideez.Integration.Lite.Messages.DevicesCollectionChangedMessage(GetDevicesForIntegration()));
         }
 
         Task OnClientConnected(RemoteClientConnectedEvent arg)
@@ -202,6 +220,11 @@ namespace HideezMiddleware.Modules.ClientPipe
                 WriteLine(ex);
             }
 
+        }
+
+        async Task OnIntegrationRefreshServiceInfo(Hideez.Integration.Lite.Messages.RefreshServiceInfoMessage arg)
+        {
+            await RefreshServiceInfo();
         }
 
         async Task OnRefreshServiceInfo(RefreshServiceInfoMessage arg)
