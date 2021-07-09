@@ -26,7 +26,7 @@ namespace HideezMiddleware.Audit
         const int EVENTS_PER_SET = 25;
         const int SET_INTERVAL = 5_000; // Interval between multiple sets
 
-        readonly HesAppConnection _hesAppConnection;
+        readonly IHesAppConnection _hesAppConnection;
         readonly FileSystemWatcher _fileSystemWatcher;
         readonly EventSaver _eventSaver;
 
@@ -41,7 +41,7 @@ namespace HideezMiddleware.Audit
         TaskCompletionSource<int> _sendingTcs = null;
         bool _skipSendingInterval = false;
 
-        public EventSender(HesAppConnection hesAppConnection, EventSaver eventSaver, ILog log)
+        public EventSender(IHesAppConnection hesAppConnection, EventSaver eventSaver, ILog log)
             : base(nameof(EventSender), log)
         {
             _eventSaver = eventSaver;
@@ -218,6 +218,7 @@ namespace HideezMiddleware.Audit
 
         public async Task SendEventsAsync(bool skipSendingInterval = false)
         {
+            //WriteDebugLine($"HASH CODE OF HES CONENCTION {_hesAppConnection.GetHashCode()}");
             if (_hesAppConnection != null
                 && _hesAppConnection.State == HesConnectionState.Connected
                 && Interlocked.CompareExchange(ref _sendingThreadSafetyInt, 1, 0) == 0)
