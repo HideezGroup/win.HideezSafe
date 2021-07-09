@@ -187,8 +187,7 @@ namespace HideezMiddleware.Modules.DeviceManagement
         {
             if (sender is IDevice device)
                 await SafePublish(new Hideez.Integration.Lite.Messages.DeviceStateChangedMessage(device.Id, e.State.Battery,
-                    e.State.Rssi, IntegrationUtils.ConvertButtonPressCodeFromSdk(e.State.Button),
-                    e.State.RawButton, e.State.OtherConnections));
+                    e.State.Rssi, (byte)e.State.Button, e.State.OtherConnections));
         }
 
         // Todo: Fix documentation error. That event is triggered when wipe start is confirmed.

@@ -17,7 +17,7 @@ namespace HideezClient.Modules.Remote
 
         public string Name { get; }
 
-        public ConnectionState State { get; }
+        public ConnectionState State { get; } = ConnectionState.Connected;
 
         public string Mac { get; }
 
@@ -31,17 +31,13 @@ namespace HideezClient.Modules.Remote
         public event EventHandler ConnectionStateChanged;
         public event EventHandler<byte[]> FingerprintStateChanged; // Not implemented on the service side
 
-        public PipeRemoteDeviceConnection(IMetaPubSub metaPubSub, string id, string mac, string name, bool isConnected)
+        public PipeRemoteDeviceConnection(IMetaPubSub metaPubSub, string id, string mac, string name)
         {
             _metaPubSub = metaPubSub;
 
             Id = id;
             Name = name;
             Mac = mac;
-
-            if (isConnected)
-                State = ConnectionState.Connected;
-            else State = ConnectionState.NotConnected;
 
             _metaPubSub.TrySubscribeOnServer<RemoteConnection_DeviceStateChangedMessage>(OnDeviceStateChanged);
             _metaPubSub.TrySubscribeOnServer<RemoteConnection_OperationCancelledMessage>(OnOperationCancelled);
