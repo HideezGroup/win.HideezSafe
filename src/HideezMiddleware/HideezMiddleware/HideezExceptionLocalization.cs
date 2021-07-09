@@ -112,7 +112,7 @@ namespace HideezMiddleware
                 var parameters = hideezException.Parameters;
                 var code = hideezException.ErrorCode;
 
-                if (code == HideezErrorCode.NonHideezException)
+                if (code == HideezErrorCode.ThirdPartyException)
                     return exception.Message;
 
                 string localizedStr = GetErrorAsString(code, culture);

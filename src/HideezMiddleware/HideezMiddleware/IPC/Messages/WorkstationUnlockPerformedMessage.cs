@@ -20,7 +20,7 @@ namespace HideezMiddleware.IPC.Messages
         /// <summary>
         /// Method that was used to perform workstation unlock
         /// </summary>
-        public SessionSwitchSubject UnlockMethod { get; set; } = SessionSwitchSubject.NonHideez;
+        public SessionSwitchSubject UnlockMethod { get; set; } = SessionSwitchSubject.Manual;
 
 
         /// <summary>

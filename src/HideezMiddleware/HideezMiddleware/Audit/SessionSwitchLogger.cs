@@ -150,7 +150,7 @@ namespace HideezMiddleware.Audit
                         && d.ChannelNo == (byte)DefaultDeviceChannel.Main)?.SerialNo;
                 }
                 else
-                    we.Note = WorkstationLockingReason.NonHideez.ToString();
+                    we.Note = WorkstationLockingReason.ThirdParty.ToString();
 
                 _lockProcedure = null;
             }
@@ -176,7 +176,7 @@ namespace HideezMiddleware.Audit
             WriteLine("Generating unlock event");
             var we = _eventSaver.GetWorkstationEvent();
             we.EventId = eventType;
-            we.Note = SessionSwitchSubject.NonHideez.ToString();
+            we.Note = SessionSwitchSubject.Manual.ToString();
             we.Date = time;
 
 

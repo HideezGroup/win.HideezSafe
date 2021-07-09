@@ -21,7 +21,7 @@ namespace HideezMiddleware.Tasks
         readonly int _timeout;
 
         public WorkstationUnlockResult FlowUnlockResult { get; private set; } = null; // Set on connectionFlow.UnlockAttempt
-        public SessionSwitchSubject UnlockMethod { get; private set; } = SessionSwitchSubject.NonHideez; // Changed on connectionFlow.UnlockAttempt
+        public SessionSwitchSubject UnlockMethod { get; private set; } = SessionSwitchSubject.Manual; // Changed on connectionFlow.UnlockAttempt
         public bool FlowFinished { get; private set; } // Set on connectionFlow.Finished
 
         public DateTime SessionSwitchEventTime { get; private set; } // Set on SessionSwitchMonitor.SessionSwitch

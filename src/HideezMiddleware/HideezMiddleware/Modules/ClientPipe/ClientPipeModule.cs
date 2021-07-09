@@ -212,7 +212,7 @@ namespace HideezMiddleware.Modules.ClientPipe
                 if (_deviceManager.Devices.Count() == 0)
                 {
                     var unlockMethod = await _sessionUnlockMethodMonitor.GetUnlockMethodAsync();
-                    await SafePublish(new WorkstationUnlockedMessage(unlockMethod == SessionSwitchSubject.NonHideez));
+                    await SafePublish(new WorkstationUnlockedMessage(unlockMethod == SessionSwitchSubject.Manual));
                 }
             }
             catch (Exception ex)
@@ -256,7 +256,7 @@ namespace HideezMiddleware.Modules.ClientPipe
             if (msg.Reason == SessionSwitchReason.SessionUnlock || msg.Reason == SessionSwitchReason.SessionLogon)
             {
                 var unlockMethod = await _sessionUnlockMethodMonitor.GetUnlockMethodAsync();
-                await SafePublish(new WorkstationUnlockedMessage(unlockMethod == SessionSwitchSubject.NonHideez));
+                await SafePublish(new WorkstationUnlockedMessage(unlockMethod == SessionSwitchSubject.Manual));
             }
         }
 

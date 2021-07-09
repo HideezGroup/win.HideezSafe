@@ -63,7 +63,7 @@ namespace HideezMiddleware
                     return _unlockProcedure.UnlockMethod;
             }
 
-            return SessionSwitchSubject.NonHideez;
+            return SessionSwitchSubject.Manual;
         }
     }
 }

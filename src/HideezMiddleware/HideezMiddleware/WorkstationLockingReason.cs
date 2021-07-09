@@ -2,9 +2,10 @@
 {
     public enum WorkstationLockingReason
     {
-        NonHideez,
+        NonHideez, // Obsolete
         DeviceBelowThreshold,
         DeviceConnectionLost,
         ProximityTimeout,
+        ThirdParty,
     }
 }
