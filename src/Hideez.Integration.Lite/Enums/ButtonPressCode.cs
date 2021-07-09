@@ -1,5 +1,9 @@
 ﻿namespace Hideez.Integration.Lite.Enums
 {
+    /// <summary>
+    /// This is a copy of Hideez.SDK.Communication.ButtonPressCode enum
+    /// You can use either one when parsing values received from Hideez Service
+    /// </summary>
     public enum ButtonPressCode
     {
         None = 0x00,

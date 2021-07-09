@@ -1,5 +1,4 @@
-﻿using Hideez.Integration.Lite.Enums;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Runtime.Serialization;
@@ -84,8 +83,11 @@ namespace Hideez.Integration.Lite.DTO
         [DataMember]
         public int UnlockAttemptsRemain { get; set; }
 
+        /// <summary>
+        /// Converted int value of HwVaultConnectionState enum
+        /// </summary>
         [DataMember]
-        public HwVaultConnectionState HwVaultConnectionState { get; set; }
+        public int HwVaultConnectionState { get; set; }
 
         [DataMember]
         public double Proximity { get; set; }

@@ -35,7 +35,7 @@ namespace HideezMiddleware.Utils
                 deviceDTO.PinAttemptsRemain = device.PinAttemptsRemain;
                 deviceDTO.IsCanUnlock = device.IsCanUnlock;
                 deviceDTO.UnlockAttemptsRemain = device.UnlockAttemptsRemain;
-                deviceDTO.HwVaultConnectionState = ConvertConnectionStateFromSdk(device.GetUserProperty<SdkHwVaultConnectionState>(CustomProperties.HW_CONNECTION_STATE_PROP));
+                deviceDTO.HwVaultConnectionState = (byte)device.GetUserProperty<SdkHwVaultConnectionState>(CustomProperties.HW_CONNECTION_STATE_PROP);
                 deviceDTO.Proximity = device.Proximity;
                 deviceDTO.CanLockPyProximity = device.GetUserProperty<bool>(WorkstationLockProcessor.PROX_LOCK_ENABLED_PROP);
                 deviceDTO.OwnerName = device.GetUserProperty<string>(DeviceCustomProperties.OWNER_NAME_PROP) ?? string.Empty;
@@ -44,28 +44,6 @@ namespace HideezMiddleware.Utils
             }
             
             return deviceDTO;
-        }
-
-        public static HwVaultConnectionState ConvertConnectionStateFromSdk(SdkHwVaultConnectionState sdkHwVaultConnectionState)
-        {
-            HwVaultConnectionState newHwVaultConnectionState = HwVaultConnectionState.Offline;
-            switch (sdkHwVaultConnectionState)
-            {
-                case SdkHwVaultConnectionState.Offline:
-                    newHwVaultConnectionState = HwVaultConnectionState.Offline;
-                    break;
-                case SdkHwVaultConnectionState.Initializing:
-                    newHwVaultConnectionState = HwVaultConnectionState.Initializing;
-                    break;
-                case SdkHwVaultConnectionState.Finalizing:
-                    newHwVaultConnectionState = HwVaultConnectionState.Finalizing;
-                    break;
-                case SdkHwVaultConnectionState.Online:
-                    newHwVaultConnectionState = HwVaultConnectionState.Online;
-                    break;
-            }
-
-            return newHwVaultConnectionState;
         }
 
         public static ButtonPressCode ConvertButtonPressCodeFromSdk(SdkButtonPressCode sdkButtonPressCode)

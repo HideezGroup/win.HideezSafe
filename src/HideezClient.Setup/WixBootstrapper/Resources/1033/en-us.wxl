@@ -37,7 +37,7 @@ no prompts. By default UI and all prompts are displayed.
   <String Id="InstallStandaloneButton">Standalone version</String>
   <String Id="InstallEnterpriseButton">Enterprise version</String>
   <String Id="InstallSelectConnectionTypeText">Select vault connection type</String>
-  <String Id="UseWin10Radio">Use Windows 10 Bluetooth</String>
+  <String Id="UseWin10Radio">Use Windows 10 internal Bluetooth (Beta Version)</String>
   <String Id="UseHDongleRadio">Use external Hideez Bluetooth Dongle</String>
 
   <!-- Options Page -->

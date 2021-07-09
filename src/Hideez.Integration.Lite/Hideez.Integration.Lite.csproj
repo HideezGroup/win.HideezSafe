@@ -4,7 +4,17 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Company>Hideez Group Inc.</Company>
     <Authors>Hideez Group Inc.</Authors>
-    <Description></Description>
+    <Description>Provides messages for shallow integration with Hideez Client Service. 
+Allows to monitor state of connected devices and listen for device button events.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>3.8.17</Version>
+    <PackageProjectUrl>https://github.com/HideezGroup/win.HideezClient</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/HideezGroup/win.HideezClient</RepositoryUrl>
+    <NeutralLanguage />
+    <PackageReleaseNotes>Integration support for Hideez Client v3.8.17 or higher.</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright ©2021 Hideez Group Inc.</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

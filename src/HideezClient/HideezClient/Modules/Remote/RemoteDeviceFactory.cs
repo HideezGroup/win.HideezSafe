@@ -26,8 +26,8 @@ namespace HideezClient.Modules
             var reply = await _metaMessenger.ProcessOnServer<EstablishRemoteDeviceConnectionMessageReply>(new EstablishRemoteDeviceConnectionMessage(connectionId, channelNo));
             var remoteDeviceId = reply.RemoteDeviceId;
 
-            var result = await remoteDeviceMessenger.TryConnectToServer(reply.PipeName);
-            var pipeRemoteDeviceConnection = new PipeRemoteDeviceConnection(remoteDeviceMessenger, remoteDeviceId, reply.DeviceName, reply.DeviceMac, result);
+            await remoteDeviceMessenger.TryConnectToServer(reply.PipeName);
+            var pipeRemoteDeviceConnection = new PipeRemoteDeviceConnection(remoteDeviceMessenger, remoteDeviceId, reply.DeviceName, reply.DeviceMac);
             var commandQueue = new CommandQueue(pipeRemoteDeviceConnection, _log);
             var deviceCommands = new RemoteDeviceCommands(remoteDeviceMessenger, remoteDeviceId);
             var device = new Device(commandQueue, channelNo, deviceCommands, _log);
