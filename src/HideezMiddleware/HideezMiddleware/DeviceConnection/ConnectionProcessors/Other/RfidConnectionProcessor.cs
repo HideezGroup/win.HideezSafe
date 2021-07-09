@@ -17,7 +17,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
     public sealed class RfidConnectionProcessor : BaseConnectionProcessor
     {
         readonly IClientUiManager _clientUiManager;
-        readonly HesAppConnection _hesConnection;
+        readonly IHesAppConnection _hesConnection;
         readonly RfidServiceConnection _rfidService;
         readonly ISettingsManager<RfidSettings> _rfidSettingsManager;
         readonly IScreenActivator _screenActivator;
@@ -28,7 +28,7 @@ namespace HideezMiddleware.DeviceConnection.ConnectionProcessors.Other
 
         public RfidConnectionProcessor(
             ConnectionFlowProcessorBase connectionFlowProcessor, 
-            HesAppConnection hesConnection,
+            IHesAppConnection hesConnection,
             RfidServiceConnection rfidService, 
             ISettingsManager<RfidSettings> rfidSettingsManager,
             IScreenActivator screenActivator,
