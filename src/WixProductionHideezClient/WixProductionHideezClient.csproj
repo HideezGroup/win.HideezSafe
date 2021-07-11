@@ -145,7 +145,7 @@ call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)WinBle.dll" "Hideez Client"
 call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)Crypto.dll" "Hideez Client"
 call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)HideezMiddleware.dll" "Hideez Client"
 call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)ServiceLibrary.Implementation.dll" "Hideez Client"
-call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)Hideez.ARM.dlll" "Hideez Client"
+call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)Hideez.ARM.dll" "Hideez Client"
 call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)Hideez.ISM.dll" "Hideez Client"
 
 call "$(SolutionDir)scripts\sign.bat" "$(TargetDir)HideezClient.exe" "Hideez Client"

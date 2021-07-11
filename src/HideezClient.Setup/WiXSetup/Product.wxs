@@ -498,8 +498,12 @@
   
       <Component Id="HideezService.System.Text.Json.dll" Guid="{649CD5DF-78B8-49D8-A446-39A9BF0D87C4}" Win64="$(var.Win64)">
         <File Id="HideezService.System.Text.Json.dll" Name="System.Text.Json.dll" Source="$(var.ProductionBuild_TargetDir)System.Text.Json.dll" />
-      </Component>  
-    
+      </Component>
+
+      <Component Id="HideezService.Hideez.Integration.Lite.dll" Guid="{DFC1395E-8C88-4477-9D65-74ED9507F3A3}" Win64="$(var.Win64)">
+        <File Id="HideezService.Hideez.Integration.Lite.dll" Name="Hideez.Integration.Lite.dll" Source="$(var.ProductionBuild_TargetDir)Hideez.Integration.Lite.dll" />
+      </Component>
+      
     </ComponentGroup>
   </Fragment>
   
@@ -873,8 +877,12 @@
   
       <Component Id="Microsoft.Bcl.AsyncInterfaces.dll" Guid="{2F684EDB-26E5-4817-846E-8CBA188F45CB}" Win64="$(var.Win64)">
         <File Id="Microsoft.Bcl.AsyncInterfaces.dll" Name="Microsoft.Bcl.AsyncInterfaces.dll" Source="$(var.ProductionBuild_TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" />
-      </Component>    
-  
+      </Component>
+
+      <Component Id="Hideez.Integration.Lite.dll" Guid="{48A38FBB-D31B-413D-8501-2CE28ED2FB33}" Win64="$(var.Win64)">
+        <File Id="Hideez.Integration.Lite.dll" Name="Hideez.Integration.Lite.dll" Source="$(var.ProductionBuild_TargetDir)Hideez.Integration.Lite.dll" />
+      </Component>
+
     </ComponentGroup>
   </Fragment>
 
