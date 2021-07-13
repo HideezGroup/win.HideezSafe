@@ -7,7 +7,7 @@ namespace HideezMiddleware.Settings
     {
         public SdkSettings()
         {
-            SettingsVersion = new Version(1, 4);
+            SettingsVersion = new Version(1, 5);
         }
 
         public SdkSettings(SdkSettings copy)
@@ -30,14 +30,20 @@ namespace HideezMiddleware.Settings
             VerifyCommandTimeout = copy.VerifyCommandTimeout;
             GetRootKeyCommandTimeout = copy.GetRootKeyCommandTimeout;
             RemoteVerifyCommandTimeout = copy.RemoteVerifyCommandTimeout;
+            RemoteGetRootkeyCommandTimeout = copy.RemoteGetRootkeyCommandTimeout;
 
             ConnectDeviceTimeout = copy.ConnectDeviceTimeout;
+            BondDeviceTimeout = copy.BondDeviceTimeout;
             DeviceInitializationTimeout = copy.DeviceInitializationTimeout;
             SystemStateEventWaitTimeout = copy.SystemStateEventWaitTimeout;
             ReconnectDeviceTimeout = copy.ReconnectDeviceTimeout;
 
             DeviceBusyTransmitTimeout = copy.DeviceBusyTransmitTimeout;
             DeviceBusyTransmitInterval = copy.DeviceBusyTransmitInterval;
+
+            DefaultLockProximity = copy.DefaultLockProximity;
+            DefaultUnlockProximity = copy.DefaultUnlockProximity;
+            DefaultLockTimeout = copy.DefaultLockTimeout;
         }
 
         [Setting]
@@ -69,9 +75,13 @@ namespace HideezMiddleware.Settings
         public int GetRootKeyCommandTimeout { get; set; } = 2_000;
         [Setting]
         public int RemoteVerifyCommandTimeout { get; set; } = 10_000;
+        [Setting]
+        public int RemoteGetRootkeyCommandTimeout { get; set; } = 10_000;
 
         [Setting]
         public int ConnectDeviceTimeout { get; set; } = 8_000;
+        [Setting]
+        public int BondDeviceTimeout { get; set; } = 17_000; 
         [Setting]
         public int DeviceInitializationTimeout { get; set; } = 15_000;
         [Setting]
@@ -79,12 +89,17 @@ namespace HideezMiddleware.Settings
         [Setting]
         public int ReconnectDeviceTimeout { get; set; } = 8_000;
         
+        [Setting]
+        public int DefaultLockProximity { get; set; } = 30;
+        [Setting]
+        public int DefaultUnlockProximity { get; set; } = 70;
+        [Setting]
+        public int DefaultLockTimeout { get; set; } = 5;
 
         [Setting]
-        public int DeviceBusyTransmitTimeout { get; set; } = 90;
-
+        public int DeviceBusyTransmitTimeout { get; set; } = 90_000;
         [Setting]
-        public int DeviceBusyTransmitInterval { get; set; } = 5;
+        public int DeviceBusyTransmitInterval { get; set; } = 5_000;
 
         public override object Clone()
         {

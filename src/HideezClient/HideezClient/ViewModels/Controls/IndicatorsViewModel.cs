@@ -107,7 +107,7 @@ namespace HideezClient.ViewModels.Controls
 
             // RFID
             RFID.State = StateControlViewModel.BoolToState(msg.RfidStatus == RfidStatus.Ok);
-            RFID.Visible = msg.RfidStatus != RfidStatus.Disabled && _serviceProxy.IsConnected;
+            RFID.Visible = msg.RfidStatus != RfidStatus.Disabled && _serviceProxy.IsConnected && msg.RfidStatus == RfidStatus.Ok;
 
             // Hideez Dongle
             Dongle.State = StateControlViewModel.BoolToState(msg.DongleStatus == BluetoothStatus.Ok);

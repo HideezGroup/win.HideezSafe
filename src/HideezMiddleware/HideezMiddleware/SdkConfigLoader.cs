@@ -27,14 +27,20 @@ namespace HideezMiddleware
             SdkConfig.VerifyCommandTimeout = settings.VerifyCommandTimeout;
             SdkConfig.GetRootKeyCommandTimeout = settings.GetRootKeyCommandTimeout;
             SdkConfig.RemoteVerifyCommandTimeout = settings.RemoteVerifyCommandTimeout;
+            SdkConfig.RemoteGetRootkeyCommandTimeout = settings.RemoteGetRootkeyCommandTimeout;
 
             SdkConfig.ConnectDeviceTimeout = settings.ConnectDeviceTimeout;
+            SdkConfig.BondDeviceTimeout = settings.BondDeviceTimeout;
             SdkConfig.DeviceInitializationTimeout = settings.DeviceInitializationTimeout;
             SdkConfig.SystemStateEventWaitTimeout = settings.SystemStateEventWaitTimeout;
             SdkConfig.ReconnectDeviceTimeout = settings.ReconnectDeviceTimeout;
 
             SdkConfig.DeviceBusyTransmitInterval = settings.DeviceBusyTransmitInterval;
             SdkConfig.DeviceBusyTransmitTimeout = settings.DeviceBusyTransmitTimeout;
+
+            SdkConfig.DefaultLockProximity = settings.DefaultLockProximity;
+            SdkConfig.DefaultUnlockProximity = settings.DefaultUnlockProximity;
+            SdkConfig.DefaultLockTimeout = settings.DefaultLockTimeout;
         }
     }
 }
