@@ -18,10 +18,13 @@ namespace HideezClient.Modules.ActionHandler
             {
                 inputApp = InputApp.Edge;
             }
-
             else if (appInfo.Title.StartsWith("skype", StringComparison.CurrentCultureIgnoreCase))
             {
                 inputApp = InputApp.Skype;
+            }
+            else if (appInfo.ProcessName.StartsWith("ezvit", StringComparison.CurrentCultureIgnoreCase))
+            {
+                inputApp = InputApp.Medoc;
             }
 
             return inputApp;
